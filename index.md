@@ -1,37 +1,145 @@
-## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/vivchar/first/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+# Renderer Recycler View Adapter
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+* Now you do not need to implement adapters for RecyclerView. 
+* You can easily use several types of cells in a single list.
+* Using this library will protect you from the appearance of any business logic in an adapter :)
 
-### Markdown
+## Gradle
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+* Step 1. Add the JitPack repository to your build file
 
-```markdown
-Syntax highlighted code block
+```gradle
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+* Step 2. Add the dependency
 
-# Header 1
-## Header 2
-### Header 3
+```gradle
+dependencies {
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:v1.0.2'
+}
+```
+## Usage
+* Step 1. Implement SomeModel
+```java
+public
+class SomeModel implements ItemModel
+{
 
-- Bulleted
-- List
+	public static final int TYPE = 0;
+	@NonNull
+	private final String mTitle;
 
-1. Numbered
-2. List
+	public
+	SomeModel(@NonNull final String title) {
+		mTitle = title;
+	}
 
-**Bold** and _Italic_ and `Code` text
+	@Override
+	public
+	int getType() {
+		return TYPE;
+	}
 
-[Link](url) and ![Image](src)
+	@NonNull
+	public
+	String getTitle() {
+		return mTitle;
+	}
+	...
+}
+```
+* Step 2. Implement SomeViewHolder
+```java
+public
+class SomeViewHolder
+		extends RecyclerView.ViewHolder
+{
+
+	public final TextView mTitle;
+
+	public
+	SomeViewHolder(final View itemView) {
+		super(itemView);
+		mTitle = (TextView) itemView.findViewById(R.id.title);
+		...
+	}
+}
+```
+* Step 3. Implement SomeViewRenderer
+```java
+public
+class SomeViewRenderer
+		extends ViewRenderer<SomeModel, SomeViewHolder>
+{
+	public
+	SomeViewRenderer(final int type, final Context context) {
+		super(type, context);
+	}
+
+	@Override
+	public
+	void bindView(@NonNull final SomeModel model, @NonNull final SomeViewHolder holder) {
+		holder.mTitle.setText(model.getTitle());
+		...
+	}
+
+	@NonNull
+	@Override
+	public
+	SomeViewHolder createViewHolder(@Nullable final ViewGroup parent) {
+		return new SomeViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.some_item, parent, false));
+	}
+}
+```
+* Step 4. Initialize Adapter and register the SomeViewRenderer 
+```java
+public
+class SomeActivity
+		extends AppCompatActivity
+{
+
+	private RendererRecyclerViewAdapter mRecyclerViewAdapter;
+	private RecyclerView mRecyclerView;
+
+	@Override
+	protected
+	void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+
+		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
+		mRecyclerViewAdapter.registerRenderer(new SomeViewRenderer(SomeModel.TYPE, this));
+		mRecyclerViewAdapter.registerRenderer(...); /* you can use several types of cells */
+
+		mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+		mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+		mRecyclerView.setAdapter(mRecyclerViewAdapter);
+
+		mRecyclerViewAdapter.setItems(getItems());
+		mRecyclerViewAdapter.notifyDataSetChanged();
+	}
+	...
+}
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## License
 
-### Jekyll Themes
+    Copyright 2016 Vitaly Vivchar
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/vivchar/first/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-### Support or Contact
+    http://www.apache.org/licenses/LICENSE-2.0
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
