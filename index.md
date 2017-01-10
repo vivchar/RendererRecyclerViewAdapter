@@ -27,8 +27,11 @@ dependencies {
 ```
 
 ## Usage
+d
 
 * Step 1. Implement SomeModel
+
+d
 
 ```java
 public
