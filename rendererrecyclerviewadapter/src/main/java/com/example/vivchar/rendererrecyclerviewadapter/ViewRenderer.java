@@ -11,7 +11,7 @@ import android.view.ViewGroup;
  */
 public
 abstract
-class ViewRenderer <M extends com.example.vivchar.rendererrecyclerviewadapter.ItemModel, VH extends RecyclerView.ViewHolder>
+class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder>
 {
 	private final int mViewType;
 	@NonNull
