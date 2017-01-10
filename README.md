@@ -1,6 +1,8 @@
 
 # Renderer Recycler View Adapter
 
+Now you do not need to implement adapters for RecyclerView. You can easily use several types of cells in a single list.
+
 ## Gradle
 
 * Step 1. Add the JitPack repository to your build file
@@ -111,6 +113,7 @@ class SomeActivity
 
 		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
 		mRecyclerViewAdapter.registerRenderer(new SomeViewRenderer(SomeModel.TYPE, this));
+		mRecyclerViewAdapter.registerRenderer(...); /* you can use several types of cells */
 
 		mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
