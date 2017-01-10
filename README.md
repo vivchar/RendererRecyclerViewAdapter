@@ -1,7 +1,9 @@
 
 # Renderer Recycler View Adapter
 
-Now you do not need to implement adapters for RecyclerView. You can easily use several types of cells in a single list.
+* Now you do not need to implement adapters for RecyclerView. 
+* You can easily use several types of cells in a single list.
+* Using this library will protect you from the appearance of any business logic in an adapter :)
 
 ## Gradle
 
