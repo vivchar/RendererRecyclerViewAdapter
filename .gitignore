@@ -3,3 +3,4 @@ build
 *.iml
 local.properties
 .idea/libraries
+.idea/workspace.xml
