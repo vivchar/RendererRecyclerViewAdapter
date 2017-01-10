@@ -1,5 +1,5 @@
 build
-.gradle
+.gradle/
 *.iml
 local.properties
 .idea/libraries
