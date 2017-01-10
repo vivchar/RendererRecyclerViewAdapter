@@ -17,6 +17,7 @@ allprojects {
     }
 }
 ```
+
 * Step 2. Add the dependency
 
 ```gradle
@@ -24,8 +25,11 @@ dependencies {
     compile 'com.github.vivchar:RendererRecyclerViewAdapter:v1.0.2'
 }
 ```
+
 ## Usage
+
 * Step 1. Implement SomeModel
+
 ```java
 public
 class SomeModel implements ItemModel
@@ -54,7 +58,9 @@ class SomeModel implements ItemModel
 	...
 }
 ```
+
 * Step 2. Implement SomeViewHolder
+
 ```java
 public
 class SomeViewHolder
@@ -71,7 +77,9 @@ class SomeViewHolder
 	}
 }
 ```
+
 * Step 3. Implement SomeViewRenderer
+
 ```java
 public
 class SomeViewRenderer
@@ -97,7 +105,9 @@ class SomeViewRenderer
 	}
 }
 ```
+
 * Step 4. Initialize Adapter and register the SomeViewRenderer 
+
 ```java
 public
 class SomeActivity
