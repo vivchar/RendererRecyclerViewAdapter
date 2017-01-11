@@ -1,1 +1,1 @@
-include ':app', ':rendererrecyclerviewadapter'
+include ':example', ':rendererrecyclerviewadapter'
