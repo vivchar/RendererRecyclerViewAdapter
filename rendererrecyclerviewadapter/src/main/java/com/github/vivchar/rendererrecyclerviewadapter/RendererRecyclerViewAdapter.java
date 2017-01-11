@@ -65,6 +65,7 @@ class RendererRecyclerViewAdapter
 	}
 
 	@NonNull
+	private
 	ItemModel
 	getItem(final int position) {
 		return mItems.get(position);

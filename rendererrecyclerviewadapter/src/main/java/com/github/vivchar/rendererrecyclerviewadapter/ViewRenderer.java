@@ -23,13 +23,8 @@ class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder>
 		mContext = context;
 	}
 
-	public
-	boolean isSupportType(final int viewType) {
-		return mViewType == viewType;
-	}
-
 	@NonNull
-	public
+	protected
 	Context getContext() {
 		return mContext;
 	}
