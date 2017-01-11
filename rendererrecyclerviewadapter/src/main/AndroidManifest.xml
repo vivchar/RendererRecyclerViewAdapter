@@ -1,4 +1,4 @@
-<manifest package = "com.example.vivchar.rendererrecyclerviewadapter"
+<manifest package = "com.github.vivchar.rendererrecyclerviewadapter"
 	xmlns:android = "http://schemas.android.com/apk/res/android">
 
 	<application android:allowBackup = "true"
