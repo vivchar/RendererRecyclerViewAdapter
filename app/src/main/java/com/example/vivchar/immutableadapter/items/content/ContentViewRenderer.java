@@ -1,4 +1,4 @@
-package com.example.vivchar.immutableadapter;
+package com.example.vivchar.immutableadapter.items.content;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.vivchar.immutableadapter.R;
 import com.example.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
 /**

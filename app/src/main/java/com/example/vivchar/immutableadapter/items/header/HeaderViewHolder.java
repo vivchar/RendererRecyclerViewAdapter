@@ -1,8 +1,10 @@
-package com.example.vivchar.immutableadapter;
+package com.example.vivchar.immutableadapter.items.header;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.vivchar.immutableadapter.R;
 
 /**
  * Created by Vivchar Vitaly on 1/10/17.

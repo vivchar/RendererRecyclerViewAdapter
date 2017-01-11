@@ -1,4 +1,4 @@
-package com.example.vivchar.immutableadapter;
+package com.example.vivchar.immutableadapter.items.content;
 
 import android.support.annotation.NonNull;
 
@@ -8,16 +8,16 @@ import com.example.vivchar.rendererrecyclerviewadapter.ItemModel;
  * Created by Vivchar Vitaly on 1/10/17.
  */
 public
-class HeaderModel implements ItemModel
+class ContentModel implements ItemModel
 {
 
-	public static final int TYPE = 0;
+	public static final int TYPE = 1;
 	@NonNull
-	private final String mTitle;
+	private final String mName;
 
 	public
-	HeaderModel(@NonNull final String title) {
-		mTitle = title;
+	ContentModel(@NonNull final String name) {
+		mName = name;
 	}
 
 	@Override
@@ -28,7 +28,7 @@ class HeaderModel implements ItemModel
 
 	@NonNull
 	public
-	String getTitle() {
-		return mTitle;
+	String getName() {
+		return mName;
 	}
 }

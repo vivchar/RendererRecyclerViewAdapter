@@ -7,6 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import com.example.vivchar.immutableadapter.items.content.ContentModel;
+import com.example.vivchar.immutableadapter.items.content.ContentViewRenderer;
+import com.example.vivchar.immutableadapter.items.header.HeaderModel;
+import com.example.vivchar.immutableadapter.items.header.HeaderViewRenderer;
 import com.example.vivchar.rendererrecyclerviewadapter.ItemModel;
 import com.example.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 
