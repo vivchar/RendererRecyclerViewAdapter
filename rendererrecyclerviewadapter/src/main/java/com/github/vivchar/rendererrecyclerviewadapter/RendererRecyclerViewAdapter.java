@@ -2,6 +2,7 @@ package com.github.vivchar.rendererrecyclerviewadapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -17,23 +18,29 @@ class RendererRecyclerViewAdapter
 	@NonNull
 	private final ArrayList<ItemModel> mItems = new ArrayList<>();
 	@NonNull
-	private final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
+	private final SparseArray<ViewRenderer> mRenderers = new SparseArray<>();
 
 	@Override
 	public
 	RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-		for (final ViewRenderer renderer : mRenderers) {
-			if (renderer.isSupportType(viewType)) {
-				return renderer.createViewHolder(parent);
-			}
+		final ViewRenderer renderer = mRenderers.get(viewType);
+		if (renderer != null) {
+			return renderer.createViewHolder(parent);
 		}
+
 		throw new RuntimeException("Not supported Item View Type: " + viewType);
 	}
 
 	public
 	void
 	registerRenderer(@NonNull final ViewRenderer renderer) {
-		mRenderers.add(renderer);
+		final int type = renderer.getType();
+
+		if (mRenderers.get(type) == null) {
+			mRenderers.put(type, renderer);
+		} else {
+			throw new RuntimeException("ViewRenderer already exist with this type: " + type);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -41,13 +48,13 @@ class RendererRecyclerViewAdapter
 	public
 	void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 		final ItemModel item = getItem(position);
-		for (final ViewRenderer renderer : mRenderers) {
-			if (renderer.isSupportType(item.getType())) {
-				renderer.bindView(item, holder);
-				return;
-			}
+
+		final ViewRenderer renderer = mRenderers.get(item.getType());
+		if (renderer != null) {
+			renderer.bindView(item, holder);
+		} else {
+			throw new RuntimeException("Not supported View Holder: " + holder);
 		}
-		throw new RuntimeException("Not supported View Holder: " + holder);
 	}
 
 	@Override

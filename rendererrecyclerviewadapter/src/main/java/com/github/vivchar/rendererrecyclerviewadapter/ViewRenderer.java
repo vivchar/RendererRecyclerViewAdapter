@@ -40,4 +40,9 @@ class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder>
 	@NonNull
 	public abstract
 	VH createViewHolder(@Nullable ViewGroup parent);
+
+	public
+	int getType() {
+		return mViewType;
+	}
 }
