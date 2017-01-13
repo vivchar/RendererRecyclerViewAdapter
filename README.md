@@ -138,6 +138,10 @@ class SomeActivity
 }
 ```
 
+### Example
+
+![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example.gif)
+
 ## License
 
     Copyright 2017 Vitaly Vivchar
