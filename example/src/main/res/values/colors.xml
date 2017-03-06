@@ -3,4 +3,7 @@
 	<color name = "colorPrimary">#3F51B5</color>
 	<color name = "colorPrimaryDark">#303F9F</color>
 	<color name = "colorAccent">#FF4081</color>
+	<color name = "blue1">#1795d2</color>
+	<color name = "blue2">#5a1795d2</color>
+	<color name = "green">#e600c77d</color>
 </resources>

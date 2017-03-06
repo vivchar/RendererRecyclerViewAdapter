@@ -1,24 +1,24 @@
-package com.github.vivchar.immutableadapter.items.header;
+package com.github.vivchar.immutableadapter.items.category;
 
 import android.support.annotation.NonNull;
 
 import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
 
 /**
- * Created by Vivchar Vitaly on 3/6/17.
+ * Created by Vivchar Vitaly on 1/10/17.
  */
 public
-class HeaderModel
+class CategoryModel
 		implements ItemModel
 {
 
-	public static final int TYPE = 2;
+	public static final int TYPE = 0;
 	@NonNull
-	private final String mName;
+	private final String mTitle;
 
 	public
-	HeaderModel(@NonNull final String name) {
-		mName = name;
+	CategoryModel(@NonNull final String title) {
+		mTitle = title;
 	}
 
 	@Override
@@ -30,6 +30,6 @@ class HeaderModel
 	@NonNull
 	public
 	String getName() {
-		return mName;
+		return mTitle;
 	}
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android = "http://schemas.android.com/apk/res/android"
+	android:layout_width = "match_parent"
+	android:layout_height = "wrap_content"
+	>
+
+	<TextView
+		android:id = "@+id/title"
+		xmlns:android = "http://schemas.android.com/apk/res/android"
+		android:layout_width = "wrap_content"
+		android:layout_height = "wrap_content"
+		android:layout_gravity = "center_vertical"
+		android:text = "Title"
+		android:textAllCaps = "true"
+		android:textColor = "@color/blue1"
+		android:textSize = "20sp"
+		/>
+
+	<Button
+		android:id="@+id/viewAll"
+		android:layout_width = "wrap_content"
+		android:layout_height = "wrap_content"
+		android:layout_gravity = "end|center_vertical"
+		android:backgroundTint = "@color/blue1"
+		android:padding = "6dp"
+		android:text = "View All"
+		android:textColor = "@android:color/white"
+		/>
+</FrameLayout>

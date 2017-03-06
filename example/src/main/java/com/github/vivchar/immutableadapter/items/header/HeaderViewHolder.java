@@ -7,18 +7,18 @@ import android.widget.TextView;
 import com.github.vivchar.immutableadapter.R;
 
 /**
- * Created by Vivchar Vitaly on 1/10/17.
+ * Created by Vivchar Vitaly on 3/6/17.
  */
 public
 class HeaderViewHolder
 		extends RecyclerView.ViewHolder
 {
 
-	public final TextView mTitle;
+	public final TextView mTextView;
 
 	public
 	HeaderViewHolder(final View itemView) {
 		super(itemView);
-		mTitle = (TextView) itemView.findViewById(R.id.title);
+		mTextView = (TextView) itemView.findViewById(R.id.content);
 	}
 }
