@@ -46,7 +46,13 @@ class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder>
 
 	@NonNull
 	protected
+	View inflate(@LayoutRes final int layout, @Nullable final ViewGroup parent, final boolean attachToRoot) {
+		return LayoutInflater.from(getContext()).inflate(layout, parent, attachToRoot);
+	}
+
+	@NonNull
+	protected
 	View inflate(@LayoutRes final int layout, final @Nullable ViewGroup parent) {
-		return LayoutInflater.from(getContext()).inflate(layout, parent, false);
+		return inflate(layout, parent, false);
 	}
 }
