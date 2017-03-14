@@ -6,6 +6,7 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Vivchar Vitaly on 1/9/17.
@@ -78,7 +79,7 @@ class RendererRecyclerViewAdapter
 	}
 
 	public
-	void setItems(@NonNull final ArrayList<ItemModel> items) {
+	void setItems(@NonNull final List<ItemModel> items) {
 		mItems.clear();
 		mItems.addAll(items);
 	}
