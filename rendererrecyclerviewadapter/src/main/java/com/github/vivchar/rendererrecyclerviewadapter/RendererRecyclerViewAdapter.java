@@ -65,11 +65,12 @@ class RendererRecyclerViewAdapter
 		return item.getType();
 	}
 
+	@SuppressWarnings("unchecked")
 	@NonNull
-	private
-	ItemModel
+	public
+	<T extends ItemModel> T
 	getItem(final int position) {
-		return mItems.get(position);
+		return (T) mItems.get(position);
 	}
 
 	@Override
@@ -79,7 +80,7 @@ class RendererRecyclerViewAdapter
 	}
 
 	public
-	void setItems(@NonNull final List<ItemModel> items) {
+	void setItems(@NonNull final List<? extends ItemModel> items) {
 		mItems.clear();
 		mItems.addAll(items);
 	}
