@@ -22,7 +22,7 @@ allprojects {
 
 ```gradle
 dependencies {
-    compile 'com.github.vivchar:RendererRecyclerViewAdapter:v1.0.4'
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:1.0.8'
 }
 ```
 
