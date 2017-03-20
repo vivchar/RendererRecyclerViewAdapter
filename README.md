@@ -133,6 +133,9 @@ class SomeActivity
 
 		mRecyclerViewAdapter.setItems(getItems());
 		mRecyclerViewAdapter.notifyDataSetChanged();
+		
+		//Or you can use the DiffUtil
+		mRecyclerViewAdapter.setItems(getItems(), new YourDiffCallBack());
 	}
 	...
 }
