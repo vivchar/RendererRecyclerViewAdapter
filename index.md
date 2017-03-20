@@ -22,7 +22,7 @@ allprojects {
 
 ```gradle
 dependencies {
-    compile 'com.github.vivchar:RendererRecyclerViewAdapter:1.0.8'
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:1.0.9'
 }
 ```
 
@@ -133,6 +133,9 @@ class SomeActivity
 
 		mRecyclerViewAdapter.setItems(getItems());
 		mRecyclerViewAdapter.notifyDataSetChanged();
+		
+		//Or you can use method with the DiffUtil support
+		//mRecyclerViewAdapter.setItems(getItems(), new YourDiffCallBack());
 	}
 	...
 }
