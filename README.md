@@ -140,7 +140,7 @@ class SomeActivity
 
 ### Example
 
-![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example_new.gif)
+![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example1.gif)
 
 ## License
 
