@@ -1,6 +1,7 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.ViewGroup;
@@ -83,5 +84,30 @@ class RendererRecyclerViewAdapter
 	void setItems(@NonNull final List<? extends ItemModel> items) {
 		mItems.clear();
 		mItems.addAll(items);
+	}
+
+	/**
+	 * @param items - your new items
+	 * @param diffCallback - callback class used by DiffUtil while calculating the diff between two lists.
+	 */
+	@SuppressWarnings("unchecked")
+	public
+	void setItems(@NonNull final List<? extends ItemModel> items, @NonNull final DiffCallback diffCallback) {
+		diffCallback.setItems(mItems, items);
+
+		final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+		mItems.clear();
+		mItems.addAll(items);
+
+		diffResult.dispatchUpdatesTo(this);
+	}
+
+	public abstract static
+	class DiffCallback <BM extends ItemModel>
+			extends DiffUtil.Callback
+	{
+		public abstract
+		void setItems(@NonNull final List<BM> oldItems, @NonNull final List<BM> newItems);
 	}
 }
