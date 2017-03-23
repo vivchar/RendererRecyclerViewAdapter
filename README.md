@@ -1,5 +1,7 @@
 
-# Renderer Recycler View Adapter [![Release](https://jitpack.io/v/vivchar/RendererRecyclerViewAdapter.svg)](https://jitpack.io/#vivchar/RendererRecyclerViewAdapter)
+# Renderer Recycler View Adapter [![Release](https://jitpack.io/v/vivchar/RendererRecyclerViewAdapter.svg)](https://jitpack.io/#vivchar/RendererRecyclerViewAdapter) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RendererRecyclerViewAdapter-blue.svg?style=flat)](https://android-arsenal.com/details/1/5442)
+
+
 * Now you do not need to implement adapters for RecyclerView. 
 * You can easily use several types of cells in a single list.
 * Using this library will protect you from the appearance of any business logic in an adapter :)
