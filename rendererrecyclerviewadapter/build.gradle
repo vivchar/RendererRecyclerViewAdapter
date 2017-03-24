@@ -7,8 +7,6 @@ android {
 	defaultConfig {
 		minSdkVersion 14
 		targetSdkVersion 25
-		versionCode 9
-		versionName "1.0"
 	}
 	buildTypes {
 		release {
@@ -22,3 +20,5 @@ dependencies {
 	compile 'com.android.support:support-annotations:25.3.0'
 	compile 'com.android.support:recyclerview-v7:25.3.0'
 }
+
+apply from: '../maven.gradle'
