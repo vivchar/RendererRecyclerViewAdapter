@@ -1,6 +1,7 @@
 
-# Renderer Recycler View Adapter [![Release](https://jitpack.io/v/vivchar/RendererRecyclerViewAdapter.svg)](https://jitpack.io/#vivchar/RendererRecyclerViewAdapter) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RendererRecyclerViewAdapter-blue.svg?style=flat)](https://android-arsenal.com/details/1/5442)
+# Renderer Recycler View Adapter 
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter) [![Release](https://jitpack.io/v/vivchar/RendererRecyclerViewAdapter.svg)](https://jitpack.io/#vivchar/RendererRecyclerViewAdapter) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RendererRecyclerViewAdapter-green.svg?style=flat)](https://android-arsenal.com/details/1/5442)
 
 * Now you do not need to implement adapters for RecyclerView. 
 * You can easily use several types of cells in a single list.
@@ -8,22 +9,9 @@
 
 ## Gradle
 
-* Step 1. Add the JitPack repository to your build file
-
-```gradle
-allprojects {
-    repositories {
-        ...
-        maven { url 'https://jitpack.io' }
-    }
-}
-```
-
-* Step 2. Add the dependency
-
 ```gradle
 dependencies {
-    compile 'com.github.vivchar:RendererRecyclerViewAdapter:1.0.9'
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:1.0.10'
 }
 ```
 
