@@ -11,7 +11,7 @@ public
 class ContentModel
 		implements BaseItemModel
 {
-
+	public static String KEY_NAME = "key";
 	public static final int TYPE = 1;
 	private final int mID;
 	@NonNull

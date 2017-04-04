@@ -34,6 +34,10 @@ class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder>
 		return mContext;
 	}
 
+	public
+	void bindView(final M item, final VH holder, final List payloads) {
+	}
+
 	public abstract
 	void bindView(@NonNull M model, @NonNull VH holder);
 
@@ -56,10 +60,5 @@ class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder>
 	protected
 	View inflate(@LayoutRes final int layout, final @Nullable ViewGroup parent) {
 		return inflate(layout, parent, false);
-	}
-
-	public
-	void bindView(final M item, final VH holder, final List payloads) {
-		bindView(item, holder);
 	}
 }

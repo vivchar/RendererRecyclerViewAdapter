@@ -2,6 +2,7 @@ package com.github.vivchar.immutableadapter;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -179,6 +180,26 @@ class MainActivity
 			final ItemModel oldItem = mOldItems.get(oldItemPosition);
 			final ItemModel newItem = mNewItems.get(newItemPosition);
 			return oldItem.equals(newItem);
+		}
+
+		@Nullable
+		@Override
+		public
+		Object getChangePayload(final int oldItemPosition, final int newItemPosition) {
+			if (mOldItems.get(oldItemPosition).getType() != ContentModel.TYPE ||
+			    mNewItems.get(newItemPosition).getType() != ContentModel.TYPE) {
+				return null;
+			}
+
+			final ContentModel oldContentItem = (ContentModel) mOldItems.get(oldItemPosition);
+			final ContentModel newContentItem = (ContentModel) mNewItems.get(newItemPosition);
+
+			final Bundle diffBundle = new Bundle();
+			if (!oldContentItem.getName().equals(newContentItem.getName())) {
+				diffBundle.putBoolean(ContentModel.KEY_NAME, true);
+			}
+
+			return diffBundle.size() == 0 ? null : diffBundle;
 		}
 	};
 

@@ -49,17 +49,18 @@ class RendererRecyclerViewAdapter
 	@Override
 	public
 	void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position, final List payloads) {
-		if (payloads.size() == 0) {
+		if (payloads == null || payloads.isEmpty()) {
 			onBindViewHolder(holder, position);
-		} else {
-			final ItemModel item = getItem(position);
-			final ViewRenderer renderer = mRenderers.get(item.getType());
+			return;
+		}
 
-			if (renderer != null) {
-				renderer.bindView(item, holder, payloads);
-			} else {
-				throw new UnsupportedViewHolderException(holder);
-			}
+		final ItemModel item = getItem(position);
+		final ViewRenderer renderer = mRenderers.get(item.getType());
+
+		if (renderer != null) {
+			renderer.bindView(item, holder, payloads);
+		} else {
+			throw new UnsupportedViewHolderException(holder);
 		}
 	}
 
