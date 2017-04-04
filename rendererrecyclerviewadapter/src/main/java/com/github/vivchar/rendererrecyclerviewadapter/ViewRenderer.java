@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */
@@ -54,5 +56,10 @@ class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder>
 	protected
 	View inflate(@LayoutRes final int layout, final @Nullable ViewGroup parent) {
 		return inflate(layout, parent, false);
+	}
+
+	public
+	void bindView(final M item, final VH holder, final List payloads) {
+		bindView(item, holder);
 	}
 }
