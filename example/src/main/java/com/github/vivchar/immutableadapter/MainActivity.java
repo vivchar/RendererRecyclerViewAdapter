@@ -135,7 +135,7 @@ class MainActivity
 
 	@NonNull
 	private final RendererRecyclerViewAdapter.DiffCallback<BaseItemModel> mDiffCallback = new RendererRecyclerViewAdapter
-			.DiffCallback<BaseItemModel>()
+			.DefaultDiffCallback<BaseItemModel>()
 	{
 		@Override
 		public
