@@ -15,12 +15,10 @@ import com.github.vivchar.immutableadapter.items.content.ContentModel;
 import com.github.vivchar.immutableadapter.items.content.ContentViewRenderer;
 import com.github.vivchar.immutableadapter.items.header.HeaderModel;
 import com.github.vivchar.immutableadapter.items.header.HeaderViewRenderer;
-import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public
@@ -139,45 +137,15 @@ class MainActivity
 	private final RendererRecyclerViewAdapter.DiffCallback<BaseItemModel> mDiffCallback = new RendererRecyclerViewAdapter
 			.DiffCallback<BaseItemModel>()
 	{
-
-		private final ArrayList<BaseItemModel> mOldItems = new ArrayList<>();
-		private final ArrayList<BaseItemModel> mNewItems = new ArrayList<>();
-
 		@Override
 		public
-		void setItems(@NonNull final List<BaseItemModel> oldItems, @NonNull final List<BaseItemModel> newItems) {
-			mOldItems.clear();
-			mOldItems.addAll(oldItems);
-
-			mNewItems.clear();
-			mNewItems.addAll(newItems);
-		}
-
-		@Override
-		public
-		int getOldListSize() {
-			return mOldItems.size();
-		}
-
-		@Override
-		public
-		int getNewListSize() {
-			return mNewItems.size();
-		}
-
-		@Override
-		public
-		boolean areItemsTheSame(final int oldItemPosition, final int newItemPosition) {
-			final BaseItemModel oldItem = mOldItems.get(oldItemPosition);
-			final BaseItemModel newItem = mNewItems.get(newItemPosition);
+		boolean areItemsTheSame(final BaseItemModel oldItem, final BaseItemModel newItem) {
 			return oldItem.getID() == newItem.getID();
 		}
 
 		@Override
 		public
-		boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
-			final ItemModel oldItem = mOldItems.get(oldItemPosition);
-			final ItemModel newItem = mNewItems.get(newItemPosition);
+		boolean areContentsTheSame(final BaseItemModel oldItem, final BaseItemModel newItem) {
 			return oldItem.equals(newItem);
 		}
 	};

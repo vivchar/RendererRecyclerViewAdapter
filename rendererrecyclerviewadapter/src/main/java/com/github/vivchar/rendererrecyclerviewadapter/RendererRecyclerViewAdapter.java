@@ -110,4 +110,59 @@ class RendererRecyclerViewAdapter
 		public abstract
 		void setItems(@NonNull final List<BM> oldItems, @NonNull final List<BM> newItems);
 	}
+
+	public abstract static
+	class DefaultDiffCallback <BM extends ItemModel>
+			extends DiffCallback<BM>
+	{
+		private final List<BM> mOldItems = new ArrayList<>();
+		private final List<BM> mNewItems = new ArrayList<>();
+
+		@Override
+		public
+		void setItems(@NonNull final List<BM> oldItems, @NonNull final List<BM> newItems) {
+			mOldItems.clear();
+			mOldItems.addAll(oldItems);
+
+			mNewItems.clear();
+			mNewItems.addAll(newItems);
+		}
+
+		@Override
+		public
+		int getOldListSize() {
+			return mOldItems.size();
+		}
+
+		@Override
+		public
+		int getNewListSize() {
+			return mNewItems.size();
+		}
+
+		@Override
+		public
+		boolean areItemsTheSame(final int oldItemPosition, final int newItemPosition) {
+			return areItemsTheSame(
+					mOldItems.get(oldItemPosition),
+					mNewItems.get(newItemPosition)
+			);
+		}
+
+		@Override
+		public
+		boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
+			return areContentsTheSame(
+					mOldItems.get(oldItemPosition),
+					mNewItems.get(newItemPosition)
+			);
+		}
+
+		protected abstract
+		boolean areItemsTheSame(final BM oldItemPosition, final BM newItemPosition);
+
+		protected abstract
+		boolean areContentsTheSame(final BM oldItemPosition, final BM newItemPosition);
+	}
+	}
 }
