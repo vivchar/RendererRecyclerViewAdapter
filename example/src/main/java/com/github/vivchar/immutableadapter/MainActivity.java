@@ -2,6 +2,7 @@ package com.github.vivchar.immutableadapter;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -135,8 +136,15 @@ class MainActivity
 
 	@NonNull
 	private final RendererRecyclerViewAdapter.DiffCallback<BaseItemModel> mDiffCallback = new RendererRecyclerViewAdapter
-			.DefaultDiffCallback<BaseItemModel>()
+			.DiffCallback<BaseItemModel>()
 	{
+		@Nullable
+		@Override
+		protected
+		Object getChangePayload(final BaseItemModel oldItem, final BaseItemModel newItem) {
+			return null;
+		}
+
 		@Override
 		public
 		boolean areItemsTheSame(final BaseItemModel oldItem, final BaseItemModel newItem) {

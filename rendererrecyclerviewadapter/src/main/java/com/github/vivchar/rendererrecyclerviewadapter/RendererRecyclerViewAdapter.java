@@ -1,6 +1,7 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -107,19 +108,9 @@ class RendererRecyclerViewAdapter
 	class DiffCallback <BM extends ItemModel>
 			extends DiffUtil.Callback
 	{
-		public abstract
-		void setItems(@NonNull final List<BM> oldItems, @NonNull final List<BM> newItems);
-	}
-
-	public abstract static
-	class DefaultDiffCallback <BM extends ItemModel>
-			extends DiffCallback<BM>
-	{
 		private final List<BM> mOldItems = new ArrayList<>();
 		private final List<BM> mNewItems = new ArrayList<>();
 
-		@Override
-		public
 		void setItems(@NonNull final List<BM> oldItems, @NonNull final List<BM> newItems) {
 			mOldItems.clear();
 			mOldItems.addAll(oldItems);
@@ -158,11 +149,24 @@ class RendererRecyclerViewAdapter
 			);
 		}
 
+		@Nullable
+		@Override
+		public
+		Object getChangePayload(final int oldItemPosition, final int newItemPosition) {
+			return getChangePayload(
+					mOldItems.get(oldItemPosition),
+					mNewItems.get(newItemPosition)
+			);
+		}
+
+		@Nullable
+		protected abstract
+		Object getChangePayload(final BM oldItem, final BM newItem);
+
 		protected abstract
 		boolean areItemsTheSame(final BM oldItemPosition, final BM newItemPosition);
 
 		protected abstract
 		boolean areContentsTheSame(final BM oldItemPosition, final BM newItemPosition);
-	}
 	}
 }
