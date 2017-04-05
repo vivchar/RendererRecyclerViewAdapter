@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */
@@ -30,6 +32,10 @@ class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder>
 	protected
 	Context getContext() {
 		return mContext;
+	}
+
+	public
+	void bindView(final M item, final VH holder, final List payloads) {
 	}
 
 	public abstract

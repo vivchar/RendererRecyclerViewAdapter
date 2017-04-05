@@ -48,6 +48,25 @@ class RendererRecyclerViewAdapter
 	@SuppressWarnings("unchecked")
 	@Override
 	public
+	void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position, final List payloads) {
+		if (payloads == null || payloads.isEmpty()) {
+			onBindViewHolder(holder, position);
+			return;
+		}
+
+		final ItemModel item = getItem(position);
+		final ViewRenderer renderer = mRenderers.get(item.getType());
+
+		if (renderer != null) {
+			renderer.bindView(item, holder, payloads);
+		} else {
+			throw new UnsupportedViewHolderException(holder);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public
 	void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 		final ItemModel item = getItem(position);
 
@@ -55,7 +74,7 @@ class RendererRecyclerViewAdapter
 		if (renderer != null) {
 			renderer.bindView(item, holder);
 		} else {
-			throw new RuntimeException("Not supported View Holder: " + holder);
+			throw new UnsupportedViewHolderException(holder);
 		}
 	}
 
@@ -109,5 +128,14 @@ class RendererRecyclerViewAdapter
 	{
 		public abstract
 		void setItems(@NonNull final List<BM> oldItems, @NonNull final List<BM> newItems);
+	}
+
+	private final static
+	class UnsupportedViewHolderException
+			extends RuntimeException
+	{
+		UnsupportedViewHolderException(final RecyclerView.ViewHolder holderName) {
+			super("Not supported View Holder: " + holderName.getClass().getSimpleName());
+		}
 	}
 }
