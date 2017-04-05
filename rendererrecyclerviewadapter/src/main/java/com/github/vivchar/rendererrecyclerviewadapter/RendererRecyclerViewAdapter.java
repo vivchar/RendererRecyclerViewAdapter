@@ -49,19 +49,18 @@ class RendererRecyclerViewAdapter
 	@SuppressWarnings("unchecked")
 	@Override
 	public
-	void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position, final List payloads) {
+	void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position, @Nullable final List payloads) {
 		if (payloads == null || payloads.isEmpty()) {
 			onBindViewHolder(holder, position);
-			return;
-		}
-
-		final ItemModel item = getItem(position);
-		final ViewRenderer renderer = mRenderers.get(item.getType());
-
-		if (renderer != null) {
-			renderer.bindView(item, holder, payloads);
 		} else {
-			throw new UnsupportedViewHolderException(holder);
+			final ItemModel item = getItem(position);
+			final ViewRenderer renderer = mRenderers.get(item.getType());
+
+			if (renderer != null) {
+				renderer.bindView(item, holder, payloads);
+			} else {
+				throw new UnsupportedViewHolderException(holder);
+			}
 		}
 	}
 
@@ -159,6 +158,9 @@ class RendererRecyclerViewAdapter
 			);
 		}
 
+		public abstract
+		boolean areItemsTheSame(final BM oldItemPosition, final BM newItemPosition);
+
 		@Override
 		public
 		boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
@@ -168,32 +170,32 @@ class RendererRecyclerViewAdapter
 			);
 		}
 
+		public abstract
+		boolean areContentsTheSame(final BM oldItemPosition, final BM newItemPosition);
+
 		@Nullable
 		@Override
 		public
 		Object getChangePayload(final int oldItemPosition, final int newItemPosition) {
-			return getChangePayload(
-					mOldItems.get(oldItemPosition),
-					mNewItems.get(newItemPosition)
-			);
+			final Object changePayload = getChangePayload(mOldItems.get(oldItemPosition), mNewItems.get(newItemPosition));
+			if (changePayload == null ) {
+				return super.getChangePayload(oldItemPosition, newItemPosition);
+			}
+			return changePayload;
 		}
 
 		@Nullable
-		protected abstract
-		Object getChangePayload(final BM oldItem, final BM newItem);
-
-		protected abstract
-		boolean areItemsTheSame(final BM oldItemPosition, final BM newItemPosition);
-
-		protected abstract
-		boolean areContentsTheSame(final BM oldItemPosition, final BM newItemPosition);
+		public
+		Object getChangePayload(final BM oldItem, final BM newItem) {
+			return null;
+		}
 	}
 
 	private final static
 	class UnsupportedViewHolderException
 			extends RuntimeException
 	{
-		UnsupportedViewHolderException(final RecyclerView.ViewHolder holderName) {
+		UnsupportedViewHolderException(@NonNull final RecyclerView.ViewHolder holderName) {
 			super("Not supported View Holder: " + holderName.getClass().getSimpleName());
 		}
 	}

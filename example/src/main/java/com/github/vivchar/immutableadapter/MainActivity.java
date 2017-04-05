@@ -138,13 +138,6 @@ class MainActivity
 	private final RendererRecyclerViewAdapter.DiffCallback<BaseItemModel> mDiffCallback = new RendererRecyclerViewAdapter
 			.DiffCallback<BaseItemModel>()
 	{
-		@Nullable
-		@Override
-		protected
-		Object getChangePayload(final BaseItemModel oldItem, final BaseItemModel newItem) {
-			return null;
-		}
-
 		@Override
 		public
 		boolean areItemsTheSame(final BaseItemModel oldItem, final BaseItemModel newItem) {
@@ -160,14 +153,14 @@ class MainActivity
 		@Nullable
 		@Override
 		public
-		Object getChangePayload(final int oldItemPosition, final int newItemPosition) {
-			if (mOldItems.get(oldItemPosition).getType() != ContentModel.TYPE ||
-			    mNewItems.get(newItemPosition).getType() != ContentModel.TYPE) {
+		Object getChangePayload(final BaseItemModel oldItem, final BaseItemModel newItem) {
+			if (oldItem.getType() != ContentModel.TYPE ||
+			    newItem.getType() != ContentModel.TYPE) {
 				return null;
 			}
 
-			final ContentModel oldContentItem = (ContentModel) mOldItems.get(oldItemPosition);
-			final ContentModel newContentItem = (ContentModel) mNewItems.get(newItemPosition);
+			final ContentModel oldContentItem = (ContentModel) oldItem;
+			final ContentModel newContentItem = (ContentModel) newItem;
 
 			final Bundle diffBundle = new Bundle();
 			if (!oldContentItem.getName().equals(newContentItem.getName())) {
@@ -177,5 +170,4 @@ class MainActivity
 			return diffBundle.size() == 0 ? null : diffBundle;
 		}
 	};
-
 }
