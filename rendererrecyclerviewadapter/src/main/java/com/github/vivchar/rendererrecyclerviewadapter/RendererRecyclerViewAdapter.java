@@ -159,7 +159,7 @@ class RendererRecyclerViewAdapter
 		}
 
 		public abstract
-		boolean areItemsTheSame(final BM oldItemPosition, final BM newItemPosition);
+		boolean areItemsTheSame(final BM oldItem, final BM newItem);
 
 		@Override
 		public
@@ -171,7 +171,7 @@ class RendererRecyclerViewAdapter
 		}
 
 		public abstract
-		boolean areContentsTheSame(final BM oldItemPosition, final BM newItemPosition);
+		boolean areContentsTheSame(final BM oldItem, final BM newItem);
 
 		@Nullable
 		@Override
