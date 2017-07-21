@@ -15,7 +15,7 @@
 from 1.0.10, AAR is distributed via jCenter.
 ```gradle
 dependencies {
-    compile 'com.github.vivchar:RendererRecyclerViewAdapter:1.0.10'
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:+'
 }
 ```
 
