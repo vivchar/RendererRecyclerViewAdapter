@@ -24,28 +24,22 @@ dependencies {
 * Step 1. Implement SomeModel
 
 ```java
-public
-class SomeModel implements ItemModel
+public class SomeModel implements ItemModel
 {
 
 	public static final int TYPE = 0;
-	@NonNull
-	private final String mTitle;
+	private String mTitle;
 
-	public
-	SomeModel(@NonNull final String title) {
+	public SomeModel(String title) {
 		mTitle = title;
 	}
 
 	@Override
-	public
-	int getType() {
+	public int getType() {
 		return TYPE;
 	}
 
-	@NonNull
-	public
-	String getTitle() {
+	public String getTitle() {
 		return mTitle;
 	}
 	...
@@ -55,15 +49,12 @@ class SomeModel implements ItemModel
 * Step 2. Implement SomeViewHolder
 
 ```java
-public
-class SomeViewHolder
-		extends RecyclerView.ViewHolder
+public class SomeViewHolder extends RecyclerView.ViewHolder
 {
 
-	public final TextView mTitle;
+	public TextView mTitle;
 
-	public
-	SomeViewHolder(final View itemView) {
+	public SomeViewHolder(View itemView) {
 		super(itemView);
 		mTitle = (TextView) itemView.findViewById(R.id.title);
 		...
@@ -74,26 +65,20 @@ class SomeViewHolder
 * Step 3. Implement SomeViewRenderer
 
 ```java
-public
-class SomeViewRenderer
-		extends ViewRenderer<SomeModel, SomeViewHolder>
+public class SomeViewRenderer extends ViewRenderer<SomeModel, SomeViewHolder>
 {
-	public
-	SomeViewRenderer(final int type, final Context context) {
+	public SomeViewRenderer(int type, Context context) {
 		super(type, context);
 	}
 
 	@Override
-	public
-	void bindView(@NonNull final SomeModel model, @NonNull final SomeViewHolder holder) {
+	public void bindView(SomeModel model, SomeViewHolder holder) {
 		holder.mTitle.setText(model.getTitle());
 		...
 	}
 
-	@NonNull
 	@Override
-	public
-	SomeViewHolder createViewHolder(@Nullable final ViewGroup parent) {
+	public SomeViewHolder createViewHolder(ViewGroup parent) {
 		return new SomeViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.some_item, parent, false));
 	}
 }
@@ -102,17 +87,14 @@ class SomeViewRenderer
 * Step 4. Initialize Adapter and register the SomeViewRenderer 
 
 ```java
-public
-class SomeActivity
-		extends AppCompatActivity
+public class SomeActivity extends AppCompatActivity
 {
 
 	private RendererRecyclerViewAdapter mRecyclerViewAdapter;
 	private RecyclerView mRecyclerView;
 
 	@Override
-	protected
-	void onCreate(final Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
