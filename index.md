@@ -1,28 +1,21 @@
 
-# Renderer Recycler View Adapter
+# Renderer Recycler View Adapter 
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter) [![Release](https://jitpack.io/v/vivchar/RendererRecyclerViewAdapter.svg)](https://jitpack.io/#vivchar/RendererRecyclerViewAdapter) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RendererRecyclerViewAdapter-green.svg?style=flat)](https://android-arsenal.com/details/1/5442) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat)](https://android-arsenal.com/api?level=14) [![API](https://img.shields.io/badge/Size-8%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.github.vivchar%3ARendererRecyclerViewAdapter%3A1.1.0)
+
+
+
+
 
 * Now you do not need to implement adapters for RecyclerView. 
 * You can easily use several types of cells in a single list.
 * Using this library will protect you from the appearance of any business logic in an adapter :)
 
 ## Gradle
-
-* Step 1. Add the JitPack repository to your build file
-
-```gradle
-allprojects {
-    repositories {
-        ...
-        maven { url 'https://jitpack.io' }
-    }
-}
-```
-
-* Step 2. Add the dependency
-
+from 1.0.10, AAR is distributed via jCenter.
 ```gradle
 dependencies {
-    compile 'com.github.vivchar:RendererRecyclerViewAdapter:1.0.9'
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:+'
 }
 ```
 
@@ -31,28 +24,21 @@ dependencies {
 * Step 1. Implement SomeModel
 
 ```java
-public
-class SomeModel implements ItemModel
-{
+public class SomeModel implements ItemModel {
 
 	public static final int TYPE = 0;
-	@NonNull
-	private final String mTitle;
+	private String mTitle;
 
-	public
-	SomeModel(@NonNull final String title) {
+	public SomeModel(String title) {
 		mTitle = title;
 	}
 
 	@Override
-	public
-	int getType() {
+	public int getType() {
 		return TYPE;
 	}
 
-	@NonNull
-	public
-	String getTitle() {
+	public String getTitle() {
 		return mTitle;
 	}
 	...
@@ -62,15 +48,11 @@ class SomeModel implements ItemModel
 * Step 2. Implement SomeViewHolder
 
 ```java
-public
-class SomeViewHolder
-		extends RecyclerView.ViewHolder
-{
+public class SomeViewHolder extends RecyclerView.ViewHolder {
 
-	public final TextView mTitle;
+	public TextView mTitle;
 
-	public
-	SomeViewHolder(final View itemView) {
+	public SomeViewHolder(View itemView) {
 		super(itemView);
 		mTitle = (TextView) itemView.findViewById(R.id.title);
 		...
@@ -81,27 +63,21 @@ class SomeViewHolder
 * Step 3. Implement SomeViewRenderer
 
 ```java
-public
-class SomeViewRenderer
-		extends ViewRenderer<SomeModel, SomeViewHolder>
-{
-	public
-	SomeViewRenderer(final int type, final Context context) {
+public class SomeViewRenderer extends ViewRenderer<SomeModel, SomeViewHolder> {
+
+	public SomeViewRenderer(int type, Context context) {
 		super(type, context);
 	}
 
 	@Override
-	public
-	void bindView(@NonNull final SomeModel model, @NonNull final SomeViewHolder holder) {
+	public void bindView(SomeModel model, SomeViewHolder holder) {
 		holder.mTitle.setText(model.getTitle());
 		...
 	}
 
-	@NonNull
 	@Override
-	public
-	SomeViewHolder createViewHolder(@Nullable final ViewGroup parent) {
-		return new SomeViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.some_item, parent, false));
+	public SomeViewHolder createViewHolder(ViewGroup parent) {
+		return new SomeViewHolder(inflate(R.layout.some_item, parent));
 	}
 }
 ```
@@ -109,17 +85,13 @@ class SomeViewRenderer
 * Step 4. Initialize Adapter and register the SomeViewRenderer 
 
 ```java
-public
-class SomeActivity
-		extends AppCompatActivity
-{
+public class SomeActivity extends AppCompatActivity {
 
 	private RendererRecyclerViewAdapter mRecyclerViewAdapter;
 	private RecyclerView mRecyclerView;
 
 	@Override
-	protected
-	void onCreate(final Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
@@ -140,6 +112,10 @@ class SomeActivity
 	...
 }
 ```
+
+### Example
+
+![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example1.gif)
 
 ## License
 
