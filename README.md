@@ -25,6 +25,7 @@ dependencies {
 
 ```java
 public class SomeModel implements ItemModel {
+
 	public static final int TYPE = 0;
 	private String mTitle;
 
@@ -48,6 +49,7 @@ public class SomeModel implements ItemModel {
 
 ```java
 public class SomeViewHolder extends RecyclerView.ViewHolder {
+
 	public TextView mTitle;
 
 	public SomeViewHolder(View itemView) {
@@ -62,6 +64,7 @@ public class SomeViewHolder extends RecyclerView.ViewHolder {
 
 ```java
 public class SomeViewRenderer extends ViewRenderer<SomeModel, SomeViewHolder> {
+
 	public SomeViewRenderer(int type, Context context) {
 		super(type, context);
 	}
@@ -83,6 +86,7 @@ public class SomeViewRenderer extends ViewRenderer<SomeModel, SomeViewHolder> {
 
 ```java
 public class SomeActivity extends AppCompatActivity {
+
 	private RendererRecyclerViewAdapter mRecyclerViewAdapter;
 	private RecyclerView mRecyclerView;
 
