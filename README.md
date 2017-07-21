@@ -24,9 +24,7 @@ dependencies {
 * Step 1. Implement SomeModel
 
 ```java
-public class SomeModel implements ItemModel
-{
-
+public class SomeModel implements ItemModel {
 	public static final int TYPE = 0;
 	private String mTitle;
 
@@ -49,9 +47,7 @@ public class SomeModel implements ItemModel
 * Step 2. Implement SomeViewHolder
 
 ```java
-public class SomeViewHolder extends RecyclerView.ViewHolder
-{
-
+public class SomeViewHolder extends RecyclerView.ViewHolder {
 	public TextView mTitle;
 
 	public SomeViewHolder(View itemView) {
@@ -65,8 +61,7 @@ public class SomeViewHolder extends RecyclerView.ViewHolder
 * Step 3. Implement SomeViewRenderer
 
 ```java
-public class SomeViewRenderer extends ViewRenderer<SomeModel, SomeViewHolder>
-{
+public class SomeViewRenderer extends ViewRenderer<SomeModel, SomeViewHolder> {
 	public SomeViewRenderer(int type, Context context) {
 		super(type, context);
 	}
@@ -87,9 +82,7 @@ public class SomeViewRenderer extends ViewRenderer<SomeModel, SomeViewHolder>
 * Step 4. Initialize Adapter and register the SomeViewRenderer 
 
 ```java
-public class SomeActivity extends AppCompatActivity
-{
-
+public class SomeActivity extends AppCompatActivity {
 	private RendererRecyclerViewAdapter mRecyclerViewAdapter;
 	private RecyclerView mRecyclerView;
 
