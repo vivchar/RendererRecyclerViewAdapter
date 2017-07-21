@@ -77,7 +77,7 @@ public class SomeViewRenderer extends ViewRenderer<SomeModel, SomeViewHolder> {
 
 	@Override
 	public SomeViewHolder createViewHolder(ViewGroup parent) {
-		return new SomeViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.some_item, parent, false));
+		return new SomeViewHolder(inflate(R.layout.some_item, parent));
 	}
 }
 ```
