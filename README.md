@@ -115,7 +115,7 @@ public class SomeActivity extends AppCompatActivity {
 
 ### Example
 
-![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example1.gif)
+![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example-1.2.0.gif)
 
 ## License
 
