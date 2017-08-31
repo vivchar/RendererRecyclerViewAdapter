@@ -1,7 +1,7 @@
 
 # Renderer Recycler View Adapter 
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter) [![Release](https://jitpack.io/v/vivchar/RendererRecyclerViewAdapter.svg)](https://jitpack.io/#vivchar/RendererRecyclerViewAdapter) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RendererRecyclerViewAdapter-green.svg?style=flat)](https://android-arsenal.com/details/1/5442) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat)](https://android-arsenal.com/api?level=14) [![API](https://img.shields.io/badge/Size-8%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.github.vivchar%3ARendererRecyclerViewAdapter%3A1.1.0)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter) [![Release](https://jitpack.io/v/vivchar/RendererRecyclerViewAdapter.svg)](https://jitpack.io/#vivchar/RendererRecyclerViewAdapter) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RendererRecyclerViewAdapter-green.svg?style=flat)](https://android-arsenal.com/details/1/5442) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat)](https://android-arsenal.com/api?level=14) [![API](https://img.shields.io/badge/Size-11%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.github.vivchar%3ARendererRecyclerViewAdapter%3A1.2.0)
 
 
 
