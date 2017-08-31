@@ -15,50 +15,41 @@ import java.util.List;
  * Created by Vivchar Vitaly on 1/10/17.
  */
 public
-abstract
-class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder>
+abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder>
 {
 	private final int mViewType;
 	@NonNull
 	private final Context mContext;
 
-	public
-	ViewRenderer(final int viewType, @NonNull final Context context) {
+	public ViewRenderer(final int viewType, @NonNull final Context context) {
 		mViewType = viewType;
 		mContext = context;
 	}
 
 	@NonNull
-	protected
-	Context getContext() {
+	protected Context getContext() {
 		return mContext;
 	}
 
-	public
-	void bindView(final M item, final VH holder, final List payloads) {
+	public void bindView(final M item, final VH holder, final List payloads) {
 	}
 
-	public abstract
-	void bindView(@NonNull M model, @NonNull VH holder);
+	public abstract void bindView(@NonNull M model, @NonNull VH holder);
 
 	@NonNull
-	public abstract
-	VH createViewHolder(@Nullable ViewGroup parent);
+	public abstract VH createViewHolder(@Nullable ViewGroup parent);
 
-	public
-	int getType() {
+	public int getType() {
 		return mViewType;
 	}
 
 	@NonNull
-	protected
-	View inflate(@LayoutRes final int layout, @Nullable final ViewGroup parent, final boolean attachToRoot) {
+	protected View inflate(@LayoutRes final int layout, @Nullable final ViewGroup parent, final boolean attachToRoot) {
 		return LayoutInflater.from(getContext()).inflate(layout, parent, attachToRoot);
 	}
 
 	@NonNull
-	protected
-	View inflate(@LayoutRes final int layout, final @Nullable ViewGroup parent) {
+	protected View inflate(@LayoutRes final int layout, final @Nullable ViewGroup parent) {
 		return inflate(layout, parent, false);
 	}
 }

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-	xmlns:android = "http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android = "http://schemas.android.com/apk/res/android"
 	android:layout_width = "match_parent"
 	android:layout_height = "match_parent"
 	android:background = "@android:color/white"
 	>
 
-	<android.support.v4.widget.SwipeRefreshLayout
-		android:id = "@+id/refresh"
+	<android.support.v4.widget.SwipeRefreshLayout android:id = "@+id/refresh"
 		xmlns:android = "http://schemas.android.com/apk/res/android"
 		android:layout_width = "match_parent"
 		android:layout_height = "match_parent"
@@ -18,7 +16,7 @@
 			android:layout_width = "match_parent"
 			android:layout_height = "match_parent"
 			android:clipToPadding = "false"
-			android:padding = "16dp"
+			android:padding = "10dp"
 			/>
 
 	</android.support.v4.widget.SwipeRefreshLayout>

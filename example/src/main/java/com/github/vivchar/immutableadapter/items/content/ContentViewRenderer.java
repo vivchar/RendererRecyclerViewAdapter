@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.github.vivchar.immutableadapter.R;
 import com.github.vivchar.immutableadapter.items.category.CategoryViewRenderer;
+import com.github.vivchar.immutableadapter.items.small.SmallViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
 import java.util.List;
@@ -64,7 +65,7 @@ class ContentViewRenderer
 
 	public
 	interface Listener
-			extends CategoryViewRenderer.Listener
+			extends CategoryViewRenderer.Listener, SmallViewRenderer.Listener
 	{
 		void onContentItemClicked(@NonNull ContentModel model);
 	}
