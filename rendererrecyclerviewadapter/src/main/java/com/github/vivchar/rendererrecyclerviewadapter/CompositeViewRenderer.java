@@ -71,6 +71,7 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 		return mAdapter;
 	}
 
+	@NonNull
 	protected abstract VH createCompositeViewHolder(@Nullable ViewGroup parent);
 
 	@NonNull
@@ -84,7 +85,7 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 	}
 
 	@NonNull
-	protected List<RecyclerView.ItemDecoration> createItemDecorations() {
+	protected List<? extends RecyclerView.ItemDecoration> createItemDecorations() {
 		return new ArrayList<>();
 	}
 }
