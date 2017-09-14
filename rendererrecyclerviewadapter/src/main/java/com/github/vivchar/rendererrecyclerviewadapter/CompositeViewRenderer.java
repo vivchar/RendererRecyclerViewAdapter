@@ -4,10 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Vivchar Vitaly on 8/25/17.
@@ -18,6 +20,7 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 {
 	@NonNull
 	private final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
+	@Nullable
 	private RendererRecyclerViewAdapter mAdapter;
 
 	public CompositeViewRenderer(final int viewType, @NonNull final Context context) {
@@ -31,29 +34,28 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 
 	@Override
 	public void bindView(@NonNull final M model, @NonNull final VH holder) {
-		mAdapter.setItems(model.getItems());
-		mAdapter.notifyDataSetChanged();
+		getAdapter().setItems(model.getItems());
+		getAdapter().notifyDataSetChanged();
 	}
 
 	@NonNull
 	@Override
 	public VH createViewHolder(@Nullable final ViewGroup parent) {
-		mAdapter = new RendererRecyclerViewAdapter();
-
 		for (final ViewRenderer renderer : mRenderers) {
-			mAdapter.registerRenderer(renderer);
+			getAdapter().registerRenderer(renderer);
 		}
 
 		final VH viewHolder = createCompositeViewHolder(parent);
 		if (viewHolder.mRecyclerView != null) {
-			viewHolder.mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-			viewHolder.mRecyclerView.setAdapter(mAdapter);
+			viewHolder.mRecyclerView.setLayoutManager(createLayoutManager());
+			viewHolder.mRecyclerView.setAdapter(getAdapter());
+			for (final RecyclerView.ItemDecoration itemDecoration : createItemDecorations()) {
+				viewHolder.mRecyclerView.addItemDecoration(itemDecoration);
+			}
 		}
 
 		return viewHolder;
 	}
-
-	public abstract VH createCompositeViewHolder(@Nullable ViewGroup parent);
 
 	@NonNull
 	public CompositeViewRenderer registerRenderer(@NonNull final ViewRenderer renderer) {
@@ -61,7 +63,28 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 		return this;
 	}
 
+	@NonNull
 	protected RendererRecyclerViewAdapter getAdapter() {
+		if (mAdapter == null) {
+			mAdapter = createAdapter();
+		}
 		return mAdapter;
+	}
+
+	protected abstract VH createCompositeViewHolder(@Nullable ViewGroup parent);
+
+	@NonNull
+	protected RecyclerView.LayoutManager createLayoutManager() {
+		return new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+	}
+
+	@NonNull
+	protected RendererRecyclerViewAdapter createAdapter() {
+		return new RendererRecyclerViewAdapter();
+	}
+
+	@NonNull
+	protected List<RecyclerView.ItemDecoration> createItemDecorations() {
+		return new ArrayList<>();
 	}
 }

@@ -3,7 +3,7 @@ package com.github.vivchar.immutableadapter.items.composite;
 import android.support.annotation.NonNull;
 
 import com.github.vivchar.immutableadapter.items.BaseItemModel;
-import com.github.vivchar.rendererrecyclerviewadapter.CompositeItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeItemModel;
 
 import java.util.List;
 
@@ -12,32 +12,21 @@ import java.util.List;
  */
 
 public class CompositeContentModel
-		implements BaseItemModel, CompositeItemModel
+		extends DefaultCompositeItemModel
+		implements BaseItemModel
 {
 	public static final int TYPE = 12431;
 
 	private int mID;
-	@NonNull
-	private final List<BaseItemModel> mItems;
 
 	public CompositeContentModel(final int ID, @NonNull final List<BaseItemModel> items) {
+		super(TYPE, items);
 		mID = ID;
-		mItems = items;
 	}
 
 	@Override
 	public int getID() {
 		return mID;
-	}
-
-	@Override
-	public int getType() {
-		return TYPE;
-	}
-
-	@NonNull
-	public List<BaseItemModel> getItems() {
-		return mItems;
 	}
 
 	@Override
