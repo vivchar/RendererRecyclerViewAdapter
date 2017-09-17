@@ -10,6 +10,9 @@
 * You can easily add the [DiffUtil](https://developer.android.com/reference/android/support/v7/util/DiffUtil.html) support;
 * Using this library will protect you from the appearance of any business logic in an adapter :blush:.
 
+### Example
+![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example-1.2.0.gif)
+
 ## Gradle
 from 1.0.10, AAR is distributed via jCenter.
 ```gradle
@@ -111,10 +114,6 @@ public class SomeActivity extends AppCompatActivity {
 	...
 }
 ```
-
-### Example
-
-![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example-1.2.0.gif)
 
 ## License
 
