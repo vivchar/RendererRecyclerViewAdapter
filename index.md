@@ -19,7 +19,7 @@ To start with, I have highlighted several requirements that I have already artic
 ## Implementation
 
 First I’ve taken a look at things I always do within the adapter, to do that I created a test implementation and analyzed the methods that I used:
-```
+```java
 public class Test extends RecyclerView.Adapter {
 
 	@Override
@@ -40,7 +40,7 @@ public class Test extends RecyclerView.Adapter {
 ```
 
 There were 4 methods overall. `setItems()` is the one that draws attention. It must be able to accept different model lists, so we create an empty interface and update the code in our test adapter:
-```
+```java
 public interface ItemModel { }
 
 public class Test extends RecyclerView.Adapter {
@@ -63,7 +63,7 @@ public class Test extends RecyclerView.Adapter {
 ```
 
 Now we must figure something out with `onCreateViewHolder()` and `onBindViewHolder()`. If I want to enable my adapter to bind different viewers, then it should better be able to delegate it somewhere. It will allow us to reuse the implementation afterwards. We create an abstract class that will be able to handle only one cell type and a specific ViewHolder of course. To this end we use generics in order to avoid type casts. Let’s call it ViewRenderer (it’s the best I could think of).
-```
+```java
 public abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder> {
 
 	public abstract	void bindView(@NonNull M model, @NonNull VH holder);
@@ -75,7 +75,7 @@ public abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView
 
 Let’s try using it in our adapter. Let’s rename the adapter into something that makes more sense and then update the code:
 
-```
+```java
 public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 
         ...
@@ -102,7 +102,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 
 It all looks okay for now. Still, our adapter must be able to work with multiple view types. To that end, the adapter has getItemViewType(), and we override it in the adapter. Let’s try to get cell type directly from the model by adding getItemViewType() into the interface and updating the adapter’s method:
 
-```
+```java
 public interface ItemModel {
 	int getType();
 }
@@ -127,7 +127,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 
 In the meanwhile we’ll improve support of multiple ViewRenderers:
 
-```
+```java
 public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 
         ...
@@ -173,7 +173,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 
 As we see, the renderer now has getType() that’s necessary to find the necessary renderer for a specific viewer. Now the adapter is finalized. We implement specific ItemModel, ViewHolder and ViewRenderer classes:
 
-```
+```java
 public class SomeModel implements ItemModel {
 
     public static final int TYPE = 0;
@@ -199,7 +199,7 @@ public class SomeModel implements ItemModel {
 }
 ```
 
-```
+```java
 public class SomeViewHolder extends RecyclerView.ViewHolder {
 
     public final TextView mTitle;
@@ -212,7 +212,7 @@ public class SomeViewHolder extends RecyclerView.ViewHolder {
 }
 ```
 
-```
+```java
 public class SomeViewRenderer extends ViewRenderer<SomeModel, SomeViewHolder> {
 
     public SomeViewRenderer(final int type, final Context context) {
@@ -234,7 +234,7 @@ public class SomeViewRenderer extends ViewRenderer<SomeModel, SomeViewHolder> {
 
 Now ViewRender has a constructor and two parameters for it: `ViewRenderer(int viewType, Context context);` I hope there’s no need to explain why we need them. Now we can let our adapter and `RecyclerView` get to know each other:
 
-```
+```java
 public class SomeActivity extends AppCompatActivity {
 
     private RendererRecyclerViewAdapter mRecyclerViewAdapter;
