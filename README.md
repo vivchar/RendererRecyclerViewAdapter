@@ -10,7 +10,7 @@
 * You can easily add the DiffUtil support;
 * Using this library will protect you from the appearance of any business logic in an adapter :blush:.
 
-### Example
+## Example
 ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example-1.2.0.gif)
 
 ## Gradle
@@ -22,7 +22,6 @@ dependencies {
 ```
 
 ## Usage
-
 * Step 1. Implement SomeModel
 
 ```java
