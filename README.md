@@ -7,7 +7,7 @@
 * You can easily use several types of cells in a single list;
 * You can reuse cells in different RecyclerView;
 * You can easily add a nested RecyclerView;
-* You can easily add the DiffUtil support;
+* You can easily add the [DiffUtil](https://developer.android.com/reference/android/support/v7/util/DiffUtil.html) support;
 * Using this library will protect you from the appearance of any business logic in an adapter :blush:.
 
 ## Gradle
