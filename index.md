@@ -12,9 +12,9 @@ If you are familiar with some of these problems, then welcome under the cut. Loo
 
 To start with, I have highlighted several requirements that I have already articulated:
 
-* it must work with RecyclerView without implementing a new adapter;
-* I must be able to reuse cells in another RecyclerView;
-* I must be able to easily add other cell types into RecyclerView.
+1. it must work with RecyclerView without implementing a new adapter;
+2. I must be able to reuse cells in another RecyclerView;
+3. I must be able to easily add other cell types into RecyclerView.
 
 ## Implementation
 
