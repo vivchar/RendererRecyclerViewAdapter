@@ -11,7 +11,7 @@
 * You can easily use several types of cells in a single list;
 * You can reuse cells in different RecyclerView;
 * You can easily add a nested RecyclerView;
-* Using this library will protect you from the appearance of any business logic in an adapter :blush:
+* Using this library will protect you from the appearance of any business logic in an adapter :blush:.
 
 ## Gradle
 from 1.0.10, AAR is distributed via jCenter.
