@@ -1,7 +1,5 @@
 
-# Renderer Recycler View Adapter 
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat)](https://android-arsenal.com/api?level=14) [![API](https://img.shields.io/badge/Size-11%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.github.vivchar%3ARendererRecyclerViewAdapter%3A1.2.0)
+# Renderer Recycler View Adapter [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat)](https://android-arsenal.com/api?level=14) [![API](https://img.shields.io/badge/Size-11%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.github.vivchar%3ARendererRecyclerViewAdapter%3A1.2.0)
 
 * Now you do not need to implement adapters for RecyclerView;
 * You can easily use several types of cells in a single list;
