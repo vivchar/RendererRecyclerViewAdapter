@@ -1,12 +1,12 @@
 # Motivation
 
-As of late, I often had to rework a lot of ListAdapters. And each time I was desperate as the adapter contained the business logic, networking queries, application routing and much more. All this was very difficult to change. At first I was just moving the unrelated stuff from adapters to presenters, fragments and other classes. Eventually, I realized that it would not hurt if I could:
+As of late, I often had to rework a lot of list adapters. And each time I was desperate as the adapter contained the business logic, networking queries, application routing and much more. All this was very difficult to change. At first I was just moving the unrelated stuff from adapters to presenters, fragments and other classes. Eventually, I realized that it would not hurt if I could:
 
 * “Secure” my adapters against the introduction of inappropriate logic;
 * Reuse cell bindings;
 * Achieve some versatility when working with different cell types.
 
-If you are familiar with some of these problems, then welcome under the cut. Looking for an off-the-shelf solution, I found AdapterDelegates but it failed to achieve the first of my objectives.
+If you are familiar with some of these problems, then welcome under the cut. Looking for an off-the-shelf solution, I found `AdapterDelegates` but it failed to achieve the first of my objectives.
 
 ## Requirements
 
