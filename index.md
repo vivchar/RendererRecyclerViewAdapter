@@ -2,9 +2,9 @@
 
 As of late, I often had to rework a lot of list adapters. And each time I was desperate as the adapter contained the business logic, networking queries, application routing and much more. All this was very difficult to change. At first I was just moving the unrelated stuff from adapters to presenters, fragments and other classes. Eventually, I realized that it would not hurt if I could:
 
-* “Secure” my adapters against the introduction of inappropriate logic;
-* Reuse cell bindings;
-* Achieve some versatility when working with different cell types.
+1. “Secure” my adapters against the introduction of inappropriate logic;
+2. Reuse cell bindings;
+3. Achieve some versatility when working with different cell types.
 
 If you are familiar with some of these problems, then welcome under the cut. Looking for an off-the-shelf solution, I found `AdapterDelegates` but it failed to achieve the first of my objectives.
 
@@ -12,9 +12,9 @@ If you are familiar with some of these problems, then welcome under the cut. Loo
 
 To start with, I have highlighted several requirements that I have already articulated:
 
-1. it must work with RecyclerView without implementing a new adapter;
-2. I must be able to reuse cells in another RecyclerView;
-3. I must be able to easily add other cell types into RecyclerView.
+- it must work with RecyclerView without implementing a new adapter;
+- I must be able to reuse cells in another RecyclerView;
+- I must be able to easily add other cell types into RecyclerView.
 
 ## Implementation
 
