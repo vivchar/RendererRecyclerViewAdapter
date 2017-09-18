@@ -6,7 +6,9 @@ As of late, I often had to rework a lot of list adapters. And each time I was de
 2. Reuse cell bindings;
 3. Achieve some versatility when working with different cell types.
 
-If you are familiar with some of these problems, then welcome. Looking for an off-the-shelf solution, I found `AdapterDelegates` but it failed to achieve the first of my objectives.
+If you are familiar with some of these problems, then welcome. 
+
+Looking for an off-the-shelf solution, I found `AdapterDelegates` but it failed to achieve the first of my objectives.
 
 ## Requirements
 
