@@ -20,7 +20,6 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 {
 	@NonNull
 	private final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
-	@Nullable
 	private RendererRecyclerViewAdapter mAdapter;
 
 	public CompositeViewRenderer(final int viewType, @NonNull final Context context) {
@@ -41,6 +40,8 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 	@NonNull
 	@Override
 	public VH createViewHolder(@Nullable final ViewGroup parent) {
+		mAdapter = createAdapter();
+
 		for (final ViewRenderer renderer : mRenderers) {
 			getAdapter().registerRenderer(renderer);
 		}
@@ -63,11 +64,7 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 		return this;
 	}
 
-	@NonNull
 	protected RendererRecyclerViewAdapter getAdapter() {
-		if (mAdapter == null) {
-			mAdapter = createAdapter();
-		}
 		return mAdapter;
 	}
 
