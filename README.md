@@ -12,7 +12,6 @@
 ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example-1.2.0.gif)
 
 ## Gradle
-from 1.0.10, AAR is distributed via jCenter.
 ```gradle
 dependencies {
     compile 'com.github.vivchar:RendererRecyclerViewAdapter:+'
