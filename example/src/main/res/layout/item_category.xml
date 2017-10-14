@@ -13,7 +13,7 @@
 		android:layout_gravity = "center_vertical"
 		android:text = "Title"
 		android:textAllCaps = "true"
-		android:textColor = "@color/blue1"
+		android:textColor = "@color/darkGray"
 		android:textSize = "20sp"
 		/>
 
@@ -22,9 +22,9 @@
 		android:layout_width = "wrap_content"
 		android:layout_height = "wrap_content"
 		android:layout_gravity = "end|center_vertical"
-		android:backgroundTint = "@color/blue1"
+		android:backgroundTint = "@color/green"
 		android:padding = "6dp"
-		android:text = "View All"
+		android:text = "@string/view_all"
 		android:textColor = "@android:color/white"
 		/>
 </FrameLayout>

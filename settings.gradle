@@ -1,1 +1,1 @@
-include ':example', ':rendererrecyclerviewadapter'
+include ':example', ':rendererrecyclerviewadapter', ':network'
