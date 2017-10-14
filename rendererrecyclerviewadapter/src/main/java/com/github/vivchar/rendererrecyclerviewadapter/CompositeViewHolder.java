@@ -1,6 +1,7 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -11,9 +12,10 @@ import android.view.View;
 public abstract class CompositeViewHolder
 		extends RecyclerView.ViewHolder
 {
-	public RecyclerView mRecyclerView;
+	public RecyclerView recyclerView;
+	public RendererRecyclerViewAdapter adapter;
 
-	public CompositeViewHolder(final View itemView) {
+	public CompositeViewHolder(@NonNull final View itemView) {
 		super(itemView);
 	}
 }

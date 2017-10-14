@@ -20,7 +20,6 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 {
 	@NonNull
 	private final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
-	private RendererRecyclerViewAdapter mAdapter;
 
 	public CompositeViewRenderer(final int viewType, @NonNull final Context context) {
 		super(viewType, context);
@@ -33,25 +32,27 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 
 	@Override
 	public void bindView(@NonNull final M model, @NonNull final VH holder) {
-		getAdapter().setItems(model.getItems());
-		getAdapter().notifyDataSetChanged();
+		holder.adapter.setItems(model.getItems());
+		holder.adapter.notifyDataSetChanged();
 	}
 
 	@NonNull
 	@Override
 	public VH createViewHolder(@Nullable final ViewGroup parent) {
-		mAdapter = createAdapter();
 
+		final RendererRecyclerViewAdapter adapter = createAdapter();
 		for (final ViewRenderer renderer : mRenderers) {
-			getAdapter().registerRenderer(renderer);
+			adapter.registerRenderer(renderer);
 		}
 
 		final VH viewHolder = createCompositeViewHolder(parent);
-		if (viewHolder.mRecyclerView != null) {
-			viewHolder.mRecyclerView.setLayoutManager(createLayoutManager());
-			viewHolder.mRecyclerView.setAdapter(getAdapter());
+		viewHolder.adapter = adapter;
+
+		if (viewHolder.recyclerView != null) {
+			viewHolder.recyclerView.setLayoutManager(createLayoutManager());
+			viewHolder.recyclerView.setAdapter(adapter);
 			for (final RecyclerView.ItemDecoration itemDecoration : createItemDecorations()) {
-				viewHolder.mRecyclerView.addItemDecoration(itemDecoration);
+				viewHolder.recyclerView.addItemDecoration(itemDecoration);
 			}
 		}
 
@@ -62,10 +63,6 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 	public CompositeViewRenderer registerRenderer(@NonNull final ViewRenderer renderer) {
 		mRenderers.add(renderer);
 		return this;
-	}
-
-	protected RendererRecyclerViewAdapter getAdapter() {
-		return mAdapter;
 	}
 
 	@NonNull

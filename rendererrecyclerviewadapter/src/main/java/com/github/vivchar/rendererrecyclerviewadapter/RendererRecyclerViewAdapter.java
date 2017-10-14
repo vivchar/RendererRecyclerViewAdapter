@@ -18,9 +18,9 @@ public class RendererRecyclerViewAdapter
 {
 
 	@NonNull
-	private final ArrayList<ItemModel> mItems = new ArrayList<>();
+	protected final ArrayList<ItemModel> mItems = new ArrayList<>();
 	@NonNull
-	private final SparseArray<ViewRenderer> mRenderers = new SparseArray<>();
+	protected final SparseArray<ViewRenderer> mRenderers = new SparseArray<>();
 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
