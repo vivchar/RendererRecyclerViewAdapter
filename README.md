@@ -17,6 +17,10 @@ dependencies {
     compile 'com.github.vivchar:RendererRecyclerViewAdapter:+'
 }
 ```
+## Motivation
+https://vivchar.github.io/RendererRecyclerViewAdapter
+## Documentation
+https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
 
 ## Usage
 * Step 1. Implement SomeModel
