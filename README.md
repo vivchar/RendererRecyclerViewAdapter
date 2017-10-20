@@ -19,7 +19,7 @@ dependencies {
 ```
 ## Motivation
 https://vivchar.github.io/RendererRecyclerViewAdapter
-## Documentation
+## Wiki
 https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
 
 ## Usage
