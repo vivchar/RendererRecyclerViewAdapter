@@ -14,9 +14,8 @@ import java.util.List;
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */
-public
-abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder>
-{
+public abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder> {
+
 	private final int mViewType;
 	@NonNull
 	private final Context mContext;
@@ -31,16 +30,45 @@ abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHo
 		return mContext;
 	}
 
-	public void bindView(final M item, final VH holder, final List payloads) {
+	/**
+	 * Use the {@link #rebindView(ItemModel, RecyclerView.ViewHolder, List)} method.
+	 */
+	@Deprecated
+	public void bindView(final M model, final VH holder, @NonNull final List payloads) {
+		bindView(model, holder);
 	}
 
+	/**
+	 * This method will be called for a partial bind if you override the {@link com.github.vivchar.rendererrecyclerviewadapter
+	 * .RendererRecyclerViewAdapter.DiffCallback#getChangePayload(ItemModel,
+	 * ItemModel)} method
+	 *
+	 * @param model    your a ItemModel
+	 * @param holder   your a ViewHolder
+	 * @param payloads your payload
+	 */
+	public void rebindView(final M model, final VH holder, @NonNull final List payloads) {
+		bindView(model, holder, payloads);
+	}
+
+	/**
+	 * This method will be called for a full bind.
+	 *
+	 * @param model  your a ItemModel
+	 * @param holder your a ViewHolder
+	 */
 	public abstract void bindView(@NonNull M model, @NonNull VH holder);
 
 	@NonNull
-	public abstract VH createViewHolder(@Nullable ViewGroup parent);
+	public abstract <VH extends RecyclerView.ViewHolder> VH createViewHolder(@Nullable ViewGroup parent);
 
 	public int getType() {
 		return mViewType;
+	}
+
+	@Nullable
+	public ViewState createViewState(@NonNull final ItemModel model, @NonNull final VH holder) {
+		return null;
 	}
 
 	@NonNull

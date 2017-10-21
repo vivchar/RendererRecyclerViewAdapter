@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.github.vivchar.example.MyItemDecoration;
 import com.github.vivchar.example.R;
+import com.github.vivchar.example.pages.github.items.ItemsDiffCallback;
 import com.github.vivchar.example.pages.github.items.list.RecyclerViewRenderer;
 import com.github.vivchar.example.pages.github.items.category.CategoryModel;
 import com.github.vivchar.example.pages.github.items.category.CategoryViewRenderer;
@@ -30,9 +31,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
 import java.util.ArrayList;
 
-public class GithubActivity
-		extends AppCompatActivity
-{
+public class GithubActivity extends AppCompatActivity {
 
 	public static final int MAX_SPAN_COUNT = 3;
 	private RendererRecyclerViewAdapter mRecyclerViewAdapter;
@@ -55,8 +54,7 @@ public class GithubActivity
 		);
 
 		mSwipeToRefresh = (SwipeRefreshLayout) findViewById(R.id.refresh);
-		mSwipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-		{
+		mSwipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
 				mGithubPresenter.onRefresh();
@@ -72,8 +70,7 @@ public class GithubActivity
 		);
 
 		mLayoutManager = new GridLayoutManager(this, MAX_SPAN_COUNT);
-		mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup()
-		{
+		mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 			@Override
 			public int getSpanSize(final int position) {
 				switch (mRecyclerViewAdapter.getItemViewType(position)) {
@@ -131,16 +128,14 @@ public class GithubActivity
 	}
 
 	@NonNull
-	private final GithubPresenter.View mMainPresenterView = new GithubPresenter.View()
-	{
+	private final GithubPresenter.View mMainPresenterView = new GithubPresenter.View() {
+
 		@Override
 		public void updateList(@NonNull final ArrayList<ItemModel> list) {
-			runOnUiThread(new Runnable()
-			{
+			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					mRecyclerViewAdapter.setItems(list);
-					mRecyclerViewAdapter.notifyDataSetChanged();
+					mRecyclerViewAdapter.setItems(list, new ItemsDiffCallback());
 				}
 			});
 		}
@@ -158,8 +153,7 @@ public class GithubActivity
 		@Override
 		public void showMessageView(@NonNull final String message, @NonNull final String url) {
 			final View view = getWindow().getDecorView().findViewById(android.R.id.content);
-			Snackbar.make(view, message, Snackbar.LENGTH_LONG).setAction(R.string.view, new View.OnClickListener()
-			{
+			Snackbar.make(view, message, Snackbar.LENGTH_LONG).setAction(R.string.view, new View.OnClickListener() {
 				@Override
 				public void onClick(final View v) {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
@@ -179,11 +173,8 @@ public class GithubActivity
 		}
 	};
 
-	private class Listener
-			implements StargazerViewRenderer.Listener,
-			           CategoryViewRenderer.Listener,
-			           ForkViewRenderer.Listener
-	{
+	private class Listener implements StargazerViewRenderer.Listener, CategoryViewRenderer.Listener, ForkViewRenderer.Listener {
+
 		@Override
 		public void onStargazerItemClicked(@NonNull final StargazerModel model) {
 			mGithubPresenter.onStargazerClicked(model);

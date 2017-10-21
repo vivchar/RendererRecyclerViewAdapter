@@ -4,10 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by vivchar on 09.10.17.
+ * Created by Vivchar Vitaly on 09.10.17.
  */
-public class GithubUser
-{
+public class GithubUser {
+
 	@SerializedName("login")
 	@Expose
 	public String login;

@@ -18,9 +18,8 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */
-public class ForkViewRenderer
-		extends ViewRenderer<ForkModel, ForkViewHolder>
-{
+public class ForkViewRenderer extends ViewRenderer<ForkModel, ForkViewHolder> {
+
 	@NonNull
 	private final Listener mListener;
 
@@ -41,8 +40,7 @@ public class ForkViewRenderer
 				.load(model.getAvatarUrl())
 				.apply(options)
 				.into(holder.avatar);
-		holder.itemView.setOnClickListener(new View.OnClickListener()
-		{
+		holder.itemView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View view) {
 				mListener.onForkItemClicked(model);
@@ -56,8 +54,7 @@ public class ForkViewRenderer
 		return new ForkViewHolder(inflate(R.layout.item_fork, parent));
 	}
 
-	public interface Listener
-	{
+	public interface Listener {
 		void onForkItemClicked(@NonNull ForkModel model);
 	}
 }

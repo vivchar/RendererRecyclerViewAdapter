@@ -10,10 +10,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 /**
- * Created by vivchar on 09.10.17.
+ * Created by Vivchar Vitaly on 09.10.17.
  */
-interface GithubAPI
-{
+interface GithubAPI {
+
 	@GET("repos/vivchar/RendererRecyclerViewAdapter/stargazers")
 	Call<List<GithubUser>> getStargazers(@Query("page") int page);
 

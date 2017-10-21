@@ -10,9 +10,7 @@ import com.github.vivchar.example.R;
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */
-public class StargazerViewHolder
-		extends RecyclerView.ViewHolder
-{
+public class StargazerViewHolder extends RecyclerView.ViewHolder {
 
 	public final TextView name;
 	public final ImageView avatar;

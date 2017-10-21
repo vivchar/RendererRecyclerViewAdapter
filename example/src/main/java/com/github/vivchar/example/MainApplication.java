@@ -6,7 +6,7 @@ import com.github.vivchar.network.MainManager;
 
 
 /**
- * Created by vivchar on 08.10.17.
+ * Created by Vivchar Vitaly on 08.10.17.
  */
 
 public class MainApplication extends Application {

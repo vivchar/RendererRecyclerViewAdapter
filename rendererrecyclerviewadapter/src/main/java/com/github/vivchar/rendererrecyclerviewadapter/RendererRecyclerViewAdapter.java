@@ -4,23 +4,27 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.v7.widget.RecyclerView.NO_POSITION;
+
 /**
  * Created by Vivchar Vitaly on 1/9/17.
  */
-public class RendererRecyclerViewAdapter
-		extends RecyclerView.Adapter
-{
+@SuppressWarnings("unchecked")
+public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 
 	@NonNull
 	protected final ArrayList<ItemModel> mItems = new ArrayList<>();
 	@NonNull
 	protected final SparseArray<ViewRenderer> mRenderers = new SparseArray<>();
+	@NonNull
+	protected final SparseArray<ViewState> mViewStates = new SparseArray<>();
 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
@@ -42,35 +46,26 @@ public class RendererRecyclerViewAdapter
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position, @Nullable final List payloads) {
-		if (payloads == null || payloads.isEmpty()) {
-			onBindViewHolder(holder, position);
-		} else {
-			final ItemModel item = getItem(position);
-			final ViewRenderer renderer = mRenderers.get(item.getType());
-
-			if (renderer != null) {
-				renderer.bindView(item, holder, payloads);
-			} else {
-				throw new UnsupportedViewHolderException(holder);
-			}
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 		final ItemModel item = getItem(position);
-
 		final ViewRenderer renderer = mRenderers.get(item.getType());
 		if (renderer != null) {
-			renderer.bindView(item, holder);
+			if (payloads == null || payloads.isEmpty()) {
+				/* Full bind */
+				renderer.bindView(item, holder);
+				restoreState(holder, position);
+			} else {
+				/* Partial bind */
+				renderer.rebindView(item, holder, payloads);
+			}
 		} else {
 			throw new UnsupportedViewHolderException(holder);
 		}
 	}
+
+	@Override
+	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {}
 
 	@Override
 	public int getItemViewType(final int position) {
@@ -78,7 +73,6 @@ public class RendererRecyclerViewAdapter
 		return item.getType();
 	}
 
-	@SuppressWarnings("unchecked")
 	@NonNull
 	public <T extends ItemModel> T getItem(final int position) {
 		return (T) mItems.get(position);
@@ -95,12 +89,9 @@ public class RendererRecyclerViewAdapter
 	}
 
 	/**
-	 * @param items
-	 * 		- your new items
-	 * @param diffCallback
-	 * 		- callback class used by DiffUtil while calculating the diff between two lists.
+	 * @param items        - your new items
+	 * @param diffCallback - callback class used by DiffUtil while calculating the diff between two lists.
 	 */
-	@SuppressWarnings("unchecked")
 	public void setItems(@NonNull final List<? extends ItemModel> items, @NonNull final DiffCallback diffCallback) {
 		diffCallback.setItems(mItems, items);
 
@@ -112,9 +103,30 @@ public class RendererRecyclerViewAdapter
 		diffResult.dispatchUpdatesTo(this);
 	}
 
-	public abstract static class DiffCallback <BM extends ItemModel>
-			extends DiffUtil.Callback
-	{
+	public void clearViewStates() {
+		mViewStates.clear();
+	}
+
+	@Override
+	public void onViewRecycled(final RecyclerView.ViewHolder holder) {
+		super.onViewRecycled(holder);
+		final int position = holder.getAdapterPosition();
+		if (position != NO_POSITION) {
+			final ItemModel item = getItem(position);
+			final ViewRenderer viewRenderer = mRenderers.get(item.getType());
+			mViewStates.put(position, viewRenderer.createViewState(item, holder));
+		}
+	}
+
+	protected void restoreState(@NonNull final RecyclerView.ViewHolder holder, final int position) {
+		final ViewState viewState = mViewStates.get(position);
+		if (viewState != null) {
+			viewState.restore(holder);
+		}
+	}
+
+	public abstract static class DiffCallback <BM extends ItemModel> extends DiffUtil.Callback {
+
 		private final List<BM> mOldItems = new ArrayList<>();
 		private final List<BM> mNewItems = new ArrayList<>();
 
@@ -144,7 +156,7 @@ public class RendererRecyclerViewAdapter
 			);
 		}
 
-		public abstract boolean areItemsTheSame(final BM oldItem, final BM newItem);
+		public abstract boolean areItemsTheSame(@NonNull final BM oldItem, @NonNull final BM newItem);
 
 		@Override
 		public boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
@@ -154,7 +166,7 @@ public class RendererRecyclerViewAdapter
 			);
 		}
 
-		public abstract boolean areContentsTheSame(final BM oldItem, final BM newItem);
+		public abstract boolean areContentsTheSame(@NonNull final BM oldItem, @NonNull final BM newItem);
 
 		@Nullable
 		@Override
@@ -167,14 +179,13 @@ public class RendererRecyclerViewAdapter
 		}
 
 		@Nullable
-		public Object getChangePayload(final BM oldItem, final BM newItem) {
+		public List getChangePayload(@NonNull final BM oldItem, @NonNull final BM newItem) {
 			return null;
 		}
 	}
 
-	private final static class UnsupportedViewHolderException
-			extends RuntimeException
-	{
+	private final static class UnsupportedViewHolderException extends RuntimeException {
+
 		UnsupportedViewHolderException(@NonNull final RecyclerView.ViewHolder holderName) {
 			super("Not supported View Holder: " + holderName.getClass().getSimpleName());
 		}

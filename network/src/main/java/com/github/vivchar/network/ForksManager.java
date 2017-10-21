@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by vivchar on 12.10.17.
+ * Created by Vivchar Vitaly on 12.10.17.
  */
 
-public class ForksManager
-{
+public class ForksManager {
 
 	@NonNull
 	private final GithubClient mClient;

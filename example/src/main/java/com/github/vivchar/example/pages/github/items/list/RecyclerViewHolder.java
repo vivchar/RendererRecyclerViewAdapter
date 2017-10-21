@@ -12,9 +12,8 @@ import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
  * Created by Vivchar Vitaly on 8/24/17.
  */
 
-public class RecyclerViewHolder
-		extends CompositeViewHolder
-{
+public class RecyclerViewHolder extends CompositeViewHolder {
+
 	public RecyclerViewHolder(@NonNull final View view) {
 		super(view);
 		recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);

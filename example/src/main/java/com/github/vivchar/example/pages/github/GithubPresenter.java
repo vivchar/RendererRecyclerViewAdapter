@@ -16,16 +16,14 @@ import com.github.vivchar.network.models.GithubUser;
 import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by vivchar on 10.10.17.
+ * Created by Vivchar Vitaly on 10.10.17.
  */
 
-class GithubPresenter
-		implements IPresenter
-{
+class GithubPresenter implements IPresenter {
+
 	@NonNull
 	private final StargazersManager mStargazersManager;
 	@NonNull
@@ -39,6 +37,7 @@ class GithubPresenter
 	private final ArrayList<ItemModel> mStargazersModels = new ArrayList<>();
 	@NonNull
 	private final ArrayList<ItemModel> mFirstStargazersModels = new ArrayList<>();
+	private int mCount = 0;
 
 	public GithubPresenter(@NonNull final StargazersManager stargazersManager,
 	                       @NonNull final ForksManager forksManager,
@@ -62,14 +61,17 @@ class GithubPresenter
 	}
 
 	@NonNull
-	private final Listener<List<GithubFork>> mForksListener = new Listener<List<GithubFork>>()
-	{
+	private final Listener<List<GithubFork>> mForksListener = new Listener<List<GithubFork>>() {
 		@Override
 		public void onChange(@NonNull final List<GithubFork> data) {
 			if (!data.isEmpty()) {
 				mForksModels.clear();
 				for (final GithubFork fork : data) {
-					mForksModels.add(new ForkModel(fork.getOwner().getLogin(), fork.getOwner().getAvatarUrl(), fork.getOwner().getHtmlUrl()));
+					mForksModels.add(new ForkModel(
+							fork.getOwner().getLogin(),
+							fork.getOwner().getAvatarUrl(),
+							fork.getOwner().getHtmlUrl()
+					));
 				}
 				updateView();
 			}
@@ -77,8 +79,7 @@ class GithubPresenter
 	};
 
 	@NonNull
-	private final Listener<List<GithubUser>> mStargazersListener = new Listener<List<GithubUser>>()
-	{
+	private final Listener<List<GithubUser>> mStargazersListener = new Listener<List<GithubUser>>() {
 		@Override
 		public void onChange(@NonNull final List<GithubUser> data) {
 			if (!data.isEmpty()) {
@@ -108,15 +109,29 @@ class GithubPresenter
 
 		final String firstTitle = "First Stargazers";
 		items.add(new CategoryModel(firstTitle));
-		items.add(new RecyclerViewModel(new ArrayList<>(mFirstStargazersModels)));
+
+		/*
+		* vivchar: Let's change positions for the DiffUtil demonstration.
+		*
+		* I don't change the first item position because here is the bug
+		* https://stackoverflow.com/a/43461324/4894238
+		*/
+		final ItemModel removed = mFirstStargazersModels.remove(1);
+		mFirstStargazersModels.add(mCount % 2 + 1, removed);
+		final int stargazersID = firstTitle.hashCode();
+		items.add(new RecyclerViewModel(stargazersID, new ArrayList<>(mFirstStargazersModels)));
 
 		final String forksTitle = "Forks";
 		items.add(new CategoryModel(forksTitle));
-		items.add(new RecyclerViewModel(new ArrayList<>(mForksModels)));
+		final int forksID = forksTitle.hashCode();
+		items.add(new RecyclerViewModel(forksID, new ArrayList<>(mForksModels)));
 
 		final String allTitle = "All Stargazers";
 		items.add(new CategoryModel(allTitle));
-		Collections.shuffle(mStargazersModels);
+
+		final ItemModel remove = mStargazersModels.remove(0);
+		mStargazersModels.add(mCount % 3, remove);
+
 		items.addAll(new ArrayList<>(mStargazersModels));
 
 		mView.hideProgressView();
@@ -124,6 +139,7 @@ class GithubPresenter
 	}
 
 	public void onRefresh() {
+		mCount++;
 		mView.showProgressView();
 		mStargazersManager.sendReloadRequest();
 	}
@@ -141,8 +157,7 @@ class GithubPresenter
 	}
 
 	public interface View
-			extends IView
-	{
+			extends IView {
 		void updateList(@NonNull ArrayList<ItemModel> list);
 		void showProgressView();
 		void hideProgressView();

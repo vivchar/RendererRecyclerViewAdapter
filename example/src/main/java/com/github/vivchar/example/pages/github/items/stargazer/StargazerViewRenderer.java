@@ -16,9 +16,8 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */
-public class StargazerViewRenderer
-		extends ViewRenderer<StargazerModel, StargazerViewHolder>
-{
+public class StargazerViewRenderer extends ViewRenderer<StargazerModel, StargazerViewHolder> {
+
 	@NonNull
 	private final Listener mListener;
 	private int mLayout;
@@ -38,8 +37,7 @@ public class StargazerViewRenderer
 				.load(url)
 				.apply(bitmapTransform(new BlurTransformation(25)))
 				.into(holder.avatar);
-		holder.itemView.setOnClickListener(new View.OnClickListener()
-		{
+		holder.itemView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View view) {
 				mListener.onStargazerItemClicked(model);
@@ -53,8 +51,7 @@ public class StargazerViewRenderer
 		return new StargazerViewHolder(inflate(mLayout, parent));
 	}
 
-	public interface Listener
-	{
+	public interface Listener {
 		void onStargazerItemClicked(@NonNull StargazerModel model);
 	}
 }

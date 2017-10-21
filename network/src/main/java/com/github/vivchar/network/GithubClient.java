@@ -12,11 +12,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by vivchar on 12.10.17.
+ * Created by Vivchar Vitaly on 12.10.17.
  */
 
-class GithubClient
-{
+class GithubClient {
+
 	@NonNull
 	private final GithubAPI mGithubAPI;
 	@NonNull
@@ -28,8 +28,7 @@ class GithubClient
 	}
 
 	public void sendStargazersRequest(final int page) {
-		mGithubAPI.getStargazers(page).enqueue(new Callback<List<GithubUser>>()
-		{
+		mGithubAPI.getStargazers(page).enqueue(new Callback<List<GithubUser>>() {
 			@Override
 			public void onResponse(final Call<List<GithubUser>> call, final Response<List<GithubUser>> response) {
 				final List<GithubUser> body = response.body();
@@ -66,8 +65,7 @@ class GithubClient
 		});
 	}
 
-	public interface EventListener
-	{
+	public interface EventListener {
 		void onStargazersReceived(int page, @NonNull List<GithubUser> stargazers);
 		void onStargazersFailed(int page);
 		void onForksReceived(@NonNull List<GithubFork> forks);

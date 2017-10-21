@@ -10,11 +10,10 @@ import java.util.List;
 
 
 /**
- * Created by vivchar on 09.10.17.
+ * Created by Vivchar Vitaly on 09.10.17.
  */
 
-public class StargazersManager
-{
+public class StargazersManager {
 
 	private static final String TAG = StargazersManager.class.getSimpleName();
 
@@ -34,9 +33,14 @@ public class StargazersManager
 	}
 
 	public void sendReloadRequest() {
-		mReloading = true;
-		mCurrentPage = 1;
-		sendPageLoadRequest(mCurrentPage);
+		/* vivchar: to avoid the API rate limit of the github https://developer.github.com/v3/#rate-limiting */
+		if (mGithubUsers.isEmpty()) {
+			mReloading = true;
+			mCurrentPage = 1;
+			sendPageLoadRequest(mCurrentPage);
+		} else {
+			notifyStargazersChanged();
+		}
 	}
 
 	private void sendPageLoadRequest(final int page) {

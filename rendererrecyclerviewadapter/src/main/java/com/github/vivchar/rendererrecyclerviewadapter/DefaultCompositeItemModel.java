@@ -8,9 +8,7 @@ import java.util.List;
  * Created by Vivchar Vitaly on 9/14/17.
  */
 
-public class DefaultCompositeItemModel
-		implements CompositeItemModel
-{
+public class DefaultCompositeItemModel implements CompositeItemModel {
 
 	protected final int mType;
 	@NonNull

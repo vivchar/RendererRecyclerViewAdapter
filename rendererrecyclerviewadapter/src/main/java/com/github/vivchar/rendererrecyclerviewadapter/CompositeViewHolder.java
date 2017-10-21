@@ -9,9 +9,8 @@ import android.view.View;
  * Created by Vivchar Vitaly on 8/25/17.
  */
 
-public abstract class CompositeViewHolder
-		extends RecyclerView.ViewHolder
-{
+public abstract class CompositeViewHolder extends RecyclerView.ViewHolder {
+
 	public RecyclerView recyclerView;
 	public RendererRecyclerViewAdapter adapter;
 

@@ -15,9 +15,8 @@ import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapte
  * Created by Vivchar Vitaly on 7/24/17.
  */
 
-public class MyItemDecoration
-		extends RecyclerView.ItemDecoration
-{
+public class MyItemDecoration extends RecyclerView.ItemDecoration {
+
 	@Override
 	public void getItemOffsets(final Rect outRect, final View view, final RecyclerView parent, final RecyclerView.State state) {
 		final RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();

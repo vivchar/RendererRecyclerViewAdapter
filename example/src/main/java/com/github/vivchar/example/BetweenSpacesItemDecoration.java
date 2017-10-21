@@ -12,9 +12,7 @@ import android.view.View;
  * Created by Vivchar Vitaly on 8/25/17.
  */
 
-public class BetweenSpacesItemDecoration
-		extends RecyclerView.ItemDecoration
-{
+public class BetweenSpacesItemDecoration extends RecyclerView.ItemDecoration {
 
 	private static final int HORIZONTAL = 0;
 	private static final int VERTICAL = 1;

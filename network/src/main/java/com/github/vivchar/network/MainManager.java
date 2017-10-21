@@ -12,12 +12,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by vivchar on 08.10.17.
+ * Created by Vivchar Vitaly on 08.10.17.
  */
 
-public class MainManager
-		implements GithubClient.EventListener
-{
+public class MainManager implements GithubClient.EventListener {
 
 	public static final String API_URL = "https://api.github.com/";
 	private static MainManager sMainManager;

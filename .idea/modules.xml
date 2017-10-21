@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/RendererRecyclerViewAdapter.iml" filepath="$PROJECT_DIR$/RendererRecyclerViewAdapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/example/example.iml" filepath="$PROJECT_DIR$/example/example.iml" />
       <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
-      <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
       <module fileurl="file://$PROJECT_DIR$/rendererrecyclerviewadapter/rendererrecyclerviewadapter.iml" filepath="$PROJECT_DIR$/rendererrecyclerviewadapter/rendererrecyclerviewadapter.iml" />
     </modules>
   </component>
