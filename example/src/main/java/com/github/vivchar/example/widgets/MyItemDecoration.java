@@ -1,4 +1,4 @@
-package com.github.vivchar.example;
+package com.github.vivchar.example.widgets;
 
 import android.content.res.Resources;
 import android.graphics.Rect;

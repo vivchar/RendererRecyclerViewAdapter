@@ -7,10 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 /**
@@ -37,10 +41,13 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 				.load(url)
 				.apply(bitmapTransform(new BlurTransformation(25)))
 				.into(holder.avatar);
+		holder.check.setVisibility(GONE);
+
 		holder.itemView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View view) {
 				mListener.onStargazerItemClicked(model);
+				holder.check.setVisibility(holder.check.getVisibility() == VISIBLE ? GONE : VISIBLE);
 			}
 		});
 	}
@@ -49,6 +56,12 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 	@Override
 	public StargazerViewHolder createViewHolder(@Nullable final ViewGroup parent) {
 		return new StargazerViewHolder(inflate(mLayout, parent));
+	}
+
+	@Nullable
+	@Override
+	public ViewState createViewState(@NonNull final ItemModel model, @NonNull final StargazerViewHolder holder) {
+		return new StargazerViewState(model, holder);
 	}
 
 	public interface Listener {

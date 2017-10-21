@@ -107,32 +107,39 @@ class GithubPresenter implements IPresenter {
 	private void updateView() {
 		final ArrayList<ItemModel> items = new ArrayList<>();
 
-		final String firstTitle = "First Stargazers";
-		items.add(new CategoryModel(firstTitle));
+		if (!mFirstStargazersModels.isEmpty()) {
 
-		/*
-		* vivchar: Let's change positions for the DiffUtil demonstration.
-		*
-		* I don't change the first item position because here is the bug
-		* https://stackoverflow.com/a/43461324/4894238
-		*/
-		final ItemModel removed = mFirstStargazersModels.remove(1);
-		mFirstStargazersModels.add(mCount % 2 + 1, removed);
-		final int stargazersID = firstTitle.hashCode();
-		items.add(new RecyclerViewModel(stargazersID, new ArrayList<>(mFirstStargazersModels)));
+			final String firstTitle = "First Stargazers";
+			items.add(new CategoryModel(firstTitle));
 
-		final String forksTitle = "Forks";
-		items.add(new CategoryModel(forksTitle));
-		final int forksID = forksTitle.hashCode();
-		items.add(new RecyclerViewModel(forksID, new ArrayList<>(mForksModels)));
+			/*
+			* vivchar: Let's change positions for the DiffUtil demonstration.
+			*
+			* I don't change the first item position because here is the bug
+			* https://stackoverflow.com/a/43461324/4894238
+			*/
+			final ItemModel removed = mFirstStargazersModels.remove(1);
+			mFirstStargazersModels.add(mCount % 2 + 1, removed);
+			final int stargazersID = firstTitle.hashCode();
+			items.add(new RecyclerViewModel(stargazersID, new ArrayList<>(mFirstStargazersModels)));
+		}
 
-		final String allTitle = "All Stargazers";
-		items.add(new CategoryModel(allTitle));
+		if (!mForksModels.isEmpty()) {
+			final String forksTitle = "Forks";
+			items.add(new CategoryModel(forksTitle));
+			final int forksID = forksTitle.hashCode();
+			items.add(new RecyclerViewModel(forksID, new ArrayList<>(mForksModels)));
+		}
 
-		final ItemModel remove = mStargazersModels.remove(0);
-		mStargazersModels.add(mCount % 3, remove);
+		if (!mStargazersModels.isEmpty()) {
+			final String allTitle = "All Stargazers";
+			items.add(new CategoryModel(allTitle));
 
-		items.addAll(new ArrayList<>(mStargazersModels));
+			final ItemModel remove = mStargazersModels.remove(0);
+			mStargazersModels.add(mCount % 3, remove);
+
+			items.addAll(new ArrayList<>(mStargazersModels));
+		}
 
 		mView.hideProgressView();
 		mView.updateList(items);

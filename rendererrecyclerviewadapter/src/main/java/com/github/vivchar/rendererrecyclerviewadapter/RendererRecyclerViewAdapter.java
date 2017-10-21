@@ -24,7 +24,9 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	@NonNull
 	protected final SparseArray<ViewRenderer> mRenderers = new SparseArray<>();
 	@NonNull
-	protected final SparseArray<ViewState> mViewStates = new SparseArray<>();
+	protected SparseArray<ViewState> mViewStates = new SparseArray<>();
+	@NonNull
+	protected final ArrayList<RecyclerView.ViewHolder> mBoundViewHolders = new ArrayList<>();
 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
@@ -50,18 +52,15 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position, @Nullable final List payloads) {
 		final ItemModel item = getItem(position);
 		final ViewRenderer renderer = mRenderers.get(item.getType());
-		if (renderer != null) {
-			if (payloads == null || payloads.isEmpty()) {
-				/* Full bind */
-				renderer.bindView(item, holder);
-				restoreState(holder, position);
-			} else {
-				/* Partial bind */
-				renderer.rebindView(item, holder, payloads);
-			}
+		if (payloads == null || payloads.isEmpty()) {
+			/* Full bind */
+			renderer.bindView(item, holder);
+			restoreViewState(position, holder);
 		} else {
-			throw new UnsupportedViewHolderException(holder);
+			/* Partial bind */
+			renderer.rebindView(item, holder, payloads);
 		}
+		mBoundViewHolders.add(holder);
 	}
 
 	@Override
@@ -71,6 +70,30 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	public int getItemViewType(final int position) {
 		final ItemModel item = getItem(position);
 		return item.getType();
+	}
+
+	@Override
+	public void onViewRecycled(final RecyclerView.ViewHolder holder) {
+		super.onViewRecycled(holder);
+		final int position = holder.getAdapterPosition();
+		if (position != NO_POSITION) {
+			final boolean hasChildren = holder instanceof CompositeViewHolder;
+			if (hasChildren) {
+				onChildrenViewsRecycled((CompositeViewHolder) holder);
+			}
+			saveViewState(position, holder);
+		}
+		mBoundViewHolders.remove(holder);
+	}
+
+	private void onChildrenViewsRecycled(@NonNull final CompositeViewHolder holder) {
+		final RendererRecyclerViewAdapter nestedAdapter = holder.adapter;
+		final ArrayList<RecyclerView.ViewHolder> boundViewHolders = nestedAdapter.getBoundViewHolders();
+		Log.d("###", "onChildrenViewsRecycled size: " + boundViewHolders.size());
+		for (final RecyclerView.ViewHolder viewHolder : boundViewHolders) {
+			Log.d("###", "onViewRecycled size: " + boundViewHolders.size());
+			nestedAdapter.onViewRecycled(viewHolder);
+		}
 	}
 
 	@NonNull
@@ -103,91 +126,30 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 		diffResult.dispatchUpdatesTo(this);
 	}
 
-	public void clearViewStates() {
-		mViewStates.clear();
+	@NonNull
+	public ArrayList<RecyclerView.ViewHolder> getBoundViewHolders() {
+		return new ArrayList<>(mBoundViewHolders);
 	}
 
-	@Override
-	public void onViewRecycled(final RecyclerView.ViewHolder holder) {
-		super.onViewRecycled(holder);
-		final int position = holder.getAdapterPosition();
-		if (position != NO_POSITION) {
-			final ItemModel item = getItem(position);
-			final ViewRenderer viewRenderer = mRenderers.get(item.getType());
-			mViewStates.put(position, viewRenderer.createViewState(item, holder));
-		}
+	@NonNull
+	public SparseArray<ViewState> getViewStates() {
+		return mViewStates;
 	}
 
-	protected void restoreState(@NonNull final RecyclerView.ViewHolder holder, final int position) {
+	public void setViewStates(@NonNull final SparseArray<ViewState> states) {
+		mViewStates = states;
+	}
+
+	protected void saveViewState(final int position, @NonNull final RecyclerView.ViewHolder holder) {
+		final ItemModel item = getItem(position);
+		final ViewRenderer viewRenderer = mRenderers.get(item.getType());
+		mViewStates.put(position, viewRenderer.createViewState(item, holder));
+	}
+
+	protected void restoreViewState(final int position, @NonNull final RecyclerView.ViewHolder holder) {
 		final ViewState viewState = mViewStates.get(position);
 		if (viewState != null) {
 			viewState.restore(holder);
-		}
-	}
-
-	public abstract static class DiffCallback <BM extends ItemModel> extends DiffUtil.Callback {
-
-		private final List<BM> mOldItems = new ArrayList<>();
-		private final List<BM> mNewItems = new ArrayList<>();
-
-		void setItems(@NonNull final List<BM> oldItems, @NonNull final List<BM> newItems) {
-			mOldItems.clear();
-			mOldItems.addAll(oldItems);
-
-			mNewItems.clear();
-			mNewItems.addAll(newItems);
-		}
-
-		@Override
-		public int getOldListSize() {
-			return mOldItems.size();
-		}
-
-		@Override
-		public int getNewListSize() {
-			return mNewItems.size();
-		}
-
-		@Override
-		public boolean areItemsTheSame(final int oldItemPosition, final int newItemPosition) {
-			return areItemsTheSame(
-					mOldItems.get(oldItemPosition),
-					mNewItems.get(newItemPosition)
-			);
-		}
-
-		public abstract boolean areItemsTheSame(@NonNull final BM oldItem, @NonNull final BM newItem);
-
-		@Override
-		public boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
-			return areContentsTheSame(
-					mOldItems.get(oldItemPosition),
-					mNewItems.get(newItemPosition)
-			);
-		}
-
-		public abstract boolean areContentsTheSame(@NonNull final BM oldItem, @NonNull final BM newItem);
-
-		@Nullable
-		@Override
-		public Object getChangePayload(final int oldItemPosition, final int newItemPosition) {
-			final Object changePayload = getChangePayload(mOldItems.get(oldItemPosition), mNewItems.get(newItemPosition));
-			if (changePayload == null) {
-				return super.getChangePayload(oldItemPosition, newItemPosition);
-			}
-			return changePayload;
-		}
-
-		@Nullable
-		public List getChangePayload(@NonNull final BM oldItem, @NonNull final BM newItem) {
-			return null;
-		}
-	}
-
-	private final static class UnsupportedViewHolderException extends RuntimeException {
-
-		UnsupportedViewHolderException(@NonNull final RecyclerView.ViewHolder holderName) {
-			super("Not supported View Holder: " + holderName.getClass().getSimpleName());
 		}
 	}
 }

@@ -4,13 +4,16 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 
-import com.github.vivchar.example.BetweenSpacesItemDecoration;
+import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
 import com.github.vivchar.example.R;
+import com.github.vivchar.example.widgets.NestedAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
+import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +37,18 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 	@Override
 	public RecyclerViewHolder createCompositeViewHolder(@Nullable final ViewGroup parent) {
 		return new RecyclerViewHolder(inflate(R.layout.item_recycler_view, parent));
+	}
+
+	@Nullable
+	@Override
+	public ViewState createViewState(@NonNull final ItemModel model, @NonNull final RecyclerViewHolder holder) {
+		return new RecyclerViewState(holder);
+	}
+
+	@NonNull
+	@Override
+	protected RendererRecyclerViewAdapter createAdapter() {
+		return new NestedAdapter();
 	}
 
 	@NonNull

@@ -13,7 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.github.vivchar.example.MyItemDecoration;
+import com.github.vivchar.example.widgets.MyItemDecoration;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.pages.github.items.ItemsDiffCallback;
 import com.github.vivchar.example.pages.github.items.list.RecyclerViewRenderer;
