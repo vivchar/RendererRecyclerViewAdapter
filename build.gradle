@@ -1,14 +1,9 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
 	repositories {
 		jcenter()
 	}
 	dependencies {
 		classpath 'com.android.tools.build:gradle:2.3.0'
-
-		// NOTE: Do not place your application dependencies here; they belong
-		// in the individual module build.gradle files
 	}
 }
 
@@ -33,6 +28,22 @@ allprojects {
 	repositories {
 		mavenCentral()
 	}
+}
+
+ext {
+	applicationID = "com.example.vivchar.example"
+	versionName = "1.0"
+	versionCode = 1
+	minSdkVersion = 14
+	targetSdkVersion = 25
+	compileSdkVersion = 25
+	buildToolsVersion = "25.0.2"
+	supportLibraryVersion = "25.3.0"
+	constraintVersion = "1.0.2"
+	retrofit2Version = "2.3.0"
+	glideVersion = "4.0.0"
+	glideTransformationsVersion = "3.0.1"
+	gpuImageVersion = "1.4.1"
 }
 
 apply plugin: 'android-reporting'
