@@ -40,15 +40,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 		throw new RuntimeException("Not supported Item View Type: " + viewType);
 	}
 
-	public void registerRenderer(@NonNull final ViewRenderer renderer) {
-		final int type = renderer.getType();
-
-		if (mRenderers.get(type) == null) {
-			mRenderers.put(type, renderer);
-		} else {
-			throw new RuntimeException("ViewRenderer already exist with this type: " + type);
-		}
-	}
+	@Override
+	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {}
 
 	@Override
 	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position, @Nullable final List payloads) {
@@ -65,8 +58,15 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 		mBoundViewHolders.add(holder);
 	}
 
-	@Override
-	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {}
+	public void registerRenderer(@NonNull final ViewRenderer renderer) {
+		final int type = renderer.getType();
+
+		if (mRenderers.get(type) == null) {
+			mRenderers.put(type, renderer);
+		} else {
+			throw new RuntimeException("ViewRenderer already exist with this type: " + type);
+		}
+	}
 
 	@Override
 	public int getItemViewType(final int position) {
@@ -79,21 +79,12 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 		super.onViewRecycled(holder);
 		final int position = holder.getAdapterPosition();
 		if (position != NO_POSITION) {
-			final boolean hasChildren = holder instanceof CompositeViewHolder;
-			if (hasChildren) {
-				onChildrenViewsRecycled((CompositeViewHolder) holder);
+			if (hasChildren(holder)) {
+				onChildrenViewsRecycled(getChildAdapter((CompositeViewHolder) holder));
 			}
 			saveViewState(position, holder);
 		}
 		mBoundViewHolders.remove(holder);
-	}
-
-	private void onChildrenViewsRecycled(@NonNull final CompositeViewHolder holder) {
-		final RendererRecyclerViewAdapter nestedAdapter = holder.adapter;
-		final ArrayList<RecyclerView.ViewHolder> boundViewHolders = nestedAdapter.getBoundViewHolders();
-		for (final RecyclerView.ViewHolder viewHolder : boundViewHolders) {
-			nestedAdapter.onViewRecycled(viewHolder);
-		}
 	}
 
 	@NonNull
@@ -131,7 +122,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	/**
 	 * Use the {@link #enableDiffUtil()} and {@link #setDiffCallback(DiffCallback)} methods
 	 *
-	 * @param items - your new items
+	 * @param items        - your new items
 	 * @param diffCallback - callback class used by DiffUtil while calculating the diff between two lists.
 	 */
 	@Deprecated
@@ -160,6 +151,10 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 		mViewStates = states;
 	}
 
+	public void clearViewStates() {
+		mViewStates.clear();
+	}
+
 	protected void saveViewState(final int position, @NonNull final RecyclerView.ViewHolder holder) {
 		final ItemModel item = getItem(position);
 		final ViewRenderer viewRenderer = mRenderers.get(item.getType());
@@ -170,6 +165,24 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 		final ViewState viewState = mViewStates.get(position);
 		if (viewState != null) {
 			viewState.restore(holder);
+		} else if (hasChildren(holder)) {
+			getChildAdapter((CompositeViewHolder) holder).clearViewStates();
 		}
+	}
+
+	protected void onChildrenViewsRecycled(@NonNull final RendererRecyclerViewAdapter adapter) {
+		final ArrayList<RecyclerView.ViewHolder> boundViewHolders = adapter.getBoundViewHolders();
+		for (final RecyclerView.ViewHolder viewHolder : boundViewHolders) {
+			adapter.onViewRecycled(viewHolder);
+		}
+	}
+
+	protected boolean hasChildren(@NonNull final RecyclerView.ViewHolder holder) {
+		return holder instanceof CompositeViewHolder;
+	}
+
+	@NonNull
+	protected RendererRecyclerViewAdapter getChildAdapter(@NonNull final CompositeViewHolder holder) {
+		return holder.adapter;
 	}
 }

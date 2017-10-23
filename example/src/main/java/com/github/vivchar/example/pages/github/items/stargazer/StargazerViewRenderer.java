@@ -24,7 +24,7 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 
 	@NonNull
 	private final Listener mListener;
-	private int mLayout;
+	private final int mLayout;
 
 	public StargazerViewRenderer(final int type, final int layout, final Context context, @NonNull final Listener listener) {
 		super(type, context);
@@ -46,8 +46,19 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 		holder.itemView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View view) {
-				mListener.onStargazerItemClicked(model);
-				holder.check.setVisibility(holder.check.getVisibility() == VISIBLE ? GONE : VISIBLE);
+				final boolean willChecked = holder.check.getVisibility() == GONE;
+				holder.check.setVisibility(willChecked ? VISIBLE : GONE);
+				mListener.onStargazerItemClicked(model, willChecked);
+			}
+		});
+
+		/* vivchar: temporary workaround */
+		holder.check.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View view) {
+				final boolean willChecked = holder.check.getVisibility() == GONE;
+				holder.check.setVisibility(willChecked ? VISIBLE : GONE);
+				mListener.onStargazerItemClicked(model, willChecked);
 			}
 		});
 	}
@@ -65,6 +76,6 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 	}
 
 	public interface Listener {
-		void onStargazerItemClicked(@NonNull StargazerModel model);
+		void onStargazerItemClicked(@NonNull StargazerModel model, final boolean isChecked);
 	}
 }

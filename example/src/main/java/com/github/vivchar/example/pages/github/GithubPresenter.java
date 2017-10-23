@@ -16,7 +16,9 @@ import com.github.vivchar.network.models.GithubUser;
 import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Vivchar Vitaly on 10.10.17.
@@ -38,6 +40,7 @@ class GithubPresenter implements IPresenter {
 	@NonNull
 	private final ArrayList<ItemModel> mFirstStargazersModels = new ArrayList<>();
 	private int mCount = 0;
+	private final ArrayList<StargazerModel> mSelectedUsers = new ArrayList<>();
 
 	public GithubPresenter(@NonNull final StargazersManager stargazersManager,
 	                       @NonNull final ForksManager forksManager,
@@ -151,8 +154,19 @@ class GithubPresenter implements IPresenter {
 		mStargazersManager.sendReloadRequest();
 	}
 
-	public void onStargazerClicked(@NonNull final StargazerModel model) {
-		mView.showMessageView(model.getName(), model.getHtmlUrl());
+	public void onStargazerClicked(@NonNull final StargazerModel model, final boolean isChecked) {
+		if (isChecked) {
+			mSelectedUsers.add(model);
+			mView.showMessageView(model.getName(), model.getHtmlUrl());
+		} else {
+			mSelectedUsers.remove(model);
+		}
+
+		if (mSelectedUsers.isEmpty()) {
+			mView.hideDoneButton();
+		} else {
+			mView.showDoneButton();
+		}
 	}
 
 	public void onCategoryClicked(@NonNull final CategoryModel model) {
@@ -163,6 +177,23 @@ class GithubPresenter implements IPresenter {
 		mView.showMessageView(model.getName(), model.getHtmlUrl());
 	}
 
+	public void onDoneClicked() {
+		if (!mSelectedUsers.isEmpty()) {
+
+			/* removing duplicates: https://stackoverflow.com/a/203992/4894238 */
+			final Set<StargazerModel> hs = new HashSet<>();
+			hs.addAll(mSelectedUsers);
+			mSelectedUsers.clear();
+			mSelectedUsers.addAll(hs);
+
+			/* vivchar: ideally we should map to other model */
+			mView.showSelectedUsers(new ArrayList<ItemModel>(mSelectedUsers));
+			mView.clearSelections();
+			mView.hideDoneButton();
+			mSelectedUsers.clear();
+		}
+	}
+
 	public interface View
 			extends IView {
 		void updateList(@NonNull ArrayList<ItemModel> list);
@@ -170,5 +201,9 @@ class GithubPresenter implements IPresenter {
 		void hideProgressView();
 		void showMessageView(@NonNull String message, @NonNull String url);
 		void showMessageView(@NonNull String message);
+		void showSelectedUsers(@NonNull ArrayList<ItemModel> list);
+		void clearSelections();
+		void showDoneButton();
+		void hideDoneButton();
 	}
 }

@@ -60,7 +60,7 @@ public abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView
 	public abstract void bindView(@NonNull M model, @NonNull VH holder);
 
 	@NonNull
-	public abstract <VH extends RecyclerView.ViewHolder> VH createViewHolder(@Nullable ViewGroup parent);
+	public abstract VH createViewHolder(@Nullable ViewGroup parent);
 
 	public int getType() {
 		return mViewType;

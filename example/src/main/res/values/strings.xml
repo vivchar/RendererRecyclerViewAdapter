@@ -2,4 +2,7 @@
 	<string name = "app_name">Renderer Recycler View Adapter</string>
 	<string name = "view">View</string>
 	<string name = "view_all">View All</string>
+	<string name = "ok">OK</string>
+	<string name = "selected_users">Selected users</string>
+	<string name = "done">Done</string>
 </resources>

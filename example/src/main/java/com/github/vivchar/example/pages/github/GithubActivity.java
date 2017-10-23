@@ -7,12 +7,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import com.github.vivchar.example.pages.github.items.selected.UserViewRenderer;
 import com.github.vivchar.example.widgets.MyItemDecoration;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.pages.github.items.ItemsDiffCallback;
@@ -39,6 +45,7 @@ public class GithubActivity extends AppCompatActivity {
 	private GridLayoutManager mLayoutManager;
 	private SwipeRefreshLayout mSwipeToRefresh;
 	private GithubPresenter mGithubPresenter;
+	private boolean mDoneItemVisibility = false;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -110,11 +117,11 @@ public class GithubActivity extends AppCompatActivity {
 		return new RecyclerViewRenderer(this);
 	}
 
-//	@NonNull
-//	private CompositeViewRenderer createStargazersRenderer() {
-//		return new RecyclerViewRenderer(this);
-//	}
-
+	@NonNull
+	private ViewRenderer createUserRenderer() {
+		/* vivchar: ideally we should use other model */
+		return new UserViewRenderer(StargazerModel.TYPE, this);
+	}
 
 	@Override
 	protected void onStart() {
@@ -126,6 +133,28 @@ public class GithubActivity extends AppCompatActivity {
 	protected void onStop() {
 		super.onStop();
 		mGithubPresenter.viewHidden();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
+		getMenuInflater().inflate(R.menu.github, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(final Menu menu) {
+		menu.findItem(R.id.done).setVisible(mDoneItemVisibility);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.done:
+				mGithubPresenter.onDoneClicked();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@NonNull
@@ -169,6 +198,43 @@ public class GithubActivity extends AppCompatActivity {
 		}
 
 		@Override
+		public void showSelectedUsers(@NonNull final ArrayList<ItemModel> list) {
+			final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+			adapter.registerRenderer(createUserRenderer());
+
+			final LayoutInflater inflater = LayoutInflater.from(getContext());
+			final RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.selected_items_dialog, null);
+			recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+			recyclerView.setAdapter(adapter);
+			adapter.setItems(list);
+
+			final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+			builder.setView(recyclerView);
+			builder.setTitle(R.string.selected_users);
+			builder.setPositiveButton(R.string.ok, null);
+
+			builder.show();
+		}
+
+		@Override
+		public void clearSelections() {
+			mRecyclerViewAdapter.clearViewStates();
+			mRecyclerViewAdapter.notifyDataSetChanged();
+		}
+
+		@Override
+		public void showDoneButton() {
+			mDoneItemVisibility = true;
+			GithubActivity.this.invalidateOptionsMenu();
+		}
+
+		@Override
+		public void hideDoneButton() {
+			mDoneItemVisibility = false;
+			GithubActivity.this.invalidateOptionsMenu();
+		}
+
+		@Override
 		public Context getContext() {
 			return GithubActivity.this;
 		}
@@ -177,8 +243,8 @@ public class GithubActivity extends AppCompatActivity {
 	private class Listener implements StargazerViewRenderer.Listener, CategoryViewRenderer.Listener, ForkViewRenderer.Listener {
 
 		@Override
-		public void onStargazerItemClicked(@NonNull final StargazerModel model) {
-			mGithubPresenter.onStargazerClicked(model);
+		public void onStargazerItemClicked(@NonNull final StargazerModel model, final boolean isChecked) {
+			mGithubPresenter.onStargazerClicked(model, isChecked);
 		}
 
 		@Override
