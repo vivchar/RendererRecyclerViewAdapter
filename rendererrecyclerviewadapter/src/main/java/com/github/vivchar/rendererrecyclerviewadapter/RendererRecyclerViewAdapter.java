@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
@@ -27,6 +26,9 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	protected SparseArray<ViewState> mViewStates = new SparseArray<>();
 	@NonNull
 	protected final ArrayList<RecyclerView.ViewHolder> mBoundViewHolders = new ArrayList<>();
+	@NonNull
+	private DiffCallback mDiffCallback = new DefaultDiffCallback();
+	private boolean mDiffUtilEnabled = false;
 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
@@ -89,9 +91,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	private void onChildrenViewsRecycled(@NonNull final CompositeViewHolder holder) {
 		final RendererRecyclerViewAdapter nestedAdapter = holder.adapter;
 		final ArrayList<RecyclerView.ViewHolder> boundViewHolders = nestedAdapter.getBoundViewHolders();
-		Log.d("###", "onChildrenViewsRecycled size: " + boundViewHolders.size());
 		for (final RecyclerView.ViewHolder viewHolder : boundViewHolders) {
-			Log.d("###", "onViewRecycled size: " + boundViewHolders.size());
 			nestedAdapter.onViewRecycled(viewHolder);
 		}
 	}
@@ -106,15 +106,35 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 		return mItems.size();
 	}
 
+	public void enableDiffUtil() {
+		mDiffUtilEnabled = true;
+	}
+
+	public void disableDiffUtil() {
+		mDiffUtilEnabled = false;
+	}
+
+	public void setDiffCallback(@NonNull final DiffCallback diffCallback) {
+		mDiffCallback = diffCallback;
+		enableDiffUtil();
+	}
+
 	public void setItems(@NonNull final List<? extends ItemModel> items) {
-		mItems.clear();
-		mItems.addAll(items);
+		if (mDiffUtilEnabled) {
+			setItems(items, mDiffCallback);
+		} else {
+			mItems.clear();
+			mItems.addAll(items);
+		}
 	}
 
 	/**
-	 * @param items        - your new items
+	 * Use the {@link #enableDiffUtil()} and {@link #setDiffCallback(DiffCallback)} methods
+	 *
+	 * @param items - your new items
 	 * @param diffCallback - callback class used by DiffUtil while calculating the diff between two lists.
 	 */
+	@Deprecated
 	public void setItems(@NonNull final List<? extends ItemModel> items, @NonNull final DiffCallback diffCallback) {
 		diffCallback.setItems(mItems, items);
 

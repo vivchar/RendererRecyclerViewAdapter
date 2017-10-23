@@ -62,6 +62,7 @@ public class GithubActivity extends AppCompatActivity {
 		});
 
 		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
+		mRecyclerViewAdapter.setDiffCallback(new ItemsDiffCallback());
 		mRecyclerViewAdapter.registerRenderer(createStargazerRenderer(R.layout.item_user_full_width));
 		mRecyclerViewAdapter.registerRenderer(createCategoryRenderer());
 		mRecyclerViewAdapter.registerRenderer(createListRenderer()
@@ -135,7 +136,7 @@ public class GithubActivity extends AppCompatActivity {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					mRecyclerViewAdapter.setItems(list, new ItemsDiffCallback());
+					mRecyclerViewAdapter.setItems(list);
 				}
 			});
 		}
