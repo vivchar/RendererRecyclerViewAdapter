@@ -74,6 +74,7 @@ afterEvaluate { project ->
 		}
 		source = android.sourceSets.main.java.sourceFiles
 		classpath += project.files(project.android.getBootClasspath().join(File.pathSeparator))
+		failOnError false
 	}
 
 	task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
