@@ -9,7 +9,7 @@
 * Using this library will protect you from the appearance of any business logic in an adapter :blush:.
 
 ## Example
-![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example-1.2.4.gif)
+![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/example.gif)
 
 ## Gradle
 ```gradle
