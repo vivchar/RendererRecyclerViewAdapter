@@ -9,6 +9,9 @@
 * You can easily save a state of a Item when scroll;
 * Using this library will protect you from the appearance of any business logic in an adapter :blush:.
 
+## Wiki
+https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
+
 ## Example
 ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/example.gif)
 
@@ -20,8 +23,6 @@ dependencies {
 ```
 ## Motivation
 https://vivchar.github.io/RendererRecyclerViewAdapter
-## Wiki
-https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
 
 ## Usage
 * Step 1. Implement SomeModel
