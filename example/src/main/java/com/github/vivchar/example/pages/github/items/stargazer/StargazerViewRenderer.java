@@ -3,7 +3,6 @@ package com.github.vivchar.example.pages.github.items.stargazer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
@@ -43,23 +42,17 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 				.into(holder.avatar);
 		holder.check.setVisibility(GONE);
 
-		holder.itemView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(final View view) {
-				final boolean willChecked = holder.check.getVisibility() == GONE;
-				holder.check.setVisibility(willChecked ? VISIBLE : GONE);
-				mListener.onStargazerItemClicked(model, willChecked);
-			}
+		holder.itemView.setOnClickListener(view -> {
+			final boolean willChecked = holder.check.getVisibility() == GONE;
+			holder.check.setVisibility(willChecked ? VISIBLE : GONE);
+			mListener.onStargazerItemClicked(model, willChecked);
 		});
 
 		/* vivchar: temporary workaround */
-		holder.check.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(final View view) {
-				final boolean willChecked = holder.check.getVisibility() == GONE;
-				holder.check.setVisibility(willChecked ? VISIBLE : GONE);
-				mListener.onStargazerItemClicked(model, willChecked);
-			}
+		holder.check.setOnClickListener(view -> {
+			final boolean willChecked = holder.check.getVisibility() == GONE;
+			holder.check.setVisibility(willChecked ? VISIBLE : GONE);
+			mListener.onStargazerItemClicked(model, willChecked);
 		});
 	}
 

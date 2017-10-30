@@ -11,9 +11,12 @@ import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
 public class StargazerViewState implements ViewState<StargazerViewHolder> {
 
+	@NonNull
+	private final ItemModel mModel;
 	private final int mVisibility;
 
 	public StargazerViewState(@NonNull final ItemModel model, @NonNull final StargazerViewHolder holder) {
+		mModel = model;
 		mVisibility = holder.check.getVisibility();
 	}
 

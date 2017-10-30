@@ -64,45 +64,39 @@ class GithubPresenter implements IPresenter {
 	}
 
 	@NonNull
-	private final Listener<List<GithubFork>> mForksListener = new Listener<List<GithubFork>>() {
-		@Override
-		public void onChange(@NonNull final List<GithubFork> data) {
-			if (!data.isEmpty()) {
-				mForksModels.clear();
-				for (final GithubFork fork : data) {
-					mForksModels.add(new ForkModel(
-							fork.getOwner().getLogin(),
-							fork.getOwner().getAvatarUrl(),
-							fork.getOwner().getHtmlUrl()
-					));
-				}
-				updateView();
+	private final Listener<List<GithubFork>> mForksListener = data -> {
+		if (!data.isEmpty()) {
+			mForksModels.clear();
+			for (final GithubFork fork : data) {
+				mForksModels.add(new ForkModel(
+						fork.getOwner().getLogin(),
+						fork.getOwner().getAvatarUrl(),
+						fork.getOwner().getHtmlUrl()
+				));
 			}
+			updateView();
 		}
 	};
 
 	@NonNull
-	private final Listener<List<GithubUser>> mStargazersListener = new Listener<List<GithubUser>>() {
-		@Override
-		public void onChange(@NonNull final List<GithubUser> data) {
-			if (!data.isEmpty()) {
+	private final Listener<List<GithubUser>> mStargazersListener = data -> {
+		if (!data.isEmpty()) {
 
-				/* vivchar: just for example, You can use other data. */
-				final List<GithubUser> topList = data.subList(0, Math.min(10, data.size()));
+			/* vivchar: just for example, You can use other data. */
+			final List<GithubUser> topList = data.subList(0, Math.min(10, data.size()));
 
-				mFirstStargazersModels.clear();
-				for (int i = 0; i < topList.size(); i++) {
-					final GithubUser topUser = topList.get(i);
-					mFirstStargazersModels.add(new StargazerModel(topUser.getLogin(), topUser.getAvatarUrl(), topUser.getHtmlUrl()));
-				}
-
-				mStargazersModels.clear();
-				for (final GithubUser githubUser : data) {
-					mStargazersModels.add(new StargazerModel(githubUser.getLogin(), githubUser.getAvatarUrl(), githubUser.getHtmlUrl()));
-				}
-
-				updateView();
+			mFirstStargazersModels.clear();
+			for (int i = 0; i < topList.size(); i++) {
+				final GithubUser topUser = topList.get(i);
+				mFirstStargazersModels.add(new StargazerModel(topUser.getLogin(), topUser.getAvatarUrl(), topUser.getHtmlUrl()));
 			}
+
+			mStargazersModels.clear();
+			for (final GithubUser githubUser : data) {
+				mStargazersModels.add(new StargazerModel(githubUser.getLogin(), githubUser.getAvatarUrl(), githubUser.getHtmlUrl()));
+			}
+
+			updateView();
 		}
 	};
 
@@ -121,8 +115,19 @@ class GithubPresenter implements IPresenter {
 			* I don't change the first item position because here is the bug
 			* https://stackoverflow.com/a/43461324/4894238
 			*/
-			final ItemModel removed = mFirstStargazersModels.remove(1);
-			mFirstStargazersModels.add(mCount % 2 + 1, removed);
+			if (mCount % 2 == 0) {
+				final int index = 1;
+				mFirstStargazersModels.remove(index);
+				mFirstStargazersModels.add(index, new StargazerModel(
+						"minion",
+						"http://telegram.org.ru/uploads/posts/2017-03/1490220304_5.png",
+						""
+				));
+			}
+
+			final ItemModel remove = mFirstStargazersModels.remove(2);
+			mFirstStargazersModels.add(mCount % 2 == 0 ? 2 : 3, remove);
+
 			final int stargazersID = firstTitle.hashCode();
 			items.add(new RecyclerViewModel(stargazersID, new ArrayList<>(mFirstStargazersModels)));
 		}
@@ -187,15 +192,14 @@ class GithubPresenter implements IPresenter {
 			mSelectedUsers.addAll(hs);
 
 			/* vivchar: ideally we should map to other model */
-			mView.showSelectedUsers(new ArrayList<ItemModel>(mSelectedUsers));
+			mView.showSelectedUsers(new ArrayList<>(mSelectedUsers));
 			mView.clearSelections();
 			mView.hideDoneButton();
 			mSelectedUsers.clear();
 		}
 	}
 
-	public interface View
-			extends IView {
+	public interface View extends IView {
 		void updateList(@NonNull ArrayList<ItemModel> list);
 		void showProgressView();
 		void hideProgressView();

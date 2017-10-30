@@ -40,12 +40,7 @@ public class ForkViewRenderer extends ViewRenderer<ForkModel, ForkViewHolder> {
 				.load(model.getAvatarUrl())
 				.apply(options)
 				.into(holder.avatar);
-		holder.itemView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(final View view) {
-				mListener.onForkItemClicked(model);
-			}
-		});
+		holder.itemView.setOnClickListener(view -> mListener.onForkItemClicked(model));
 	}
 
 	@NonNull

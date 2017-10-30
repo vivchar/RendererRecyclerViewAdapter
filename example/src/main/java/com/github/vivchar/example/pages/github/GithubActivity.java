@@ -61,12 +61,7 @@ public class GithubActivity extends AppCompatActivity {
 		);
 
 		mSwipeToRefresh = (SwipeRefreshLayout) findViewById(R.id.refresh);
-		mSwipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				mGithubPresenter.onRefresh();
-			}
-		});
+		mSwipeToRefresh.setOnRefreshListener(() -> mGithubPresenter.onRefresh());
 
 		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
 		mRecyclerViewAdapter.setDiffCallback(new ItemsDiffCallback());
@@ -162,12 +157,7 @@ public class GithubActivity extends AppCompatActivity {
 
 		@Override
 		public void updateList(@NonNull final ArrayList<ItemModel> list) {
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					mRecyclerViewAdapter.setItems(list);
-				}
-			});
+			runOnUiThread(() -> mRecyclerViewAdapter.setItems(list));
 		}
 
 		@Override
@@ -183,12 +173,9 @@ public class GithubActivity extends AppCompatActivity {
 		@Override
 		public void showMessageView(@NonNull final String message, @NonNull final String url) {
 			final View view = getWindow().getDecorView().findViewById(android.R.id.content);
-			Snackbar.make(view, message, Snackbar.LENGTH_LONG).setAction(R.string.view, new View.OnClickListener() {
-				@Override
-				public void onClick(final View v) {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-				}
-			}).show();
+			Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+					.setAction(R.string.view, v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))))
+					.show();
 		}
 
 		@Override
