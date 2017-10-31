@@ -83,7 +83,7 @@ public class MainManager implements GithubClient.EventListener {
 	}
 
 	@Override
-	public void onForksFailed() {
-		mForksManager.onForksFailed();
+	public void onForksFailed(@NonNull final String message) {
+		mForksManager.onForksFailed(message);
 	}
 }

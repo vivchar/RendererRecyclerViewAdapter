@@ -8,6 +8,10 @@ import com.github.vivchar.network.models.GithubUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.ReplaySubject;
+
 
 /**
  * Created by Vivchar Vitaly on 09.10.17.
@@ -20,9 +24,8 @@ public class StargazersManager {
 	@NonNull
 	private final GithubClient mClient;
 	@NonNull
-	private final List<GithubUser> mGithubUsers = new ArrayList<>();
-	@NonNull
-	private final List<Listener<List<GithubUser>>> mStargazersListeners = new ArrayList<>();
+	private final ReplaySubject<List<GithubUser>> mGithubUsers = ReplaySubject.createWithSize(1);
+
 	private int mCurrentPage = 1;
 	private int mLastLoadedPage = 0;
 	private boolean mHasMore = false;
@@ -34,12 +37,12 @@ public class StargazersManager {
 
 	public void sendReloadRequest() {
 		/* vivchar: to avoid the API rate limit of the github https://developer.github.com/v3/#rate-limiting */
-		if (mGithubUsers.isEmpty()) {
+		if (mGithubUsers.getValue().isEmpty()) {
 			mReloading = true;
 			mCurrentPage = 1;
 			sendPageLoadRequest(mCurrentPage);
 		} else {
-			notifyStargazersChanged();
+			mGithubUsers.onNext(mGithubUsers.getValue()); //temporary workaround
 		}
 	}
 
@@ -56,30 +59,24 @@ public class StargazersManager {
 		mHasMore = !list.isEmpty();
 		if (mReloading) {
 			mReloading = false;
-			mGithubUsers.clear();
+			mGithubUsers.onNext(list);
+		} else {
+			if (mGithubUsers.getValue() != null) {
+				mGithubUsers.getValue().addAll(list);
+				mGithubUsers.onNext(mGithubUsers.getValue());
+			} else {
+				mGithubUsers.onNext(list);
+			}
 		}
-		mGithubUsers.addAll(list);
-		notifyStargazersChanged();
 	}
 
 	public void onStargazersFailed(final int page) {
 		Log.e(TAG, "onStargazersFailed: " + page);
-		notifyStargazersChanged();
+		mGithubUsers.onNext(new ArrayList<>());
 	}
 
-	public void addStargazersListener(@NonNull final Listener<List<GithubUser>> listener) {
-		mStargazersListeners.add(listener);
-		listener.onChange(mGithubUsers);
-	}
-
-	public void removeStargazersListener(@NonNull final Listener<List<GithubUser>> listener) {
-		mStargazersListeners.remove(listener);
-	}
-
-	//TODO: rework to rx
-	private void notifyStargazersChanged() {
-		for (final Listener<List<GithubUser>> listener : mStargazersListeners) {
-			listener.onChange(mGithubUsers);
-		}
+	@NonNull
+	public Observable<List<GithubUser>> getGithubUsers() {
+		return mGithubUsers.hide();
 	}
 }

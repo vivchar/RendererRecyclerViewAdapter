@@ -3,10 +3,13 @@ package com.github.vivchar.network;
 import android.support.annotation.NonNull;
 
 import com.github.vivchar.network.models.GithubFork;
-import com.github.vivchar.network.models.GithubUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.ReplaySubject;
 
 /**
  * Created by Vivchar Vitaly on 12.10.17.
@@ -17,9 +20,7 @@ public class ForksManager {
 	@NonNull
 	private final GithubClient mClient;
 	@NonNull
-	private final List<GithubFork> mGithubForks = new ArrayList<>();
-	@NonNull
-	private final List<Listener<List<GithubFork>>> mForksListeners = new ArrayList<>();
+	private final ReplaySubject<List<GithubFork>> mGithubForks = ReplaySubject.createWithSize(1);
 
 	public ForksManager(@NonNull final GithubClient client) {
 		mClient = client;
@@ -30,29 +31,16 @@ public class ForksManager {
 	}
 
 	public void onForksReceived(@NonNull final List<GithubFork> forks) {
-		mGithubForks.clear();
-		mGithubForks.addAll(forks);
-		notifyStargazersChanged();
+		mGithubForks.onNext(forks);
 	}
 
-	public void onForksFailed() {
-		mGithubForks.clear();
-		notifyStargazersChanged();
+	public void onForksFailed(@NonNull final String message) {
+		mGithubForks.onNext(new ArrayList<>());
+//		mGithubForks.onError(new Exception(message));
 	}
 
-	public void addForksListener(@NonNull final Listener<List<GithubFork>> listener) {
-		mForksListeners.add(listener);
-		listener.onChange(mGithubForks);
-	}
-
-	public void removeForksListener(@NonNull final Listener<List<GithubFork>> listener) {
-		mForksListeners.remove(listener);
-	}
-
-	//TODO: rework to rx
-	private void notifyStargazersChanged() {
-		for (final Listener<List<GithubFork>> listener : mForksListeners) {
-			listener.onChange(mGithubForks);
-		}
+	@NonNull
+	public Observable<List<GithubFork>> getGithubForks() {
+		return mGithubForks.hide();
 	}
 }

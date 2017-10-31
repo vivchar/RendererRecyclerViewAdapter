@@ -17,7 +17,7 @@ public class RecyclerViewModel extends DefaultCompositeItemModel {
 	public static final int TYPE = 654323;
 	private int mID;
 
-	public RecyclerViewModel(final int ID, @NonNull final List<ItemModel> items) {
+	public RecyclerViewModel(final int ID, @NonNull final List<? extends ItemModel> items) {
 		super(TYPE, items);
 		mID = ID;
 	}

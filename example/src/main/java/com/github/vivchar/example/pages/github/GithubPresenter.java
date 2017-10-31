@@ -2,7 +2,7 @@ package com.github.vivchar.example.pages.github;
 
 import android.support.annotation.NonNull;
 
-import com.github.vivchar.example.IPresenter;
+import com.github.vivchar.example.Presenter;
 import com.github.vivchar.example.IView;
 import com.github.vivchar.example.pages.github.items.category.CategoryModel;
 import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
@@ -20,11 +20,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * Created by Vivchar Vitaly on 10.10.17.
  */
 
-class GithubPresenter implements IPresenter {
+class GithubPresenter extends Presenter {
 
 	@NonNull
 	private final StargazersManager mStargazersManager;
@@ -33,18 +39,12 @@ class GithubPresenter implements IPresenter {
 	@NonNull
 	private final View mView;
 
-	@NonNull
-	private final ArrayList<ItemModel> mForksModels = new ArrayList<>();
-	@NonNull
-	private final ArrayList<ItemModel> mStargazersModels = new ArrayList<>();
-	@NonNull
-	private final ArrayList<ItemModel> mFirstStargazersModels = new ArrayList<>();
 	private int mCount = 0;
 	private final ArrayList<StargazerModel> mSelectedUsers = new ArrayList<>();
 
-	public GithubPresenter(@NonNull final StargazersManager stargazersManager,
-	                       @NonNull final ForksManager forksManager,
-	                       @NonNull final View view) {
+	GithubPresenter(@NonNull final StargazersManager stargazersManager,
+	                @NonNull final ForksManager forksManager,
+	                @NonNull final View view) {
 		mStargazersManager = stargazersManager;
 		mForksManager = forksManager;
 		mView = view;
@@ -52,105 +52,86 @@ class GithubPresenter implements IPresenter {
 
 	@Override
 	public void viewShown() {
-		mView.showProgressView();
-		mStargazersManager.addStargazersListener(mStargazersListener);
-		mForksManager.addForksListener(mForksListener);
-	}
+		final Observable<List<StargazerModel>> stargazers = mStargazersManager.getGithubUsers()
+				.map(githubUsers -> {
+					final ArrayList<StargazerModel> items = new ArrayList<>();
+					for (final GithubUser githubUser : githubUsers) {
+						items.add(new StargazerModel(
+								githubUser.getLogin(),
+								githubUser.getAvatarUrl(),
+								githubUser.getHtmlUrl()
+						));
+					}
+					return items;
+				});
 
-	@Override
-	public void viewHidden() {
-		mStargazersManager.removeStargazersListener(mStargazersListener);
-		mForksManager.removeForksListener(mForksListener);
-	}
+		final Observable<List<ForkModel>> forks = mForksManager.getGithubForks()
+				.map(items -> {
+					final ArrayList<ForkModel> models = new ArrayList<>();
+					for (final GithubFork fork : items) {
+						models.add(new ForkModel(
+								fork.getOwner().getLogin(),
+								fork.getOwner().getAvatarUrl(),
+								fork.getOwner().getHtmlUrl()
+						));
+					}
+					return models;
+				});
 
-	@NonNull
-	private final Listener<List<GithubFork>> mForksListener = data -> {
-		if (!data.isEmpty()) {
-			mForksModels.clear();
-			for (final GithubFork fork : data) {
-				mForksModels.add(new ForkModel(
-						fork.getOwner().getLogin(),
-						fork.getOwner().getAvatarUrl(),
-						fork.getOwner().getHtmlUrl()
-				));
-			}
-			updateView();
-		}
-	};
+		final Observable<List<ItemModel>> combineLatest = Observable.combineLatest(stargazers, forks, (stargazerModels, forkModels) -> {
+					final List<StargazerModel> topModels = new ArrayList<>(stargazerModels.subList(0, Math.min(10, stargazerModels.size())));
 
-	@NonNull
-	private final Listener<List<GithubUser>> mStargazersListener = data -> {
-		if (!data.isEmpty()) {
+					/*
+					 * vivchar: Let's change positions for the DiffUtil demonstration.
+					 *
+					 * I don't change the first item position because here is the bug
+					 * https://stackoverflow.com/a/43461324/4894238
+					 */
+					final StargazerModel remove = topModels.remove(2);
+					topModels.add(mCount % 2 == 0 ? 2 : 3, remove);
 
-			/* vivchar: just for example, You can use other data. */
-			final List<GithubUser> topList = data.subList(0, Math.min(10, data.size()));
+//					if (mCount % 2 == 0) {
+//						final int index = 1;
+//						topModels.remove(index);
+//						topModels.add(index, new StargazerModel(
+//								"minion",
+//								"http://telegram.org.ru/uploads/posts/2017-03/1490220304_5.png",
+//								""
+//						));
+//					}
 
-			mFirstStargazersModels.clear();
-			for (int i = 0; i < topList.size(); i++) {
-				final GithubUser topUser = topList.get(i);
-				mFirstStargazersModels.add(new StargazerModel(topUser.getLogin(), topUser.getAvatarUrl(), topUser.getHtmlUrl()));
-			}
 
-			mStargazersModels.clear();
-			for (final GithubUser githubUser : data) {
-				mStargazersModels.add(new StargazerModel(githubUser.getLogin(), githubUser.getAvatarUrl(), githubUser.getHtmlUrl()));
-			}
+					final ArrayList<ItemModel> allModels = new ArrayList<>();
 
-			updateView();
-		}
-	};
+					final String firstTitle = "First Stargazers";
+					allModels.add(new CategoryModel(firstTitle));
+					final int firstID = firstTitle.hashCode();
+					allModels.add(new RecyclerViewModel(firstID, new ArrayList<>(topModels)));
 
-	//TODO: use the combineLatest of the RX library
-	private void updateView() {
-		final ArrayList<ItemModel> items = new ArrayList<>();
 
-		if (!mFirstStargazersModels.isEmpty()) {
+					final String forksTitle = "Forks";
+					allModels.add(new CategoryModel(forksTitle));
+					final int forksID = forksTitle.hashCode();
+					allModels.add(new RecyclerViewModel(forksID, new ArrayList<>(forkModels)));
 
-			final String firstTitle = "First Stargazers";
-			items.add(new CategoryModel(firstTitle));
 
-			/*
-			* vivchar: Let's change positions for the DiffUtil demonstration.
-			*
-			* I don't change the first item position because here is the bug
-			* https://stackoverflow.com/a/43461324/4894238
-			*/
-			if (mCount % 2 == 0) {
-				final int index = 1;
-				mFirstStargazersModels.remove(index);
-				mFirstStargazersModels.add(index, new StargazerModel(
-						"minion",
-						"http://telegram.org.ru/uploads/posts/2017-03/1490220304_5.png",
-						""
-				));
-			}
+					final String allTitle = "All Stargazers";
+					allModels.add(new CategoryModel(allTitle));
+					final StargazerModel stargazer = stargazerModels.remove(0);
+					stargazerModels.add(mCount % 3, stargazer);
+					allModels.addAll(new ArrayList<>(stargazerModels));
 
-			final ItemModel remove = mFirstStargazersModels.remove(2);
-			mFirstStargazersModels.add(mCount % 2 == 0 ? 2 : 3, remove);
+					return allModels;
+				}
+		);
 
-			final int stargazersID = firstTitle.hashCode();
-			items.add(new RecyclerViewModel(stargazersID, new ArrayList<>(mFirstStargazersModels)));
-		}
-
-		if (!mForksModels.isEmpty()) {
-			final String forksTitle = "Forks";
-			items.add(new CategoryModel(forksTitle));
-			final int forksID = forksTitle.hashCode();
-			items.add(new RecyclerViewModel(forksID, new ArrayList<>(mForksModels)));
-		}
-
-		if (!mStargazersModels.isEmpty()) {
-			final String allTitle = "All Stargazers";
-			items.add(new CategoryModel(allTitle));
-
-			final ItemModel remove = mStargazersModels.remove(0);
-			mStargazersModels.add(mCount % 3, remove);
-
-			items.addAll(new ArrayList<>(mStargazersModels));
-		}
-
-		mView.hideProgressView();
-		mView.updateList(items);
+		addSubscription(combineLatest
+				.subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(itemModels -> {
+					mView.hideProgressView();
+					mView.updateList(itemModels);
+				}));
 	}
 
 	public void onRefresh() {
@@ -200,7 +181,7 @@ class GithubPresenter implements IPresenter {
 	}
 
 	public interface View extends IView {
-		void updateList(@NonNull ArrayList<ItemModel> list);
+		void updateList(@NonNull List<ItemModel> list);
 		void showProgressView();
 		void hideProgressView();
 		void showMessageView(@NonNull String message, @NonNull String url);

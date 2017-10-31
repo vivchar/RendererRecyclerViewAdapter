@@ -44,6 +44,8 @@ ext {
 	glideVersion = "4.0.0"
 	glideTransformationsVersion = "3.0.1"
 	gpuImageVersion = "1.4.1"
+	rxJavaVersion = "2.1.6"
+	rxAndroidVersion = "2.0.1"
 }
 
 apply plugin: 'android-reporting'

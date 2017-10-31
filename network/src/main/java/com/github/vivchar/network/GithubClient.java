@@ -54,13 +54,13 @@ class GithubClient {
 				if (response.isSuccessful() && body != null) {
 					mListener.onForksReceived(body);
 				} else {
-					mListener.onForksFailed();
+					mListener.onForksFailed("Response is failed");
 				}
 			}
 
 			@Override
 			public void onFailure(final Call<List<GithubFork>> call, final Throwable t) {
-				mListener.onForksFailed();
+				mListener.onForksFailed(t.getMessage());
 			}
 		});
 	}
@@ -69,6 +69,6 @@ class GithubClient {
 		void onStargazersReceived(int page, @NonNull List<GithubUser> stargazers);
 		void onStargazersFailed(int page);
 		void onForksReceived(@NonNull List<GithubFork> forks);
-		void onForksFailed();
+		void onForksFailed(@NonNull final String message);
 	}
 }

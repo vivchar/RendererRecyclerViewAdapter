@@ -36,6 +36,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapte
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GithubActivity extends AppCompatActivity {
 
@@ -156,8 +157,8 @@ public class GithubActivity extends AppCompatActivity {
 	private final GithubPresenter.View mMainPresenterView = new GithubPresenter.View() {
 
 		@Override
-		public void updateList(@NonNull final ArrayList<ItemModel> list) {
-			runOnUiThread(() -> mRecyclerViewAdapter.setItems(list));
+		public void updateList(@NonNull final List<ItemModel> list) {
+			mRecyclerViewAdapter.setItems(list);
 		}
 
 		@Override
