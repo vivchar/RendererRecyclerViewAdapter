@@ -71,4 +71,9 @@ public class StargazerModel implements ItemModel {
 		result = 31 * result + mHtmlUrl.hashCode();
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "{" + mName + "}";
+	}
 }

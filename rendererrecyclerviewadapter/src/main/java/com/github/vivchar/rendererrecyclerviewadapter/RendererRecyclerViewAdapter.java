@@ -162,9 +162,10 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	}
 
 	protected void restoreViewState(final int position, @NonNull final RecyclerView.ViewHolder holder) {
+		final ItemModel item = getItem(position);
 		final ViewState viewState = mViewStates.get(position);
 		if (viewState != null) {
-			viewState.restore(holder);
+			viewState.restore(item, holder);
 		} else if (hasChildren(holder)) {
 			getChildAdapter((CompositeViewHolder) holder).clearViewStates();
 		}

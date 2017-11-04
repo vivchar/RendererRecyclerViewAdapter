@@ -8,5 +8,5 @@ import android.support.v7.widget.RecyclerView;
  */
 
 public interface ViewState <VH extends RecyclerView.ViewHolder> {
-	void restore(@NonNull VH holder);
+	void restore(@NonNull final ItemModel model, @NonNull VH holder);
 }

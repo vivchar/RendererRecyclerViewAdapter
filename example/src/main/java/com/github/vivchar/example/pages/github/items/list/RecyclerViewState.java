@@ -1,11 +1,11 @@
 package com.github.vivchar.example.pages.github.items.list;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewState;
+import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
 /**
@@ -23,8 +23,8 @@ public class RecyclerViewState extends CompositeViewState<RecyclerViewHolder> {
 	}
 
 	@Override
-	public void restore(@NonNull final RecyclerViewHolder holder) {
-		super.restore(holder);
+	public void restore(@NonNull final ItemModel model, @NonNull final RecyclerViewHolder holder) {
+		super.restore(model, holder);
 		holder.adapter.setViewStates(mViewStates);
 	}
 }

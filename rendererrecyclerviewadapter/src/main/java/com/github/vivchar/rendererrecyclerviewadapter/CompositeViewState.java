@@ -17,7 +17,7 @@ public class CompositeViewState <VH extends CompositeViewHolder> implements View
 	}
 
 	@Override
-	public void restore(@NonNull final VH holder) {
+	public void restore(@NonNull final ItemModel model, @NonNull final VH holder) {
 		holder.recyclerView.getLayoutManager().onRestoreInstanceState(mLayoutManagerState);
 	}
 }
