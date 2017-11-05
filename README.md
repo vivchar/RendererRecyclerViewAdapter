@@ -7,6 +7,7 @@
 * You can easily add a nested RecyclerView;
 * You can easily add the DiffUtil support;
 * You can easily save a state of a Item when scroll;
+* You can easily add a Load More Indicator;
 * Using this library will protect you from the appearance of any business logic in an adapter :blush:.
 
 ## Wiki
