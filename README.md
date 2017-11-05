@@ -7,7 +7,7 @@
 * [You can easily add a nested RecyclerView](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-Composite-Items);
 * [You can easily add the DiffUtil support](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-DiffUtil);
 * You can easily save a state of a Item when scroll;
-* [You can easily add a Load More Indicator](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Customization-of-Load-More-Indicator);
+* [You can easily add a Load More Indicator](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-Load-More-Indicator);
 * Using this library will help you to follow [SOLID principles](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)).
 
 ## Wiki
