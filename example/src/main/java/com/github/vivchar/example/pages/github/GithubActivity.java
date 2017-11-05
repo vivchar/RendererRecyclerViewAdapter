@@ -13,12 +13,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.github.vivchar.example.pages.github.items.selected.UserViewRenderer;
+import com.github.vivchar.example.widgets.EndlessScrollListener;
 import com.github.vivchar.example.widgets.MyItemDecoration;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.pages.github.items.ItemsDiffCallback;
@@ -32,6 +34,7 @@ import com.github.vivchar.example.pages.github.items.stargazer.StargazerViewRend
 import com.github.vivchar.network.MainManager;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.LoadMoreViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
@@ -66,6 +69,7 @@ public class GithubActivity extends AppCompatActivity {
 
 		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
 		mRecyclerViewAdapter.setDiffCallback(new ItemsDiffCallback());
+		mRecyclerViewAdapter.registerRenderer(new LoadMoreViewRenderer(R.layout.item_load_more, this));
 		mRecyclerViewAdapter.registerRenderer(createStargazerRenderer(R.layout.item_user_full_width));
 		mRecyclerViewAdapter.registerRenderer(createCategoryRenderer());
 		mRecyclerViewAdapter.registerRenderer(createListRenderer()
@@ -91,6 +95,12 @@ public class GithubActivity extends AppCompatActivity {
 		mRecyclerView.setLayoutManager(mLayoutManager);
 		mRecyclerView.setAdapter(mRecyclerViewAdapter);
 		mRecyclerView.addItemDecoration(new MyItemDecoration());
+		mRecyclerView.addOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public void onLoadMore(final int page, final int totalItemsCount) {
+				mGithubPresenter.onLoadMore();
+			}
+		});
 	}
 
 	@NonNull
@@ -220,6 +230,11 @@ public class GithubActivity extends AppCompatActivity {
 		public void hideDoneButton() {
 			mDoneItemVisibility = false;
 			GithubActivity.this.invalidateOptionsMenu();
+		}
+
+		@Override
+		public void showLoadMoreView() {
+			mRecyclerViewAdapter.showLoadMore();
 		}
 
 		@Override

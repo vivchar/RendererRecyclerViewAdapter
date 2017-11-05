@@ -1,16 +1,16 @@
 package com.github.vivchar.example.pages.github;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
-import com.github.vivchar.example.Presenter;
 import com.github.vivchar.example.IView;
+import com.github.vivchar.example.Presenter;
 import com.github.vivchar.example.pages.github.items.category.CategoryModel;
-import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
 import com.github.vivchar.example.pages.github.items.fork.ForkModel;
+import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
 import com.github.vivchar.example.pages.github.items.stargazer.StargazerModel;
 import com.github.vivchar.network.ForksManager;
 import com.github.vivchar.network.StargazersManager;
-import com.github.vivchar.network.Listener;
 import com.github.vivchar.network.models.GithubFork;
 import com.github.vivchar.network.models.GithubUser;
 import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
@@ -22,15 +22,16 @@ import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by Vivchar Vitaly on 10.10.17.
  */
 
 class GithubPresenter extends Presenter {
+
+	private static final String TAG = GithubPresenter.class.getSimpleName();
 
 	@NonNull
 	private final StargazersManager mStargazersManager;
@@ -41,6 +42,7 @@ class GithubPresenter extends Presenter {
 
 	private int mCount = 0;
 	private final ArrayList<StargazerModel> mSelectedUsers = new ArrayList<>();
+	private boolean mLoadingMore = false;
 
 	GithubPresenter(@NonNull final StargazersManager stargazersManager,
 	                @NonNull final ForksManager forksManager,
@@ -79,7 +81,8 @@ class GithubPresenter extends Presenter {
 				});
 
 		final Observable<List<ItemModel>> combineLatest = Observable.combineLatest(stargazers, forks, (stargazerModels, forkModels) -> {
-					final List<StargazerModel> topModels = new ArrayList<>(stargazerModels.subList(0, Math.min(10, stargazerModels.size())));
+					final List<StargazerModel> topModels = new ArrayList<>(stargazerModels.subList(0, Math.min(10, stargazerModels.size()
+					)));
 
 					/*
 					 * vivchar: Let's change positions for the DiffUtil demonstration.
@@ -128,10 +131,14 @@ class GithubPresenter extends Presenter {
 		addSubscription(combineLatest
 				.subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(itemModels -> {
-					mView.hideProgressView();
-					mView.updateList(itemModels);
-				}));
+				.subscribe(
+						itemModels -> {
+							mLoadingMore = false;
+							mView.hideProgressView();
+							mView.updateList(itemModels);
+						},
+						throwable -> Log.d(TAG, "Can't update list: " + throwable.getMessage())
+				));
 	}
 
 	public void onRefresh() {
@@ -180,6 +187,15 @@ class GithubPresenter extends Presenter {
 		}
 	}
 
+	public void onLoadMore() {
+		if (!mLoadingMore) {
+			Log.d(TAG, "onLoadMore");
+			mLoadingMore = true;
+			mStargazersManager.sendLoadMoreRequest();
+			mView.showLoadMoreView();
+		}
+	}
+
 	public interface View extends IView {
 		void updateList(@NonNull List<ItemModel> list);
 		void showProgressView();
@@ -190,5 +206,6 @@ class GithubPresenter extends Presenter {
 		void clearSelections();
 		void showDoneButton();
 		void hideDoneButton();
+		void showLoadMoreView();
 	}
 }

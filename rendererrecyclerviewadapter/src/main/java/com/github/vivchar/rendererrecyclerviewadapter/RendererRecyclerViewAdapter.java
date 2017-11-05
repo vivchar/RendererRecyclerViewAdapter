@@ -26,9 +26,15 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	protected SparseArray<ViewState> mViewStates = new SparseArray<>();
 	@NonNull
 	protected final ArrayList<RecyclerView.ViewHolder> mBoundViewHolders = new ArrayList<>();
+
 	@NonNull
-	private DiffCallback mDiffCallback = new DefaultDiffCallback();
-	private boolean mDiffUtilEnabled = false;
+	protected DiffCallback mDiffCallback = new DefaultDiffCallback();
+	@NonNull
+	protected LoadMoreItemModel mLoadMoreModel = new LoadMoreItemModel();
+
+	protected boolean mDiffUtilEnabled = false;
+	protected boolean mLoadMoreVisible = false;
+	protected int mLoadMorePosition;
 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
@@ -117,6 +123,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 			mItems.clear();
 			mItems.addAll(items);
 		}
+
+		mLoadMoreVisible = false;
 	}
 
 	/**
@@ -135,6 +143,42 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 		mItems.addAll(items);
 
 		diffResult.dispatchUpdatesTo(this);
+
+		mLoadMoreVisible = false;
+	}
+
+	/**
+	 * Show a Load More Indicator.
+	 * The Load More Indicator will be hidden automatically when you call the {@link #setItems(List)} method.
+	 * Or you can manually hide it using the {@link #hideLoadMore()} method
+	 * <p>
+	 * FYI: If you want to add a Load More Indicator to other position, then you should override this method
+	 */
+	public void showLoadMore() {
+		mLoadMoreVisible = true;
+		mItems.add(mLoadMoreModel);
+		mLoadMorePosition = getItemCount() - 1;
+		notifyItemInserted(mLoadMorePosition);
+	}
+
+	public void hideLoadMore() {
+		if (mLoadMoreVisible && mLoadMorePosition < getItemCount()) {
+			mItems.remove(mLoadMorePosition);
+			notifyItemRemoved(mLoadMorePosition);
+			mLoadMoreVisible = false;
+		}
+	}
+
+	/**
+	 * If you want to show a some custom data in a Load More Indicator
+	 * then you should set your custom {@link LoadMoreItemModel} and create your custom {@link LoadMoreViewRenderer}
+	 * <p>
+	 * Use the {@link #registerRenderer(ViewRenderer)} to set your custom {@link LoadMoreViewRenderer}
+	 *
+	 * @param model - custom {@link LoadMoreItemModel}
+	 */
+	public void setLoadMoreModel(@NonNull final LoadMoreItemModel model) {
+		mLoadMoreModel = model;
 	}
 
 	@NonNull

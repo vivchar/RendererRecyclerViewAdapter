@@ -46,7 +46,14 @@ public class StargazersManager {
 		}
 	}
 
+	public void sendLoadMoreRequest() {
+		if (mHasMore) {
+			sendPageLoadRequest(mLastLoadedPage + 1);
+		}
+	}
+
 	private void sendPageLoadRequest(final int page) {
+		Log.d(TAG, "sendPageLoadRequest: " + page);
 		mClient.sendStargazersRequest(page);
 	}
 
@@ -55,6 +62,7 @@ public class StargazersManager {
 	}
 
 	public void onStargazersReceived(final int page, @NonNull final List<GithubUser> list) {
+		Log.d(TAG, "onStargazersReceived: " + page + " list: " + list.size());
 		mLastLoadedPage = page;
 		mHasMore = !list.isEmpty();
 		if (mReloading) {
