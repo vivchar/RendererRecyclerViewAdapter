@@ -4,10 +4,10 @@
 * Now you do not need to implement adapters for RecyclerView;
 * You can easily use several types of cells in a single list;
 * You can reuse cells in different RecyclerView;
-* You can easily add a nested RecyclerView;
-* You can easily add the DiffUtil support;
+* [You can easily add a nested RecyclerView](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-Composite-Items);
+* [You can easily add the DiffUtil support](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-DiffUtil);
 * You can easily save a state of a Item when scroll;
-* You can easily add a Load More Indicator;
+* [You can easily add a Load More Indicator](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Customization-of-Load-More-Indicator);
 * Using this library will protect you from the appearance of any business logic in an adapter :blush:.
 
 ## Wiki
