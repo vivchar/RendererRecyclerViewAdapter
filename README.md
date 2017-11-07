@@ -8,7 +8,7 @@
 * [You can easily add the DiffUtil support](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-DiffUtil);
 * [You can easily save a state of a Item when scroll](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Recommendations-for-the-View-States);
 * [You can easily add a Load More Indicator](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-Load-More-Indicator);
-* Using this library will help you to follow [SOLID principles](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)).
+* Using this library will help you to follow SOLID principles.
 
 ## Wiki
 https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
