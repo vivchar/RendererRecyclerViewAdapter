@@ -34,6 +34,11 @@ public class ItemsDiffCallback extends DefaultDiffCallback<ItemModel> {
 		return super.areItemsTheSame(oldItem, newItem);
 	}
 
+	@Override
+	public boolean areContentsTheSame(@NonNull final ItemModel oldItem, @NonNull final ItemModel newItem) {
+		return super.areContentsTheSame(oldItem, newItem);
+	}
+
 	@Nullable
 	@Override
 	public Object getChangePayload(@NonNull final ItemModel oldItem, @NonNull final ItemModel newItem) {

@@ -125,6 +125,7 @@ class GithubPresenter extends Presenter {
 					allModels.add(new CategoryModel(allTitle));
 					final StargazerModel stargazer = stargazerModels.remove(0);
 					stargazerModels.add(mCount % 3, stargazer);
+					stargazerModels.remove(mCount % 2 == 0 ? 4 : 5);
 					allModels.addAll(new ArrayList<>(stargazerModels));
 
 					return allModels;
@@ -134,13 +135,13 @@ class GithubPresenter extends Presenter {
 		addSubscription(combineLatest
 				.subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread())
-				.doOnNext(mView::updateList)
+				.doOnNext(itemModels -> mView.hideProgressView())
 				.distinctUntilChanged()
 				.subscribe(
 						itemModels -> {
 							Log.d(TAG, "updating...");
 							mLoadingMore = false;
-							mView.hideProgressView();
+							mView.updateList(itemModels);
 						},
 						throwable -> Log.d(TAG, "Can't update list: " + throwable.getMessage())
 				));
