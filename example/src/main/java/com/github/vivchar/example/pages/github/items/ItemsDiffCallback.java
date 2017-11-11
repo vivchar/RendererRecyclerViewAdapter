@@ -2,6 +2,7 @@ package com.github.vivchar.example.pages.github.items;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
@@ -15,6 +16,8 @@ import java.util.List;
  */
 
 public class ItemsDiffCallback extends DefaultDiffCallback<ItemModel> {
+
+	private static final String TAG = ItemsDiffCallback.class.getSimpleName();
 
 	@Override
 	public boolean areItemsTheSame(@NonNull final ItemModel oldItem, @NonNull final ItemModel newItem) {
@@ -33,13 +36,18 @@ public class ItemsDiffCallback extends DefaultDiffCallback<ItemModel> {
 
 	@Nullable
 	@Override
-	public List getChangePayload(@NonNull final ItemModel oldItem, @NonNull final ItemModel newItem) {
+	public Object getChangePayload(@NonNull final ItemModel oldItem, @NonNull final ItemModel newItem) {
 		if (oldItem instanceof RecyclerViewModel) {
 			if (newItem instanceof RecyclerViewModel) {
 				/* vivchar: I just want to call the RecyclerViewRenderer.rebindView() method */
-				return new ArrayList();
+				final ArrayList<Long> payload = new ArrayList<>();
+				payload.add(System.currentTimeMillis());
+				Log.d(TAG, "composite payload: " + payload);
+				return payload;
 			}
 		}
-		return super.getChangePayload(oldItem, newItem);
+		final Object payload = super.getChangePayload(oldItem, newItem);
+		Log.d(TAG, "default payload: " + payload);
+		return payload;
 	}
 }

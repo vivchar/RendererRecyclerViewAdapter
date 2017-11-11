@@ -29,20 +29,13 @@ public class NestedAdapter extends RendererRecyclerViewAdapter {
 
 	@Override
 	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position, @Nullable final List payloads) {
-		super.onBindViewHolder(holder, position, payloads);
 		Log.d(TAG, "onBindViewHolder: " + holder.getClass().getSimpleName());
+		super.onBindViewHolder(holder, position, payloads);
 	}
 
 	@Override
 	public void onViewRecycled(final RecyclerView.ViewHolder holder) {
-		super.onViewRecycled(holder);
 		Log.d(TAG, "onViewRecycled: " + holder.getClass().getSimpleName());
-	}
-
-	@Override
-	public void setItems(@NonNull final List<? extends ItemModel> items, @NonNull final DiffCallback diffCallback) {
-		Log.d(TAG, "start setItems: " + items);
-		super.setItems(items, diffCallback);
-		Log.d(TAG, "end setItems: " + items);
+		super.onViewRecycled(holder);
 	}
 }

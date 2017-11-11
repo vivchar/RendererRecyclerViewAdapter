@@ -26,4 +26,5 @@ dependencies {
     compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofit2Version"
     compile "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
     compile "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
+    compile "com.annimon:stream:$rootProject.ext.streamVersion"
 }

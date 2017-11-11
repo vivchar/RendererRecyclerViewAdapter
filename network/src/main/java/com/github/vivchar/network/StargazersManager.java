@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.functions.Function;
 import io.reactivex.subjects.ReplaySubject;
 
 
@@ -30,19 +30,22 @@ public class StargazersManager {
 	private int mLastLoadedPage = 0;
 	private boolean mHasMore = false;
 	private boolean mReloading = false;
+	@NonNull
+	private final List<GithubUser> mOriginalUsers = new ArrayList<>();
 
 	StargazersManager(@NonNull final GithubClient client) {
 		mClient = client;
 	}
 
 	public void sendReloadRequest() {
+		Log.d(TAG, "sendReloadRequest");
 		/* vivchar: to avoid the API rate limit of the github https://developer.github.com/v3/#rate-limiting */
 		if (mGithubUsers.getValue().isEmpty()) {
 			mReloading = true;
 			mCurrentPage = 1;
 			sendPageLoadRequest(mCurrentPage);
 		} else {
-			mGithubUsers.onNext(mGithubUsers.getValue()); //temporary workaround
+			mGithubUsers.onNext(new ArrayList<>(mOriginalUsers)); //temporary workaround
 		}
 	}
 
@@ -65,17 +68,17 @@ public class StargazersManager {
 		Log.d(TAG, "onStargazersReceived: " + page + " list: " + list.size());
 		mLastLoadedPage = page;
 		mHasMore = !list.isEmpty();
+
+		final ArrayList<GithubUser> newList = new ArrayList<>();
 		if (mReloading) {
 			mReloading = false;
-			mGithubUsers.onNext(list);
-		} else {
-			if (mGithubUsers.getValue() != null) {
-				mGithubUsers.getValue().addAll(list);
-				mGithubUsers.onNext(mGithubUsers.getValue());
-			} else {
-				mGithubUsers.onNext(list);
-			}
+		} else if (mGithubUsers.getValue() != null) { //load more response
+			newList.addAll(0, mGithubUsers.getValue());
 		}
+		newList.addAll(list);
+		mOriginalUsers.addAll(new ArrayList<>(newList));
+
+		mGithubUsers.onNext(newList);
 	}
 
 	public void onStargazersFailed(final int page) {
@@ -84,7 +87,12 @@ public class StargazersManager {
 	}
 
 	@NonNull
-	public Observable<List<GithubUser>> getGithubUsers() {
+	public Observable<List<GithubUser>> getAll() {
 		return mGithubUsers.hide();
+	}
+
+	@NonNull
+	public Observable<List<GithubUser>> getTop10() {
+		return mGithubUsers.hide().map(githubUsers -> new ArrayList<>(githubUsers.subList(0, Math.min(githubUsers.size(), 10))));
 	}
 }

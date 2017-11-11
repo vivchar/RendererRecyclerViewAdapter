@@ -3,6 +3,7 @@ package com.github.vivchar.example.pages.github;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.annimon.stream.Stream;
 import com.github.vivchar.example.IView;
 import com.github.vivchar.example.Presenter;
 import com.github.vivchar.example.pages.github.items.category.CategoryModel;
@@ -11,8 +12,6 @@ import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
 import com.github.vivchar.example.pages.github.items.stargazer.StargazerModel;
 import com.github.vivchar.network.ForksManager;
 import com.github.vivchar.network.StargazersManager;
-import com.github.vivchar.network.models.GithubFork;
-import com.github.vivchar.network.models.GithubUser;
 import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
 
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -54,35 +54,40 @@ class GithubPresenter extends Presenter {
 
 	@Override
 	public void viewShown() {
-		final Observable<List<StargazerModel>> stargazers = mStargazersManager.getGithubUsers()
-				.map(githubUsers -> {
-					final ArrayList<StargazerModel> items = new ArrayList<>();
-					for (final GithubUser githubUser : githubUsers) {
-						items.add(new StargazerModel(
-								githubUser.getLogin(),
-								githubUser.getAvatarUrl(),
-								githubUser.getHtmlUrl()
-						));
-					}
-					return items;
-				});
+		final Observable<List<StargazerModel>> stargazers = mStargazersManager.getAll()
+				.map(users -> Stream.of(users)
+						.map(user -> new StargazerModel(
+								user.getLogin(),
+								user.getAvatarUrl(),
+								user.getHtmlUrl()
+						)).toList()
+				);
+
+		final Observable<List<StargazerModel>> topStargazers = mStargazersManager.getTop10()
+				.map(users -> Stream.of(users)
+						.map(user -> new StargazerModel(
+								user.getLogin(),
+								user.getAvatarUrl(),
+								user.getHtmlUrl()
+						)).toList()
+				);
 
 		final Observable<List<ForkModel>> forks = mForksManager.getGithubForks()
-				.map(items -> {
-					final ArrayList<ForkModel> models = new ArrayList<>();
-					for (final GithubFork fork : items) {
-						models.add(new ForkModel(
+				.map(items -> Stream.of(items).map(fork -> new ForkModel(
 								fork.getOwner().getLogin(),
 								fork.getOwner().getAvatarUrl(),
 								fork.getOwner().getHtmlUrl()
-						));
-					}
-					return models;
-				});
+						)).toList()
+				);
 
-		final Observable<List<ItemModel>> combineLatest = Observable.combineLatest(stargazers, forks, (stargazerModels, forkModels) -> {
-					final List<StargazerModel> topModels = new ArrayList<>(stargazerModels.subList(0, Math.min(10, stargazerModels.size()
-					)));
+		final Observable<List<ItemModel>> combineLatest = Observable.combineLatest(
+				stargazers,
+				topStargazers,
+				forks,
+				(stargazerModels, topStargazersModels, forkModels) -> {
+
+					final ArrayList<ItemModel> allModels = new ArrayList<>();
+
 
 					/*
 					 * vivchar: Let's change positions for the DiffUtil demonstration.
@@ -90,26 +95,24 @@ class GithubPresenter extends Presenter {
 					 * I don't change the first item position because here is the bug
 					 * https://stackoverflow.com/a/43461324/4894238
 					 */
-					final StargazerModel remove = topModels.remove(2);
-					topModels.add(mCount % 2 == 0 ? 2 : 3, remove);
 
-//					if (mCount % 2 == 0) {
-//						final int index = 1;
-//						topModels.remove(index);
-//						topModels.add(index, new StargazerModel(
-//								"minion",
-//								"http://telegram.org.ru/uploads/posts/2017-03/1490220304_5.png",
-//								""
-//						));
-//					}
+					Log.d(TAG, "topStargazersModels: " + topStargazersModels.size());
+					if (mCount % 4 == 0 && topStargazersModels.size() >= 3) {
+						topStargazersModels.remove(2);
+						Log.d(TAG, "removing " + mCount);
+					} else if (mCount % 2 == 0 && topStargazersModels.size() >= 3) {
+						final StargazerModel removed = topStargazersModels.remove(2);
+						topStargazersModels.add(1, removed);
+						Log.d(TAG, "moving "  + mCount);
+					} else {
+						Log.d(TAG, "restoring "  + mCount);
+					}
 
-
-					final ArrayList<ItemModel> allModels = new ArrayList<>();
 
 					final String firstTitle = "First Stargazers";
 					allModels.add(new CategoryModel(firstTitle));
 					final int firstID = firstTitle.hashCode();
-					allModels.add(new RecyclerViewModel(firstID, new ArrayList<>(topModels)));
+					allModels.add(new RecyclerViewModel(firstID, new ArrayList<>(topStargazersModels)));
 
 
 					final String forksTitle = "Forks";
@@ -131,17 +134,20 @@ class GithubPresenter extends Presenter {
 		addSubscription(combineLatest
 				.subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread())
+				.doOnNext(mView::updateList)
+				.distinctUntilChanged()
 				.subscribe(
 						itemModels -> {
+							Log.d(TAG, "updating...");
 							mLoadingMore = false;
 							mView.hideProgressView();
-							mView.updateList(itemModels);
 						},
 						throwable -> Log.d(TAG, "Can't update list: " + throwable.getMessage())
 				));
 	}
 
 	public void onRefresh() {
+		Log.d(TAG, "================================================");
 		mCount++;
 		mView.showProgressView();
 		mStargazersManager.sendReloadRequest();

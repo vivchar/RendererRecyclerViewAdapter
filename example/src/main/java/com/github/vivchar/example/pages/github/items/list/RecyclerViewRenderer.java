@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
@@ -24,13 +25,25 @@ import java.util.List;
 
 public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewModel, RecyclerViewHolder> {
 
+	private static final String TAG = RecyclerViewRenderer.class.getSimpleName();
+
 	public RecyclerViewRenderer(@NonNull final Context context) {
 		super(RecyclerViewModel.TYPE, context);
 	}
 
 	@Override
-	public void rebindView(final RecyclerViewModel model, final RecyclerViewHolder holder, @NonNull final List payloads) {
-		holder.adapter.setItems(model.getItems(), new DefaultDiffCallback());
+	public void rebindView(@NonNull final RecyclerViewModel model, @NonNull final RecyclerViewHolder holder, @NonNull final List<Object> payloads) {
+		Log.d(TAG, "rebindView " + model.toString() + ", payload: " + payloads.toString());
+		holder.adapter.enableDiffUtil();
+		holder.adapter.setItems(model.getItems());
+	}
+
+	@Override
+	public void bindView(@NonNull final RecyclerViewModel model, @NonNull final RecyclerViewHolder holder) {
+		Log.d(TAG, "bindView " + model.toString());
+		holder.adapter.disableDiffUtil();
+		holder.adapter.setItems(model.getItems());
+		holder.adapter.notifyDataSetChanged();
 	}
 
 	@NonNull
@@ -48,7 +61,9 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 	@NonNull
 	@Override
 	protected RendererRecyclerViewAdapter createAdapter() {
-		return new NestedAdapter();
+		final NestedAdapter nestedAdapter = new NestedAdapter();
+		nestedAdapter.setDiffCallback(new DefaultDiffCallback());
+		return nestedAdapter;
 	}
 
 	@NonNull

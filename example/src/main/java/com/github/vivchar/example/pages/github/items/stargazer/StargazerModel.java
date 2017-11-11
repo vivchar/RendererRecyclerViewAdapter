@@ -10,7 +10,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
 
 public class StargazerModel implements ItemModel {
 
-	public static final int TYPE = 634278;
+	public static final int TYPE = 4;
 	@NonNull
 	private final String mName;
 	@NonNull
@@ -74,6 +74,7 @@ public class StargazerModel implements ItemModel {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + "{" + mName + "}";
+//		return getClass().getSimpleName() + "{" + mName + ", " + mAvatarUrl + ", " + mHtmlUrl + "}";
+		return mName;
 	}
 }

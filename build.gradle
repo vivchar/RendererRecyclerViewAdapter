@@ -46,6 +46,7 @@ ext {
 	gpuImageVersion = "1.4.1"
 	rxJavaVersion = "2.1.6"
 	rxAndroidVersion = "2.0.1"
+	streamVersion = "1.1.9"
 }
 
 apply plugin: 'android-reporting'

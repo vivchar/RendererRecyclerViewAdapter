@@ -14,7 +14,7 @@ import java.util.List;
 
 public class RecyclerViewModel extends DefaultCompositeItemModel {
 
-	public static final int TYPE = 654323;
+	public static final int TYPE = 3;
 	private int mID;
 
 	public RecyclerViewModel(final int ID, @NonNull final List<? extends ItemModel> items) {
@@ -34,5 +34,11 @@ public class RecyclerViewModel extends DefaultCompositeItemModel {
 	@Override
 	public int hashCode() {
 		return mID;
+	}
+
+	@Override
+	public String toString() {
+//		return getClass().getSimpleName() + "{" + mID + ", " + mType + ", " + mItems.toString() + "}";
+		return getClass().getSimpleName() + "{" + mItems.toString() + "}";
 	}
 }

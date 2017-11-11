@@ -1,5 +1,6 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
@@ -51,6 +52,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 
 	@Override
 	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position, @Nullable final List payloads) {
+		super.onBindViewHolder(holder, position, payloads);
 		final ItemModel item = getItem(position);
 		final ViewRenderer renderer = mRenderers.get(item.getType());
 		if (payloads == null || payloads.isEmpty()) {
@@ -61,6 +63,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 			/* Partial bind */
 			renderer.rebindView(item, holder, payloads);
 		}
+
+		mBoundViewHolders.remove(holder);
 		mBoundViewHolders.add(holder);
 	}
 
@@ -90,6 +94,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 			}
 			saveViewState(position, holder);
 		}
+
 		mBoundViewHolders.remove(holder);
 	}
 
@@ -118,31 +123,18 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 
 	public void setItems(@NonNull final List<? extends ItemModel> items) {
 		if (mDiffUtilEnabled) {
-			setItems(items, mDiffCallback);
+			mDiffCallback.setItems(mItems, items);
+
+			final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(mDiffCallback);
+
+			mItems.clear();
+			mItems.addAll(items);
+
+			diffResult.dispatchUpdatesTo(this);
 		} else {
 			mItems.clear();
 			mItems.addAll(items);
 		}
-
-		mLoadMoreVisible = false;
-	}
-
-	/**
-	 * Use the {@link #enableDiffUtil()} and {@link #setDiffCallback(DiffCallback)} methods
-	 *
-	 * @param items        - your new items
-	 * @param diffCallback - callback class used by DiffUtil while calculating the diff between two lists.
-	 */
-	@Deprecated
-	public void setItems(@NonNull final List<? extends ItemModel> items, @NonNull final DiffCallback diffCallback) {
-		diffCallback.setItems(mItems, items);
-
-		final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-
-		mItems.clear();
-		mItems.addAll(items);
-
-		diffResult.dispatchUpdatesTo(this);
 
 		mLoadMoreVisible = false;
 	}
@@ -155,17 +147,29 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	 * FYI: If you want to add a Load More Indicator to other position, then you should override this method
 	 */
 	public void showLoadMore() {
-		mLoadMoreVisible = true;
-		mItems.add(mLoadMoreModel);
-		mLoadMorePosition = getItemCount() - 1;
-		notifyItemInserted(mLoadMorePosition);
+		final Handler handler = new Handler();
+		final Runnable r = new Runnable() {
+			public void run() {
+				mLoadMoreVisible = true;
+				mItems.add(mLoadMoreModel);
+				mLoadMorePosition = getItemCount() - 1;
+				notifyItemInserted(mLoadMorePosition);
+			}
+		};
+		handler.post(r);
 	}
 
 	public void hideLoadMore() {
 		if (mLoadMoreVisible && mLoadMorePosition < getItemCount()) {
-			mItems.remove(mLoadMorePosition);
-			notifyItemRemoved(mLoadMorePosition);
-			mLoadMoreVisible = false;
+			final Handler handler = new Handler();
+			final Runnable r = new Runnable() {
+				public void run() {
+					mItems.remove(mLoadMorePosition);
+					notifyItemRemoved(mLoadMorePosition);
+					mLoadMoreVisible = false;
+				}
+			};
+			handler.post(r);
 		}
 	}
 

@@ -9,7 +9,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
  */
 public class CategoryModel implements ItemModel {
 
-	public static final int TYPE = 12376;
+	public static final int TYPE = 1;
 	@NonNull
 	private final String mTitle;
 
@@ -44,5 +44,10 @@ public class CategoryModel implements ItemModel {
 	@Override
 	public int hashCode() {
 		return mTitle.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "{" + mTitle + "}";
 	}
 }

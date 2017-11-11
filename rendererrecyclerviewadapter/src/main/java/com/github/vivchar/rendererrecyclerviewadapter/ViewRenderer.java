@@ -31,14 +31,6 @@ public abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView
 	}
 
 	/**
-	 * Use the {@link #rebindView(ItemModel, RecyclerView.ViewHolder, List)} method.
-	 */
-	@Deprecated
-	public void bindView(final M model, final VH holder, @NonNull final List payloads) {
-		bindView(model, holder);
-	}
-
-	/**
 	 * This method will be called for a partial bind if you override the {@link com.github.vivchar.rendererrecyclerviewadapter
 	 * .RendererRecyclerViewAdapter.DiffCallback#getChangePayload(ItemModel,
 	 * ItemModel)} method
@@ -47,8 +39,8 @@ public abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView
 	 * @param holder   your a ViewHolder
 	 * @param payloads your payload
 	 */
-	public void rebindView(final M model, final VH holder, @NonNull final List payloads) {
-		bindView(model, holder, payloads);
+	public void rebindView(@NonNull final M model, @NonNull final VH holder, @NonNull final List<Object> payloads) {
+		bindView(model, holder);
 	}
 
 	/**

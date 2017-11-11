@@ -9,7 +9,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
  */
 public class ForkModel implements ItemModel {
 
-	public static final int TYPE = 1654;
+	public static final int TYPE = 2;
 
 	@NonNull
 	private final String mName;
@@ -70,5 +70,10 @@ public class ForkModel implements ItemModel {
 		result = 31 * result + mAvatarUrl.hashCode();
 		result = 31 * result + mHtmlUrl.hashCode();
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "{" + mName + ", " + mAvatarUrl + ", " + mHtmlUrl + "}";
 	}
 }

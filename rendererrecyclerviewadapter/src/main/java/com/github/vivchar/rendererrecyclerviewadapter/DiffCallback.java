@@ -64,7 +64,7 @@ public abstract class DiffCallback <BM extends ItemModel> extends DiffUtil.Callb
 	}
 
 	@Nullable
-	public List getChangePayload(@NonNull final BM oldItem, @NonNull final BM newItem) {
+	public Object getChangePayload(@NonNull final BM oldItem, @NonNull final BM newItem) {
 		return null;
 	}
 }
