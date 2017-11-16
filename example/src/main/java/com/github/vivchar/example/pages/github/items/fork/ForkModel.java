@@ -2,14 +2,12 @@ package com.github.vivchar.example.pages.github.items.fork;
 
 import android.support.annotation.NonNull;
 
-import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */
-public class ForkModel implements ItemModel {
-
-	public static final int TYPE = 2;
+public class ForkModel implements ViewModel {
 
 	@NonNull
 	private final String mName;
@@ -22,11 +20,6 @@ public class ForkModel implements ItemModel {
 		mName = name;
 		mAvatarUrl = avatarUrl;
 		mHtmlUrl = htmlUrl;
-	}
-
-	@Override
-	public int getType() {
-		return TYPE;
 	}
 
 	@NonNull

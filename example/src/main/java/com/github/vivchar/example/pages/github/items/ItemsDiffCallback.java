@@ -6,21 +6,20 @@ import android.util.Log;
 
 import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
-import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Vivchar Vitaly on 20.10.17.
  */
 
-public class ItemsDiffCallback extends DefaultDiffCallback<ItemModel> {
+public class ItemsDiffCallback extends DefaultDiffCallback<ViewModel> {
 
 	private static final String TAG = ItemsDiffCallback.class.getSimpleName();
 
 	@Override
-	public boolean areItemsTheSame(@NonNull final ItemModel oldItem, @NonNull final ItemModel newItem) {
+	public boolean areItemsTheSame(@NonNull final ViewModel oldItem, @NonNull final ViewModel newItem) {
 		/* vivchar: Ideally you should create a BaseItemModel with the getID method */
 		if (oldItem instanceof RecyclerViewModel) {
 			if (newItem instanceof RecyclerViewModel) {
@@ -35,13 +34,13 @@ public class ItemsDiffCallback extends DefaultDiffCallback<ItemModel> {
 	}
 
 	@Override
-	public boolean areContentsTheSame(@NonNull final ItemModel oldItem, @NonNull final ItemModel newItem) {
+	public boolean areContentsTheSame(@NonNull final ViewModel oldItem, @NonNull final ViewModel newItem) {
 		return super.areContentsTheSame(oldItem, newItem);
 	}
 
 	@Nullable
 	@Override
-	public Object getChangePayload(@NonNull final ItemModel oldItem, @NonNull final ItemModel newItem) {
+	public Object getChangePayload(@NonNull final ViewModel oldItem, @NonNull final ViewModel newItem) {
 		if (oldItem instanceof RecyclerViewModel) {
 			if (newItem instanceof RecyclerViewModel) {
 				/* vivchar: I just want to call the RecyclerViewRenderer.rebindView() method */

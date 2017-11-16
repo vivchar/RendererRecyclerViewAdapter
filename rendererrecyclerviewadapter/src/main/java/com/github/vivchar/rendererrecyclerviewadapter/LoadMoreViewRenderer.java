@@ -10,22 +10,22 @@ import android.view.ViewGroup;
  * Created by Vivchar Vitaly on 05.11.17.
  */
 
-public class LoadMoreViewRenderer extends ViewRenderer<LoadMoreItemModel, LoadMoreViewHolder> {
+public class LoadMoreViewRenderer extends ViewRenderer<LoadMoreViewModel, LoadMoreViewHolder> {
 
 	@LayoutRes
-	private final int mLayout;
+	protected final int mLayoutID;
 
-	public LoadMoreViewRenderer(final int layout, @NonNull final Context context) {
-		super(LoadMoreItemModel.TYPE, context);
-		mLayout = layout;
+	public LoadMoreViewRenderer(@LayoutRes final int layoutID, @NonNull final Context context) {
+		super(LoadMoreViewModel.class, context);
+		mLayoutID = layoutID;
 	}
 
 	@Override
-	public void bindView(@NonNull final LoadMoreItemModel model, @NonNull final LoadMoreViewHolder holder) {}
+	public void bindView(@NonNull final LoadMoreViewModel model, @NonNull final LoadMoreViewHolder holder) {}
 
 	@NonNull
 	@Override
 	public LoadMoreViewHolder createViewHolder(@Nullable final ViewGroup parent) {
-		return new LoadMoreViewHolder(inflate(mLayout, parent));
+		return new LoadMoreViewHolder(inflate(mLayoutID, parent));
 	}
 }

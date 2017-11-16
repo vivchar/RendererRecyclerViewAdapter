@@ -13,31 +13,31 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.github.vivchar.example.pages.github.items.selected.UserViewRenderer;
-import com.github.vivchar.example.widgets.EndlessScrollListener;
-import com.github.vivchar.example.widgets.MyItemDecoration;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.pages.github.items.ItemsDiffCallback;
-import com.github.vivchar.example.pages.github.items.list.RecyclerViewRenderer;
 import com.github.vivchar.example.pages.github.items.category.CategoryModel;
 import com.github.vivchar.example.pages.github.items.category.CategoryViewRenderer;
 import com.github.vivchar.example.pages.github.items.fork.ForkModel;
 import com.github.vivchar.example.pages.github.items.fork.ForkViewRenderer;
+import com.github.vivchar.example.pages.github.items.list.RecyclerViewRenderer;
+import com.github.vivchar.example.pages.github.items.selected.UserViewRenderer;
 import com.github.vivchar.example.pages.github.items.stargazer.StargazerModel;
 import com.github.vivchar.example.pages.github.items.stargazer.StargazerViewRenderer;
+import com.github.vivchar.example.widgets.EndlessScrollListener;
+import com.github.vivchar.example.widgets.MyItemDecoration;
 import com.github.vivchar.network.MainManager;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
-import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.LoadMoreViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,13 +81,11 @@ public class GithubActivity extends AppCompatActivity {
 		mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 			@Override
 			public int getSpanSize(final int position) {
-				switch (mRecyclerViewAdapter.getItemViewType(position)) {
-					case ForkModel.TYPE:
-					case StargazerModel.TYPE:
-						return 1;
-					default:
-						return 3;
+				final Type type = mRecyclerViewAdapter.getType(position);
+				if (type.equals(ForkModel.class) || type.equals(StargazerModel.class)) {
+					return 1;
 				}
+				return 3;
 			}
 		});
 
@@ -105,17 +103,17 @@ public class GithubActivity extends AppCompatActivity {
 
 	@NonNull
 	private ViewRenderer createForkRenderer() {
-		return new ForkViewRenderer(ForkModel.TYPE, this, new Listener());
+		return new ForkViewRenderer(this, new Listener());
 	}
 
 	@NonNull
 	private ViewRenderer createStargazerRenderer(final int layout) {
-		return new StargazerViewRenderer(StargazerModel.TYPE, layout, this, new Listener());
+		return new StargazerViewRenderer(layout, this, new Listener());
 	}
 
 	@NonNull
 	private ViewRenderer createCategoryRenderer() {
-		return new CategoryViewRenderer(CategoryModel.TYPE, this, new Listener());
+		return new CategoryViewRenderer(this, new Listener());
 	}
 
 	@NonNull
@@ -126,7 +124,7 @@ public class GithubActivity extends AppCompatActivity {
 	@NonNull
 	private ViewRenderer createUserRenderer() {
 		/* vivchar: ideally we should use other model */
-		return new UserViewRenderer(StargazerModel.TYPE, this);
+		return new UserViewRenderer(this);
 	}
 
 	@Override
@@ -167,7 +165,7 @@ public class GithubActivity extends AppCompatActivity {
 	private final GithubPresenter.View mMainPresenterView = new GithubPresenter.View() {
 
 		@Override
-		public void updateList(@NonNull final List<ItemModel> list) {
+		public void updateList(@NonNull final List<ViewModel> list) {
 			mRecyclerViewAdapter.setItems(list);
 		}
 
@@ -196,7 +194,7 @@ public class GithubActivity extends AppCompatActivity {
 		}
 
 		@Override
-		public void showSelectedUsers(@NonNull final ArrayList<ItemModel> list) {
+		public void showSelectedUsers(@NonNull final ArrayList<ViewModel> list) {
 			final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
 			adapter.registerRenderer(createUserRenderer());
 

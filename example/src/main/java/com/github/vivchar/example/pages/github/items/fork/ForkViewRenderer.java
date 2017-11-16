@@ -23,8 +23,8 @@ public class ForkViewRenderer extends ViewRenderer<ForkModel, ForkViewHolder> {
 	@NonNull
 	private final Listener mListener;
 
-	public ForkViewRenderer(final int type, final Context context, @NonNull final Listener listener) {
-		super(type, context);
+	public ForkViewRenderer(final Context context, @NonNull final Listener listener) {
+		super(ForkModel.class, context);
 		mListener = listener;
 	}
 

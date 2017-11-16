@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Vivchar Vitaly on 21.10.17.
  */
-public abstract class DiffCallback <BM extends ItemModel> extends DiffUtil.Callback {
+public abstract class DiffCallback <BM extends ViewModel> extends DiffUtil.Callback {
 
 	private final List<BM> mOldItems = new ArrayList<>();
 	private final List<BM> mNewItems = new ArrayList<>();

@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.github.vivchar.example.pages.github.items.category.CategoryModel;
 import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
-import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 
 /**
@@ -25,13 +25,13 @@ public class MyItemDecoration extends RecyclerView.ItemDecoration {
 		if (itemPosition != RecyclerView.NO_POSITION) {
 			if (layoutManager instanceof GridLayoutManager) {
 				final RendererRecyclerViewAdapter adapter = (RendererRecyclerViewAdapter) parent.getAdapter();
-				final ItemModel item = adapter.getItem(itemPosition);
-				if (item.getType() == RecyclerViewModel.TYPE) {
+				final ViewModel item = adapter.getItem(itemPosition);
+				if (item instanceof RecyclerViewModel) {
 					outRect.left = dpToPixels(-10);
 					outRect.right = dpToPixels(-10);
 					outRect.top = dpToPixels(5);
 					outRect.bottom = dpToPixels(5);
-				} else if (item.getType() == CategoryModel.TYPE) {
+				} else if (item instanceof CategoryModel) {
 					outRect.left = dpToPixels(5);
 					outRect.right = dpToPixels(5);
 					outRect.top = dpToPixels(10);

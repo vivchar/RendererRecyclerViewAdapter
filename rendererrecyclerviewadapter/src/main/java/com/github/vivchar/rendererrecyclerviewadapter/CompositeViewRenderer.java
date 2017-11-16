@@ -15,17 +15,17 @@ import java.util.List;
  * Created by Vivchar Vitaly on 8/25/17.
  */
 
-public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH extends CompositeViewHolder> extends ViewRenderer<M, VH> {
+public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH extends CompositeViewHolder> extends ViewRenderer<M, VH> {
 
 	@NonNull
 	private final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
 
-	public CompositeViewRenderer(final int viewType, @NonNull final Context context) {
-		super(viewType, context);
+	public CompositeViewRenderer(@NonNull final Class<M> type, @NonNull final Context context) {
+		super(type, context);
 	}
 
-	public CompositeViewRenderer(final int viewType, @NonNull final Context context, @NonNull final ViewRenderer... renderers) {
-		super(viewType, context);
+	public CompositeViewRenderer(@NonNull final Class<M> type, @NonNull final Context context, @NonNull final ViewRenderer... renderers) {
+		super(type, context);
 		Collections.addAll(mRenderers, renderers);
 	}
 
@@ -66,7 +66,7 @@ public abstract class CompositeViewRenderer <M extends CompositeItemModel, VH ex
 
 	@Nullable
 	@Override
-	public ViewState createViewState(@NonNull final ItemModel model, @NonNull final VH holder) {
+	public ViewState createViewState(@NonNull final ViewModel model, @NonNull final VH holder) {
 		return new CompositeViewState(holder);
 	}
 

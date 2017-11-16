@@ -2,15 +2,14 @@ package com.github.vivchar.example.pages.github.items.stargazer;
 
 import android.support.annotation.NonNull;
 
-import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 
 /**
  * Created by Vivchar Vitaly on 10.10.17.
  */
 
-public class StargazerModel implements ItemModel {
+public class StargazerModel implements ViewModel {
 
-	public static final int TYPE = 4;
 	@NonNull
 	private final String mName;
 	@NonNull
@@ -22,11 +21,6 @@ public class StargazerModel implements ItemModel {
 		mName = name;
 		mAvatarUrl = avatarUrl;
 		mHtmlUrl = htmlUrl;
-	}
-
-	@Override
-	public int getType() {
-		return TYPE;
 	}
 
 	@NonNull

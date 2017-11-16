@@ -9,19 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */
-public abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView.ViewHolder> {
+public abstract class ViewRenderer <M extends ViewModel, VH extends RecyclerView.ViewHolder> {
 
-	private final int mViewType;
+	@NonNull
+	private final Type mType;
 	@NonNull
 	private final Context mContext;
 
-	public ViewRenderer(final int viewType, @NonNull final Context context) {
-		mViewType = viewType;
+	public ViewRenderer(@NonNull final Class<M> type, @NonNull final Context context) {
+		mType = type;
 		mContext = context;
 	}
 
@@ -32,10 +34,10 @@ public abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView
 
 	/**
 	 * This method will be called for a partial bind if you override the {@link com.github.vivchar.rendererrecyclerviewadapter
-	 * .RendererRecyclerViewAdapter.DiffCallback#getChangePayload(ItemModel,
-	 * ItemModel)} method
+	 * .RendererRecyclerViewAdapter.DiffCallback#getChangePayload(ViewModel,
+	 * ViewModel)} method
 	 *
-	 * @param model    your a ItemModel
+	 * @param model    your a ViewModel
 	 * @param holder   your a ViewHolder
 	 * @param payloads your payload
 	 */
@@ -46,7 +48,7 @@ public abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView
 	/**
 	 * This method will be called for a full bind.
 	 *
-	 * @param model  your a ItemModel
+	 * @param model  your a ViewModel
 	 * @param holder your a ViewHolder
 	 */
 	public abstract void bindView(@NonNull M model, @NonNull VH holder);
@@ -54,22 +56,23 @@ public abstract class ViewRenderer <M extends ItemModel, VH extends RecyclerView
 	@NonNull
 	public abstract VH createViewHolder(@Nullable ViewGroup parent);
 
-	public int getType() {
-		return mViewType;
+	@NonNull
+	public Type getType() {
+		return mType;
 	}
 
 	@Nullable
-	public ViewState createViewState(@NonNull final ItemModel model, @NonNull final VH holder) {
+	public ViewState createViewState(@NonNull final ViewModel model, @NonNull final VH holder) {
 		return null;
 	}
 
 	@NonNull
-	protected View inflate(@LayoutRes final int layout, @Nullable final ViewGroup parent, final boolean attachToRoot) {
-		return LayoutInflater.from(getContext()).inflate(layout, parent, attachToRoot);
+	protected View inflate(@LayoutRes final int layoutID, @Nullable final ViewGroup parent, final boolean attachToRoot) {
+		return LayoutInflater.from(getContext()).inflate(layoutID, parent, attachToRoot);
 	}
 
 	@NonNull
-	protected View inflate(@LayoutRes final int layout, final @Nullable ViewGroup parent) {
-		return inflate(layout, parent, false);
+	protected View inflate(@LayoutRes final int layoutID, final @Nullable ViewGroup parent) {
+		return inflate(layoutID, parent, false);
 	}
 }

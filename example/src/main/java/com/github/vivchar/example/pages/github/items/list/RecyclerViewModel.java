@@ -2,9 +2,9 @@ package com.github.vivchar.example.pages.github.items.list;
 
 import android.support.annotation.NonNull;
 
-import com.github.vivchar.rendererrecyclerviewadapter.CompositeItemModel;
-import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeItemModel;
-import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewModel;
+import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 
 import java.util.List;
 
@@ -12,13 +12,12 @@ import java.util.List;
  * Created by Vivchar Vitaly on 8/24/17.
  */
 
-public class RecyclerViewModel extends DefaultCompositeItemModel {
+public class RecyclerViewModel extends DefaultCompositeViewModel {
 
-	public static final int TYPE = 3;
-	private int mID;
+	private final int mID;
 
-	public RecyclerViewModel(final int ID, @NonNull final List<? extends ItemModel> items) {
-		super(TYPE, items);
+	public RecyclerViewModel(final int ID, @NonNull final List<? extends ViewModel> items) {
+		super(items);
 		mID = ID;
 	}
 
@@ -28,7 +27,7 @@ public class RecyclerViewModel extends DefaultCompositeItemModel {
 
 	@Override
 	public boolean equals(final Object o) {
-		return o instanceof CompositeItemModel && mItems.equals(((CompositeItemModel) o).getItems());
+		return o instanceof CompositeViewModel && mItems.equals(((CompositeViewModel) o).getItems());
 	}
 
 	@Override

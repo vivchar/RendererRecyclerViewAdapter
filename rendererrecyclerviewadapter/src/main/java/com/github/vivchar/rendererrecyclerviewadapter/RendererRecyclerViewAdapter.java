@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +21,11 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 
 	@NonNull
-	protected final ArrayList<ItemModel> mItems = new ArrayList<>();
+	protected final ArrayList<ViewModel> mItems = new ArrayList<>();
 	@NonNull
-	protected final SparseArray<ViewRenderer> mRenderers = new SparseArray<>();
+	protected final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
+	@NonNull
+	protected final ArrayList<Type> mTypes = new ArrayList<>();
 	@NonNull
 	protected SparseArray<ViewState> mViewStates = new SparseArray<>();
 	@NonNull
@@ -31,20 +34,16 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	@NonNull
 	protected DiffCallback mDiffCallback = new DefaultDiffCallback();
 	@NonNull
-	protected LoadMoreItemModel mLoadMoreModel = new LoadMoreItemModel();
+	protected LoadMoreViewModel mLoadMoreModel = new LoadMoreViewModel();
 
 	protected boolean mDiffUtilEnabled = false;
 	protected boolean mLoadMoreVisible = false;
 	protected int mLoadMorePosition;
 
 	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-		final ViewRenderer renderer = mRenderers.get(viewType);
-		if (renderer != null) {
-			return renderer.createViewHolder(parent);
-		}
-
-		throw new RuntimeException("Not supported Item View Type: " + viewType);
+	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
+		final ViewRenderer renderer = mRenderers.get(typeIndex);
+		return renderer.createViewHolder(parent);
 	}
 
 	@Override
@@ -53,8 +52,9 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	@Override
 	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position, @Nullable final List payloads) {
 		super.onBindViewHolder(holder, position, payloads);
-		final ItemModel item = getItem(position);
-		final ViewRenderer renderer = mRenderers.get(item.getType());
+		final ViewModel item = getItem(position);
+		final ViewRenderer renderer = getRenderer(item);
+
 		if (payloads == null || payloads.isEmpty()) {
 			/* Full bind */
 			renderer.bindView(item, holder);
@@ -69,19 +69,55 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	}
 
 	public void registerRenderer(@NonNull final ViewRenderer renderer) {
-		final int type = renderer.getType();
+		final Type type = renderer.getType();
 
-		if (mRenderers.get(type) == null) {
-			mRenderers.put(type, renderer);
+		if (!mTypes.contains(type)) {
+			mTypes.add(type);
+			mRenderers.add(renderer);
 		} else {
-			throw new RuntimeException("ViewRenderer already exist with this type: " + type);
+			throw new RuntimeException("ViewRenderer already registered for this type: " + type);
 		}
 	}
 
+	@NonNull
+	protected ViewRenderer getRenderer(final int position) {
+		final int typeIndex = getTypeIndex(position);
+		return mRenderers.get(typeIndex);
+	}
+
+	@NonNull
+	protected ViewRenderer getRenderer(@NonNull final ViewModel model) {
+		final int typeIndex = getTypeIndex(model);
+		return mRenderers.get(typeIndex);
+	}
+
+	/**
+	 * The ItemViewType is the term of the RecyclerView, We never use this term.
+	 */
 	@Override
 	public int getItemViewType(final int position) {
-		final ItemModel item = getItem(position);
-		return item.getType();
+		return getTypeIndex(position);
+	}
+
+	protected int getTypeIndex(final int position) {
+		final ViewModel model = getItem(position);
+		return getTypeIndex(model);
+	}
+
+	protected int getTypeIndex(@NonNull final ViewModel model) {
+		final Type type = model.getClass();
+		final int typeIndex = mTypes.indexOf(type);
+
+		if (typeIndex == -1) {
+			throw new RuntimeException("ViewRenderer not registered for this type: " + type);
+		}
+		return typeIndex;
+	}
+
+	@NonNull
+	public Type getType(final int position) {
+		final int typeIndex = getTypeIndex(position);
+		return mTypes.get(typeIndex);
 	}
 
 	@Override
@@ -99,7 +135,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	}
 
 	@NonNull
-	public <T extends ItemModel> T getItem(final int position) {
+	public <T extends ViewModel> T getItem(final int position) {
 		return (T) mItems.get(position);
 	}
 
@@ -121,7 +157,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 		enableDiffUtil();
 	}
 
-	public void setItems(@NonNull final List<? extends ItemModel> items) {
+	public void setItems(@NonNull final List<? extends ViewModel> items) {
 		if (mDiffUtilEnabled) {
 			mDiffCallback.setItems(mItems, items);
 
@@ -175,13 +211,13 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 
 	/**
 	 * If you want to show a some custom data in a Load More Indicator
-	 * then you should set your custom {@link LoadMoreItemModel} and create your custom {@link LoadMoreViewRenderer}
+	 * then you should set your custom {@link LoadMoreViewModel} and create your custom {@link LoadMoreViewRenderer}
 	 * <p>
 	 * Use the {@link #registerRenderer(ViewRenderer)} to set your custom {@link LoadMoreViewRenderer}
 	 *
-	 * @param model - custom {@link LoadMoreItemModel}
+	 * @param model - custom {@link LoadMoreViewModel}
 	 */
-	public void setLoadMoreModel(@NonNull final LoadMoreItemModel model) {
+	public void setLoadMoreModel(@NonNull final LoadMoreViewModel model) {
 		mLoadMoreModel = model;
 	}
 
@@ -204,16 +240,16 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	}
 
 	protected void saveViewState(final int position, @NonNull final RecyclerView.ViewHolder holder) {
-		final ItemModel item = getItem(position);
-		final ViewRenderer viewRenderer = mRenderers.get(item.getType());
-		mViewStates.put(position, viewRenderer.createViewState(item, holder));
+		final ViewModel model = getItem(position);
+		final ViewRenderer viewRenderer = getRenderer(model);
+		mViewStates.put(position, viewRenderer.createViewState(model, holder));
 	}
 
 	protected void restoreViewState(final int position, @NonNull final RecyclerView.ViewHolder holder) {
-		final ItemModel item = getItem(position);
+		final ViewModel model = getItem(position);
 		final ViewState viewState = mViewStates.get(position);
 		if (viewState != null) {
-			viewState.restore(item, holder);
+			viewState.restore(model, holder);
 		} else if (hasChildren(holder)) {
 			getChildAdapter((CompositeViewHolder) holder).clearViewStates();
 		}

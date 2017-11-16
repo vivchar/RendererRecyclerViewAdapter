@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
@@ -27,11 +27,11 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 	private static final String TAG = StargazerViewRenderer.class.getSimpleName();
 	@NonNull
 	private final Listener mListener;
-	private final int mLayout;
+	private final int mLayoutID;
 
-	public StargazerViewRenderer(final int type, final int layout, final Context context, @NonNull final Listener listener) {
-		super(type, context);
-		mLayout = layout;
+	public StargazerViewRenderer(final int layoutID, final Context context, @NonNull final Listener listener) {
+		super(StargazerModel.class, context);
+		mLayoutID = layoutID;
 		mListener = listener;
 	}
 
@@ -42,7 +42,9 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 	}
 
 	@Override
-	public void rebindView(@NonNull final StargazerModel model, @NonNull final StargazerViewHolder holder, @NonNull final List<Object> payloads) {
+	public void rebindView(@NonNull final StargazerModel model,
+	                       @NonNull final StargazerViewHolder holder,
+	                       @NonNull final List<Object> payloads) {
 		Log.d(TAG, "bindView " + model.toString());
 		bindInner(model, holder);
 	}
@@ -74,12 +76,12 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 	@NonNull
 	@Override
 	public StargazerViewHolder createViewHolder(@Nullable final ViewGroup parent) {
-		return new StargazerViewHolder(inflate(mLayout, parent));
+		return new StargazerViewHolder(inflate(mLayoutID, parent));
 	}
 
 	@Nullable
 	@Override
-	public ViewState createViewState(@NonNull final ItemModel model, @NonNull final StargazerViewHolder holder) {
+	public ViewState createViewState(@NonNull final ViewModel model, @NonNull final StargazerViewHolder holder) {
 		return new StargazerViewState(model, holder);
 	}
 

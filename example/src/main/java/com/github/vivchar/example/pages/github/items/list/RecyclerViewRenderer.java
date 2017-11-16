@@ -12,7 +12,7 @@ import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.NestedAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
-import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
@@ -28,7 +28,7 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 	private static final String TAG = RecyclerViewRenderer.class.getSimpleName();
 
 	public RecyclerViewRenderer(@NonNull final Context context) {
-		super(RecyclerViewModel.TYPE, context);
+		super(RecyclerViewModel.class, context);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 
 	@Nullable
 	@Override
-	public ViewState createViewState(@NonNull final ItemModel model, @NonNull final RecyclerViewHolder holder) {
+	public ViewState createViewState(@NonNull final ViewModel model, @NonNull final RecyclerViewHolder holder) {
 		return new RecyclerViewState(holder);
 	}
 

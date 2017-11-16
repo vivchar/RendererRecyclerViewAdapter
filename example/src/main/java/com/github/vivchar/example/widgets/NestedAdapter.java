@@ -1,13 +1,10 @@
 package com.github.vivchar.example.widgets;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ViewGroup;
 
-import com.github.vivchar.rendererrecyclerviewadapter.DiffCallback;
-import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 
 import java.util.List;
@@ -21,8 +18,8 @@ public class NestedAdapter extends RendererRecyclerViewAdapter {
 	private static final String TAG = NestedAdapter.class.getSimpleName();
 
 	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-		final RecyclerView.ViewHolder viewHolder = super.onCreateViewHolder(parent, viewType);
+	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
+		final RecyclerView.ViewHolder viewHolder = super.onCreateViewHolder(parent, typeIndex);
 		Log.d(TAG, "onCreateViewHolder: " + viewHolder.getClass().getSimpleName());
 		return viewHolder;
 	}

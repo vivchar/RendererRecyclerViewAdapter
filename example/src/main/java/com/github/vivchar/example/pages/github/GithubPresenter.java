@@ -12,7 +12,7 @@ import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
 import com.github.vivchar.example.pages.github.items.stargazer.StargazerModel;
 import com.github.vivchar.network.ForksManager;
 import com.github.vivchar.network.StargazersManager;
-import com.github.vivchar.rendererrecyclerviewadapter.ItemModel;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,7 +21,6 @@ import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -80,13 +79,13 @@ class GithubPresenter extends Presenter {
 						)).toList()
 				);
 
-		final Observable<List<ItemModel>> combineLatest = Observable.combineLatest(
+		final Observable<List<ViewModel>> combineLatest = Observable.combineLatest(
 				stargazers,
 				topStargazers,
 				forks,
 				(stargazerModels, topStargazersModels, forkModels) -> {
 
-					final ArrayList<ItemModel> allModels = new ArrayList<>();
+					final ArrayList<ViewModel> allModels = new ArrayList<>();
 
 
 					/*
@@ -204,12 +203,12 @@ class GithubPresenter extends Presenter {
 	}
 
 	public interface View extends IView {
-		void updateList(@NonNull List<ItemModel> list);
+		void updateList(@NonNull List<ViewModel> list);
 		void showProgressView();
 		void hideProgressView();
 		void showMessageView(@NonNull String message, @NonNull String url);
 		void showMessageView(@NonNull String message);
-		void showSelectedUsers(@NonNull ArrayList<ItemModel> list);
+		void showSelectedUsers(@NonNull ArrayList<ViewModel> list);
 		void clearSelections();
 		void showDoneButton();
 		void hideDoneButton();
