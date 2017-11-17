@@ -99,6 +99,9 @@ public class SomeActivity extends AppCompatActivity {
 }
 ```
 
+## Migration to v2.0
+//TODO
+
 ## License
 
     Copyright 2017 Vitaly Vivchar
