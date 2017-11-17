@@ -26,7 +26,7 @@ dependencies {
 https://vivchar.github.io/RendererRecyclerViewAdapter
 
 ## Usage
-* Step 1. Add the ViewModel interface to your UImodel
+* Step 1. Add the ViewModel interface to your UI model
 
 ```java
 public class SomeModel implements ViewModel {
