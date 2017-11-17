@@ -26,26 +26,10 @@ dependencies {
 https://vivchar.github.io/RendererRecyclerViewAdapter
 
 ## Usage
-* Step 1. Implement SomeModel
+* Step 1. Add the ViewModel interface to your UImodel
 
 ```java
-public class SomeModel implements ItemModel {
-
-	public static final int TYPE = 0;
-	private String mTitle;
-
-	public SomeModel(String title) {
-		mTitle = title;
-	}
-
-	@Override
-	public int getType() {
-		return TYPE;
-	}
-
-	public String getTitle() {
-		return mTitle;
-	}
+public class SomeModel implements ViewModel {
 	...
 }
 ```
@@ -70,8 +54,8 @@ public class SomeViewHolder extends RecyclerView.ViewHolder {
 ```java
 public class SomeViewRenderer extends ViewRenderer<SomeModel, SomeViewHolder> {
 
-	public SomeViewRenderer(int type, Context context) {
-		super(type, context);
+	public SomeViewRenderer(Context context) {
+		super(SomeModel.class, context);
 	}
 
 	@Override
@@ -101,7 +85,7 @@ public class SomeActivity extends AppCompatActivity {
 		setContentView(R.layout.main);
 
 		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
-		mRecyclerViewAdapter.registerRenderer(new SomeViewRenderer(SomeModel.TYPE, this));
+		mRecyclerViewAdapter.registerRenderer(new SomeViewRenderer(this));
 		mRecyclerViewAdapter.registerRenderer(...); /* you can use several types of cells */
 
 		mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -110,9 +94,6 @@ public class SomeActivity extends AppCompatActivity {
 
 		mRecyclerViewAdapter.setItems(getItems());
 		mRecyclerViewAdapter.notifyDataSetChanged();
-		
-		//Or you can use method with the DiffUtil support
-		//mRecyclerViewAdapter.setItems(getItems(), new YourDiffCallBack());
 	}
 	...
 }
