@@ -37,7 +37,7 @@ public class SomeModel implements ViewModel {
 * Step 2. Implement SomeViewHolder
 
 ```java
-public class SomeViewHolder extends RecyclerView.ViewHolder {
+public class SomeViewHolder extends ViewHolder {
 
 	public TextView mTitle;
 
