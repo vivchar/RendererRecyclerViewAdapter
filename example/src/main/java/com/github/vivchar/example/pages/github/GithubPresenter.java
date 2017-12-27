@@ -56,6 +56,7 @@ class GithubPresenter extends Presenter {
 		final Observable<List<StargazerModel>> stargazers = mStargazersManager.getAll()
 				.map(users -> Stream.of(users)
 						.map(user -> new StargazerModel(
+								user.getID(),
 								user.getLogin(),
 								user.getAvatarUrl(),
 								user.getHtmlUrl()
@@ -65,6 +66,7 @@ class GithubPresenter extends Presenter {
 		final Observable<List<StargazerModel>> topStargazers = mStargazersManager.getTop10()
 				.map(users -> Stream.of(users)
 						.map(user -> new StargazerModel(
+								user.getID(),
 								user.getLogin(),
 								user.getAvatarUrl(),
 								user.getHtmlUrl()

@@ -1,16 +1,16 @@
 package com.github.vivchar.example.pages.github.items.fork;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.vivchar.example.R;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewHolder;
 
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */
-public class ForkViewHolder extends RecyclerView.ViewHolder {
+public class ForkViewHolder extends ViewHolder {
 
 	public final TextView name;
 	public final ImageView avatar;

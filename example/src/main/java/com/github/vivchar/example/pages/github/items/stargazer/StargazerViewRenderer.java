@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
@@ -81,8 +80,13 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 
 	@Nullable
 	@Override
-	public ViewState createViewState(@NonNull final ViewModel model, @NonNull final StargazerViewHolder holder) {
-		return new StargazerViewState(model, holder);
+	public ViewState createViewState(@NonNull final StargazerViewHolder holder) {
+		return new StargazerViewState(holder);
+	}
+
+	@Override
+	public int createViewStateID(@NonNull final StargazerModel model) {
+		return model.getID();
 	}
 
 	public interface Listener {

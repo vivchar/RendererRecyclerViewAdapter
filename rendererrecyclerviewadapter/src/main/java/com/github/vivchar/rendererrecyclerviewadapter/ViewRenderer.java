@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import java.util.List;
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */
-public abstract class ViewRenderer <M extends ViewModel, VH extends RecyclerView.ViewHolder> {
+public abstract class ViewRenderer <M extends ViewModel, VH extends ViewHolder> {
 
 	@NonNull
 	private final Type mType;
@@ -30,6 +29,16 @@ public abstract class ViewRenderer <M extends ViewModel, VH extends RecyclerView
 	@NonNull
 	protected Context getContext() {
 		return mContext;
+	}
+
+	protected void performRebindView(@NonNull final M model, @NonNull final VH holder, @NonNull final List<Object> payloads) {
+		rebindView(model, holder, payloads);
+	}
+
+	protected void performBindView(@NonNull final M model, @NonNull final VH holder) {
+		holder.setType(model.getClass());
+		holder.setViewStateID(createViewStateID(model));
+		bindView(model, holder);
 	}
 
 	/**
@@ -56,14 +65,23 @@ public abstract class ViewRenderer <M extends ViewModel, VH extends RecyclerView
 	@NonNull
 	public abstract VH createViewHolder(@Nullable ViewGroup parent);
 
+	/**
+	 * Called when a view created by your adapter has been recycled.
+	 */
+	public void viewRecycled(@NonNull final ViewHolder holder) {}
+
 	@NonNull
 	public Type getType() {
 		return mType;
 	}
 
 	@Nullable
-	public ViewState createViewState(@NonNull final ViewModel model, @NonNull final VH holder) {
+	public ViewState createViewState(@NonNull final VH holder) {
 		return null;
+	}
+
+	public int createViewStateID(@NonNull final M model) {
+		return ViewHolder.UNDEFINED;
 	}
 
 	@NonNull

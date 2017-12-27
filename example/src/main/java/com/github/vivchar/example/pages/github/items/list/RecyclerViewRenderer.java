@@ -12,7 +12,6 @@ import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.NestedAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
-import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
@@ -34,16 +33,16 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 	@Override
 	public void rebindView(@NonNull final RecyclerViewModel model, @NonNull final RecyclerViewHolder holder, @NonNull final List<Object> payloads) {
 		Log.d(TAG, "rebindView " + model.toString() + ", payload: " + payloads.toString());
-		holder.adapter.enableDiffUtil();
-		holder.adapter.setItems(model.getItems());
+		holder.getAdapter().enableDiffUtil();
+		holder.getAdapter().setItems(model.getItems());
 	}
 
 	@Override
 	public void bindView(@NonNull final RecyclerViewModel model, @NonNull final RecyclerViewHolder holder) {
 		Log.d(TAG, "bindView " + model.toString());
-		holder.adapter.disableDiffUtil();
-		holder.adapter.setItems(model.getItems());
-		holder.adapter.notifyDataSetChanged();
+		holder.getAdapter().disableDiffUtil();
+		holder.getAdapter().setItems(model.getItems());
+		holder.getAdapter().notifyDataSetChanged();
 	}
 
 	@NonNull
@@ -54,8 +53,13 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 
 	@Nullable
 	@Override
-	public ViewState createViewState(@NonNull final ViewModel model, @NonNull final RecyclerViewHolder holder) {
+	public ViewState createViewState(@NonNull final RecyclerViewHolder holder) {
 		return new RecyclerViewState(holder);
+	}
+
+	@Override
+	public int createViewStateID(@NonNull final RecyclerViewModel model) {
+		return model.getID();
 	}
 
 	@NonNull

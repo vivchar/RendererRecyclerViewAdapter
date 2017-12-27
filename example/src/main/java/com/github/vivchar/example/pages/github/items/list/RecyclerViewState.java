@@ -5,7 +5,6 @@ import android.util.SparseArray;
 
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewState;
-import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
 /**
@@ -19,12 +18,12 @@ public class RecyclerViewState extends CompositeViewState<RecyclerViewHolder> {
 
 	public RecyclerViewState(@NonNull final CompositeViewHolder holder) {
 		super(holder);
-		mViewStates = holder.adapter.getViewStates();
+		mViewStates = holder.getAdapter().getViewStates();
 	}
 
 	@Override
-	public void restore(@NonNull final ViewModel model, @NonNull final RecyclerViewHolder holder) {
-		super.restore(model, holder);
-		holder.adapter.setViewStates(mViewStates);
+	public void restore(@NonNull final RecyclerViewHolder holder) {
+		super.restore(holder);
+		holder.getAdapter().setViewStates(mViewStates);
 	}
 }

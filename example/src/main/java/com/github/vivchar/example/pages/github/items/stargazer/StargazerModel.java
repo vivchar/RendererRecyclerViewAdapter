@@ -10,6 +10,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 
 public class StargazerModel implements ViewModel {
 
+	private int mID;
 	@NonNull
 	private final String mName;
 	@NonNull
@@ -17,10 +18,15 @@ public class StargazerModel implements ViewModel {
 	@NonNull
 	private final String mHtmlUrl;
 
-	public StargazerModel(@NonNull final String name, @NonNull final String avatarUrl, @NonNull final String htmlUrl) {
+	public StargazerModel(final int ID, @NonNull final String name, @NonNull final String avatarUrl, @NonNull final String htmlUrl) {
+		mID = ID;
 		mName = name;
 		mAvatarUrl = avatarUrl;
 		mHtmlUrl = htmlUrl;
+	}
+
+	public int getID() {
+		return mID;
 	}
 
 	@NonNull

@@ -31,8 +31,8 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 
 	@Override
 	public void bindView(@NonNull final M model, @NonNull final VH holder) {
-		holder.adapter.setItems(model.getItems());
-		holder.adapter.notifyDataSetChanged();
+		holder.getAdapter().setItems(model.getItems());
+		holder.getAdapter().notifyDataSetChanged();
 	}
 
 	@NonNull
@@ -45,13 +45,13 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 		}
 
 		final VH viewHolder = createCompositeViewHolder(parent);
-		viewHolder.adapter = adapter;
+		viewHolder.setAdapter(adapter);
 
-		if (viewHolder.recyclerView != null) {
-			viewHolder.recyclerView.setLayoutManager(createLayoutManager());
-			viewHolder.recyclerView.setAdapter(adapter);
+		if (viewHolder.getRecyclerView() != null) {
+			viewHolder.getRecyclerView().setLayoutManager(createLayoutManager());
+			viewHolder.getRecyclerView().setAdapter(adapter);
 			for (final RecyclerView.ItemDecoration itemDecoration : createItemDecorations()) {
-				viewHolder.recyclerView.addItemDecoration(itemDecoration);
+				viewHolder.getRecyclerView().addItemDecoration(itemDecoration);
 			}
 		}
 
@@ -64,10 +64,13 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 		return this;
 	}
 
+	/**
+	 * Use {@link CompositeViewState} if you want to save scroll state of Nested RecyclerView
+	 */
 	@Nullable
 	@Override
-	public ViewState createViewState(@NonNull final ViewModel model, @NonNull final VH holder) {
-		return new CompositeViewState(holder);
+	public ViewState createViewState(@NonNull final VH holder) {
+		return super.createViewState(holder);
 	}
 
 	@NonNull

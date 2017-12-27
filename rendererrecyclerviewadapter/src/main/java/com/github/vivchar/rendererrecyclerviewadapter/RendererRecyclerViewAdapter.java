@@ -18,7 +18,7 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
  * Created by Vivchar Vitaly on 1/9/17.
  */
 @SuppressWarnings("unchecked")
-public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
+public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
 	@NonNull
 	protected final ArrayList<ViewModel> mItems = new ArrayList<>();
@@ -29,7 +29,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	@NonNull
 	protected SparseArray<ViewState> mViewStates = new SparseArray<>();
 	@NonNull
-	protected final ArrayList<RecyclerView.ViewHolder> mBoundViewHolders = new ArrayList<>();
+	protected final ArrayList<ViewHolder> mBoundViewHolders = new ArrayList<>();
 
 	@NonNull
 	protected DiffCallback mDiffCallback = new DefaultDiffCallback();
@@ -41,27 +41,27 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	protected int mLoadMorePosition;
 
 	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
+	public ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
 		final ViewRenderer renderer = mRenderers.get(typeIndex);
 		return renderer.createViewHolder(parent);
 	}
 
 	@Override
-	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {}
+	public void onBindViewHolder(final ViewHolder holder, final int position) {}
 
 	@Override
-	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position, @Nullable final List payloads) {
+	public void onBindViewHolder(final ViewHolder holder, final int position, @Nullable final List payloads) {
 		super.onBindViewHolder(holder, position, payloads);
 		final ViewModel item = getItem(position);
 		final ViewRenderer renderer = getRenderer(item);
 
 		if (payloads == null || payloads.isEmpty()) {
 			/* Full bind */
-			renderer.bindView(item, holder);
-			restoreViewState(position, holder);
+			renderer.performBindView(item, holder);
+			restoreViewState(holder);
 		} else {
 			/* Partial bind */
-			renderer.rebindView(item, holder, payloads);
+			renderer.performRebindView(item, holder, payloads);
 		}
 
 		mBoundViewHolders.remove(holder);
@@ -91,6 +91,12 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 		return mRenderers.get(typeIndex);
 	}
 
+	@NonNull
+	protected ViewRenderer getRenderer(@NonNull final Type type) {
+		final int typeIndex = getTypeIndex(type);
+		return mRenderers.get(typeIndex);
+	}
+
 	/**
 	 * The ItemViewType is the term of the RecyclerView, We never use this term.
 	 */
@@ -105,7 +111,10 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	}
 
 	protected int getTypeIndex(@NonNull final ViewModel model) {
-		final Type type = model.getClass();
+		return getTypeIndex(model.getClass());
+	}
+
+	protected int getTypeIndex(@NonNull final Type type) {
 		final int typeIndex = mTypes.indexOf(type);
 
 		if (typeIndex == -1) {
@@ -121,14 +130,18 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	}
 
 	@Override
-	public void onViewRecycled(final RecyclerView.ViewHolder holder) {
+	public void onViewRecycled(final ViewHolder holder) {
 		super.onViewRecycled(holder);
+
+		final ViewRenderer renderer = getRenderer(holder.getType());
+		renderer.viewRecycled(holder);
+
 		final int position = holder.getAdapterPosition();
 		if (position != NO_POSITION) {
 			if (hasChildren(holder)) {
 				onChildrenViewsRecycled(getChildAdapter((CompositeViewHolder) holder));
 			}
-			saveViewState(position, holder);
+			saveViewState(holder);
 		}
 
 		mBoundViewHolders.remove(holder);
@@ -222,7 +235,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 	}
 
 	@NonNull
-	public ArrayList<RecyclerView.ViewHolder> getBoundViewHolders() {
+	public ArrayList<ViewHolder> getBoundViewHolders() {
 		return new ArrayList<>(mBoundViewHolders);
 	}
 
@@ -239,35 +252,43 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter {
 		mViewStates.clear();
 	}
 
-	protected void saveViewState(final int position, @NonNull final RecyclerView.ViewHolder holder) {
-		final ViewModel model = getItem(position);
-		final ViewRenderer viewRenderer = getRenderer(model);
-		mViewStates.put(position, viewRenderer.createViewState(model, holder));
+	protected void saveViewState(@NonNull final ViewHolder holder) {
+		final ViewRenderer viewRenderer = getRenderer(holder.getType());
+		final ViewState viewState = viewRenderer.createViewState(holder);
+		if (viewState != null) {
+			if (holder.isSupportViewState()) {
+				mViewStates.put(holder.getViewStateID(), viewState);
+			} else {
+				throw new RuntimeException("You defined the " + viewState.getClass().getSimpleName() + " but didn't specify the ID."
+				                           + " Please override onCreateViewStateID(model) method in your ViewRenderer.");
+			}
+		}
 	}
 
-	protected void restoreViewState(final int position, @NonNull final RecyclerView.ViewHolder holder) {
-		final ViewModel model = getItem(position);
-		final ViewState viewState = mViewStates.get(position);
-		if (viewState != null) {
-			viewState.restore(model, holder);
-		} else if (hasChildren(holder)) {
-			getChildAdapter((CompositeViewHolder) holder).clearViewStates();
+	protected void restoreViewState(@NonNull final ViewHolder holder) {
+		if (holder.isSupportViewState()) {
+			final ViewState viewState = mViewStates.get(holder.getViewStateID());
+			if (viewState != null) {
+				viewState.restore(holder);
+			} else if (hasChildren(holder)) {
+				getChildAdapter((CompositeViewHolder) holder).clearViewStates();
+			}
 		}
 	}
 
 	protected void onChildrenViewsRecycled(@NonNull final RendererRecyclerViewAdapter adapter) {
-		final ArrayList<RecyclerView.ViewHolder> boundViewHolders = adapter.getBoundViewHolders();
-		for (final RecyclerView.ViewHolder viewHolder : boundViewHolders) {
+		final ArrayList<ViewHolder> boundViewHolders = adapter.getBoundViewHolders();
+		for (final ViewHolder viewHolder : boundViewHolders) {
 			adapter.onViewRecycled(viewHolder);
 		}
 	}
 
-	protected boolean hasChildren(@NonNull final RecyclerView.ViewHolder holder) {
+	protected boolean hasChildren(@NonNull final ViewHolder holder) {
 		return holder instanceof CompositeViewHolder;
 	}
 
 	@NonNull
 	protected RendererRecyclerViewAdapter getChildAdapter(@NonNull final CompositeViewHolder holder) {
-		return holder.adapter;
+		return holder.getAdapter();
 	}
 }
