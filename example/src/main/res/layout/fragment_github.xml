@@ -1,0 +1,25 @@
+<android.support.v4.widget.SwipeRefreshLayout android:id = "@+id/refresh"
+	xmlns:android = "http://schemas.android.com/apk/res/android"
+	xmlns:app = "http://schemas.android.com/apk/res-auto"
+	xmlns:tools = "http://schemas.android.com/tools"
+	android:layout_width = "match_parent"
+	android:layout_height = "match_parent"
+	>
+
+	<android.support.v7.widget.RecyclerView
+		android:id = "@+id/recycler_view"
+		android:layout_width = "match_parent"
+		android:layout_height = "match_parent"
+		android:clipToPadding = "false"
+		android:padding = "10dp"
+		app:layoutManager = "android.support.v7.widget.GridLayoutManager"
+		tools:listitem = "@layout/item_user_full_width"
+		/>
+
+	<FrameLayout
+		android:id = "@+id/screen_container"
+		android:layout_width = "match_parent"
+		android:layout_height = "match_parent"
+		/>
+
+</android.support.v4.widget.SwipeRefreshLayout>

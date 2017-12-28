@@ -10,7 +10,7 @@ import io.reactivex.disposables.Disposable;
  * Created by Vivchar Vitaly on 10.10.17.
  */
 
-public abstract class Presenter {
+public abstract class BasePresenter {
 
 	@NonNull
 	private final CompositeDisposable disposables = new CompositeDisposable();

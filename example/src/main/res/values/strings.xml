@@ -5,4 +5,9 @@
 	<string name = "ok">OK</string>
 	<string name = "selected_users">Selected users</string>
 	<string name = "done">Done</string>
+	<string name = "view_renderer">View Renderer</string>
+	<string name = "composite_view_renderer">Composite View Renderer</string>
+	<string name = "view_state">View State</string>
+	<string name = "composite_view_state">Composite View State</string>
+	<string name = "main">Main</string>
 </resources>

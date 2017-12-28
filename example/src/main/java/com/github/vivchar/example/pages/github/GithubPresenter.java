@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.annimon.stream.Stream;
 import com.github.vivchar.example.IView;
-import com.github.vivchar.example.Presenter;
+import com.github.vivchar.example.BasePresenter;
 import com.github.vivchar.example.pages.github.items.category.CategoryModel;
 import com.github.vivchar.example.pages.github.items.fork.ForkModel;
 import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
@@ -28,7 +28,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Vivchar Vitaly on 10.10.17.
  */
 
-class GithubPresenter extends Presenter {
+class GithubPresenter extends BasePresenter {
 
 	private static final String TAG = GithubPresenter.class.getSimpleName();
 

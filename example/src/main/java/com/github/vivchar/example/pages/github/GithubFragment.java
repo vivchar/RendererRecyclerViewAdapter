@@ -5,20 +5,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.pages.github.items.ItemsDiffCallback;
 import com.github.vivchar.example.pages.github.items.category.CategoryModel;
@@ -44,22 +43,26 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GithubActivity extends AppCompatActivity {
+/**
+ * Created by Vivchar Vitaly on 12/28/17.
+ */
+
+public class GithubFragment extends BaseScreenFragment {
 
 	public static final int MAX_SPAN_COUNT = 3;
+	private boolean mDoneItemVisibility = false;
 	private RendererRecyclerViewAdapter mRecyclerViewAdapter;
 	private RecyclerView mRecyclerView;
 	private GridLayoutManager mLayoutManager;
 	private SwipeRefreshLayout mSwipeToRefresh;
 	private GithubPresenter mGithubPresenter;
-	private boolean mDoneItemVisibility = false;
 
+	@Nullable
 	@Override
-	protected void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.github);
-		final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
+	public View onCreateView(final LayoutInflater inflater,
+	                         @Nullable final ViewGroup container,
+	                         @Nullable final Bundle savedInstanceState) {
+		View inflate = inflater.inflate(R.layout.fragment_github, container, false);
 
 		mGithubPresenter = new GithubPresenter(
 				MainManager.getInstance().getStargazersManager(),
@@ -67,12 +70,12 @@ public class GithubActivity extends AppCompatActivity {
 				mMainPresenterView
 		);
 
-		mSwipeToRefresh = (SwipeRefreshLayout) findViewById(R.id.refresh);
+		mSwipeToRefresh = (SwipeRefreshLayout) inflate.findViewById(R.id.refresh);
 		mSwipeToRefresh.setOnRefreshListener(() -> mGithubPresenter.onRefresh());
 
 		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
 		mRecyclerViewAdapter.setDiffCallback(new ItemsDiffCallback());
-		mRecyclerViewAdapter.registerRenderer(new LoadMoreViewRenderer(R.layout.item_load_more, this));
+		mRecyclerViewAdapter.registerRenderer(new LoadMoreViewRenderer(R.layout.item_load_more, getContext()));
 		mRecyclerViewAdapter.registerRenderer(createStargazerRenderer(R.layout.item_user_full_width));
 		mRecyclerViewAdapter.registerRenderer(createListRenderer()
 				.registerRenderer(createForkRenderer())
@@ -82,13 +85,13 @@ public class GithubActivity extends AppCompatActivity {
 		mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
 				R.layout.item_category,
 				CategoryModel.class,
-				this,
+				getContext(),
 				(model, finder, payloads) -> finder
 						.find(R.id.title, (ViewProvider<TextView>) view -> view.setText(model.getName()))
 						.setOnClickListener(R.id.viewAll, (v -> mGithubPresenter.onCategoryClicked(model)))
 		));
 
-		mLayoutManager = new GridLayoutManager(this, MAX_SPAN_COUNT);
+		mLayoutManager = new GridLayoutManager(getContext(), MAX_SPAN_COUNT);
 		mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 			@Override
 			public int getSpanSize(final int position) {
@@ -100,7 +103,7 @@ public class GithubActivity extends AppCompatActivity {
 			}
 		});
 
-		mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+		mRecyclerView = (RecyclerView) inflate.findViewById(R.id.recycler_view);
 		mRecyclerView.setLayoutManager(mLayoutManager);
 		mRecyclerView.setAdapter(mRecyclerViewAdapter);
 		mRecyclerView.addItemDecoration(new MyItemDecoration());
@@ -110,66 +113,46 @@ public class GithubActivity extends AppCompatActivity {
 				mGithubPresenter.onLoadMore();
 			}
 		});
-	}
-
-	@NonNull
-	private ViewRenderer createForkRenderer() {
-		return new ForkViewRenderer(this, new Listener());
-	}
-
-	@NonNull
-	private ViewRenderer createStargazerRenderer(final int layout) {
-		return new StargazerViewRenderer(layout, this, new Listener());
-	}
-
-	@NonNull
-	private ViewRenderer createCategoryRenderer() {
-		return new CategoryViewRenderer(this, new Listener());
-	}
-
-	@NonNull
-	private CompositeViewRenderer createListRenderer() {
-		return new RecyclerViewRenderer(this);
-	}
-
-	@NonNull
-	private ViewRenderer createUserRenderer() {
-		/* vivchar: ideally we should use other model */
-		return new UserViewRenderer(this);
+		return inflate;
 	}
 
 	@Override
-	protected void onStart() {
+	public void onStart() {
 		super.onStart();
 		mGithubPresenter.viewShown();
 	}
 
 	@Override
-	protected void onStop() {
+	public void onStop() {
 		super.onStop();
 		mGithubPresenter.viewHidden();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		getMenuInflater().inflate(R.menu.github, menu);
-		return super.onCreateOptionsMenu(menu);
+
+	@NonNull
+	private ViewRenderer createForkRenderer() {
+		return new ForkViewRenderer(getContext(), new Listener());
 	}
 
-	@Override
-	public boolean onPrepareOptionsMenu(final Menu menu) {
-		menu.findItem(R.id.done).setVisible(mDoneItemVisibility);
-		return super.onPrepareOptionsMenu(menu);
+	@NonNull
+	private ViewRenderer createStargazerRenderer(final int layout) {
+		return new StargazerViewRenderer(layout, getContext(), new Listener());
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(final MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.done:
-				mGithubPresenter.onDoneClicked();
-				break;
-		}
-		return super.onOptionsItemSelected(item);
+	@NonNull
+	private ViewRenderer createCategoryRenderer() {
+		return new CategoryViewRenderer(getContext(), new Listener());
+	}
+
+	@NonNull
+	private CompositeViewRenderer createListRenderer() {
+		return new RecyclerViewRenderer(getContext());
+	}
+
+	@NonNull
+	private ViewRenderer createUserRenderer() {
+		/* vivchar: ideally we should use other model */
+		return new UserViewRenderer(getContext());
 	}
 
 	@NonNull
@@ -192,7 +175,7 @@ public class GithubActivity extends AppCompatActivity {
 
 		@Override
 		public void showMessageView(@NonNull final String message, @NonNull final String url) {
-			final View view = getWindow().getDecorView().findViewById(android.R.id.content);
+			final View view = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
 			Snackbar.make(view, message, Snackbar.LENGTH_LONG)
 					.setAction(R.string.view, v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))))
 					.show();
@@ -200,7 +183,7 @@ public class GithubActivity extends AppCompatActivity {
 
 		@Override
 		public void showMessageView(@NonNull final String message) {
-			final View view = getWindow().getDecorView().findViewById(android.R.id.content);
+			final View view = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
 			Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
 		}
 
@@ -232,13 +215,13 @@ public class GithubActivity extends AppCompatActivity {
 		@Override
 		public void showDoneButton() {
 			mDoneItemVisibility = true;
-			GithubActivity.this.invalidateOptionsMenu();
+			getActivity().invalidateOptionsMenu();
 		}
 
 		@Override
 		public void hideDoneButton() {
 			mDoneItemVisibility = false;
-			GithubActivity.this.invalidateOptionsMenu();
+			getActivity().invalidateOptionsMenu();
 		}
 
 		@Override
@@ -248,7 +231,7 @@ public class GithubActivity extends AppCompatActivity {
 
 		@Override
 		public Context getContext() {
-			return GithubActivity.this;
+			return GithubFragment.this.getContext();
 		}
 	};
 
