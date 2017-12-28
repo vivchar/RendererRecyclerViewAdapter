@@ -8,6 +8,7 @@
 * [You can easily add the DiffUtil support](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-DiffUtil);
 * [You can easily save a state of a Item when scroll](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Recommendations-for-the-View-States);
 * [You can easily add a Load More Indicator](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-Load-More-Indicator);
+* Can be used without ViewHolder - use ViewBinder instead of ViewRenderer;
 * Using this library will help you to follow SOLID principles.
 
 ## Wiki
