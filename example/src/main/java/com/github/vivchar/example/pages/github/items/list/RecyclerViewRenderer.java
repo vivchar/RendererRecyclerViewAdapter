@@ -48,7 +48,7 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 	@NonNull
 	@Override
 	public RecyclerViewHolder createCompositeViewHolder(@Nullable final ViewGroup parent) {
-		return new RecyclerViewHolder(inflate(R.layout.item_recycler_view, parent));
+		return new RecyclerViewHolder(inflate(R.layout.item_composite, parent));
 	}
 
 	@Nullable

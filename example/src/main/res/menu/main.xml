@@ -28,13 +28,26 @@
 		/>
 
 	<item
+		android:id = "@+id/view_binder"
+		android:title = "@string/view_binder"
+		app:showAsAction = "never"
+		/>
+
+	<item
+		android:id = "@+id/diff_util"
+		android:title = "@string/diff_util"
+		app:showAsAction = "never"
+		/>
+
+	<item
 		android:id = "@+id/view_state"
 		android:title = "@string/view_state"
 		app:showAsAction = "never"
 		/>
+
 	<item
-		android:id = "@+id/composite_view_state"
-		android:title = "@string/composite_view_state"
+		android:id = "@+id/load_more"
+		android:title = "@string/load_more"
 		app:showAsAction = "never"
 		/>
 </menu>

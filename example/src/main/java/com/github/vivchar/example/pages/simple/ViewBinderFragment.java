@@ -6,20 +6,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
-import com.github.vivchar.example.pages.simple.items.SimpleCompositeViewRenderer;
 import com.github.vivchar.example.pages.simple.items.SimpleViewModel;
-import com.github.vivchar.example.pages.simple.items.SimpleViewRenderer;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
-import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
 
 /**
- * Created by Vivchar Vitaly on 12/28/17.
+ * Created by Vivchar Vitaly on 28.12.17.
  */
-public class CompositeViewRendererFragment extends BaseScreenFragment {
+public class ViewBinderFragment extends ViewRendererFragment {
 
 	private YourDataProvider mYourDataProvider = new YourDataProvider();
 
@@ -33,17 +33,18 @@ public class CompositeViewRendererFragment extends BaseScreenFragment {
 
 		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
 
-		adapter.registerRenderer(
-				new SimpleCompositeViewRenderer(
-						DefaultCompositeViewModel.class,
-						getContext()
-				).registerRenderer(new SimpleViewRenderer(
-						SimpleViewModel.class,
-						getContext()
-				))
-		);
+		adapter.registerRenderer(new ViewBinder<>(
+				R.layout.item_simple,
+				SimpleViewModel.class,
+				getContext(),
+				(model, finder, payloads) -> finder
+						.find(R.id.text, (ViewProvider<TextView>) textView -> textView.setText(model.getText()))
+						.setOnClickListener(R.id.text, v -> {
+							Toast.makeText(getContext(), "Text Clicked", Toast.LENGTH_SHORT).show();
+						})
+		));
 
-		adapter.setItems(mYourDataProvider.generateCompositeSimpleItems());
+		adapter.setItems(mYourDataProvider.generateSimpleItems());
 
 		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 		recyclerView.setAdapter(adapter);

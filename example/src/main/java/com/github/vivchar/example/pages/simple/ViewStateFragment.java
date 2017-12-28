@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
-import com.github.vivchar.example.pages.simple.items.SimpleCompositeViewRenderer;
+import com.github.vivchar.example.pages.simple.items.ViewStateViewModel;
+import com.github.vivchar.example.pages.simple.items.ViewStateViewRenderer;
 import com.github.vivchar.example.pages.simple.items.SimpleViewModel;
 import com.github.vivchar.example.pages.simple.items.SimpleViewRenderer;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
@@ -17,9 +18,10 @@ import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 
 /**
- * Created by Vivchar Vitaly on 12/28/17.
+ * Created by Vivchar Vitaly on 28.12.17.
  */
-public class CompositeViewRendererFragment extends BaseScreenFragment {
+
+public class ViewStateFragment extends BaseScreenFragment {
 
 	private YourDataProvider mYourDataProvider = new YourDataProvider();
 
@@ -34,8 +36,8 @@ public class CompositeViewRendererFragment extends BaseScreenFragment {
 		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
 
 		adapter.registerRenderer(
-				new SimpleCompositeViewRenderer(
-						DefaultCompositeViewModel.class,
+				new ViewStateViewRenderer(
+						ViewStateViewModel.class,
 						getContext()
 				).registerRenderer(new SimpleViewRenderer(
 						SimpleViewModel.class,
@@ -43,7 +45,7 @@ public class CompositeViewRendererFragment extends BaseScreenFragment {
 				))
 		);
 
-		adapter.setItems(mYourDataProvider.generateCompositeSimpleItems());
+		adapter.setItems(mYourDataProvider.generateViewStateItems());
 
 		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 		recyclerView.setAdapter(adapter);

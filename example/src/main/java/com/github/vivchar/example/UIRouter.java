@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.github.vivchar.example.pages.github.GithubFragment;
 import com.github.vivchar.example.pages.simple.CompositeViewRendererFragment;
+import com.github.vivchar.example.pages.simple.DiffUtilFragment;
+import com.github.vivchar.example.pages.simple.ViewBinderFragment;
 import com.github.vivchar.example.pages.simple.ViewRendererFragment;
+import com.github.vivchar.example.pages.simple.ViewStateFragment;
 
 /**
  * Created by Vivchar Vitaly on 12/28/17.
@@ -52,7 +55,19 @@ public class UIRouter {
 		showFragment(new ViewRendererFragment());
 	}
 
+	public void openViewBinderPage() {
+		showFragment(new ViewBinderFragment());
+	}
+
 	public void openCompositeViewRendererPage() {
 		showFragment(new CompositeViewRendererFragment());
+	}
+
+	public void openViewStatePage() {
+		showFragment(new ViewStateFragment());
+	}
+
+	public void openDiffUtilPage() {
+		showFragment(new DiffUtilFragment());
 	}
 }

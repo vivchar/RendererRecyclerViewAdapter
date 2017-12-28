@@ -42,9 +42,16 @@ public class MainActivity extends AppCompatActivity {
 				break;
 			case R.id.done:
 				break;
-			case R.id.view_state:
+			case R.id.diff_util:
+				mUIRouter.openDiffUtilPage();
 				break;
-			case R.id.composite_view_state:
+			case R.id.view_state:
+				mUIRouter.openViewStatePage();
+				break;
+			case R.id.load_more:
+				break;
+			case R.id.view_binder:
+				mUIRouter.openViewBinderPage();
 				break;
 			case R.id.composite_view_renderer:
 				mUIRouter.openCompositeViewRendererPage();

@@ -8,6 +8,8 @@
 	<string name = "view_renderer">View Renderer</string>
 	<string name = "composite_view_renderer">Composite View Renderer</string>
 	<string name = "view_state">View State</string>
-	<string name = "composite_view_state">Composite View State</string>
+	<string name = "load_more">Load More</string>
+	<string name = "diff_util">Diff Util</string>
 	<string name = "main">Main</string>
+	<string name = "view_binder">View Binder</string>
 </resources>
