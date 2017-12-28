@@ -56,8 +56,14 @@ mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
 		.find(R.id.title, (ViewProvider<TextView>) textView -> { ... })
 		.setOnClickListener(R.id.button, v -> { ... })
 ));
-
 mRecyclerViewAdapter.registerRenderer(...); /* you can use several types of cells */
+
+mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+mRecyclerView.setAdapter(mRecyclerViewAdapter);
+
+mRecyclerViewAdapter.setItems(getItems());
+mRecyclerViewAdapter.notifyDataSetChanged();
 
 //...
 ```
