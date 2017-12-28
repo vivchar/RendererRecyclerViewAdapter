@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.pages.github.items.ItemsDiffCallback;
@@ -32,10 +33,12 @@ import com.github.vivchar.example.widgets.EndlessScrollListener;
 import com.github.vivchar.example.widgets.MyItemDecoration;
 import com.github.vivchar.network.MainManager;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
-import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.LoadMoreViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -71,11 +74,20 @@ public class GithubActivity extends AppCompatActivity {
 		mRecyclerViewAdapter.setDiffCallback(new ItemsDiffCallback());
 		mRecyclerViewAdapter.registerRenderer(new LoadMoreViewRenderer(R.layout.item_load_more, this));
 		mRecyclerViewAdapter.registerRenderer(createStargazerRenderer(R.layout.item_user_full_width));
-		mRecyclerViewAdapter.registerRenderer(createCategoryRenderer());
 		mRecyclerViewAdapter.registerRenderer(createListRenderer()
 				.registerRenderer(createForkRenderer())
 				.registerRenderer(createStargazerRenderer(R.layout.item_user_150))
 		);
+
+//		mRecyclerViewAdapter.registerRenderer(createCategoryRenderer());
+		mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
+				R.layout.item_category,
+				CategoryModel.class,
+				this,
+				(model, finder) -> finder
+						.find(R.id.title, (ViewProvider<TextView>) view -> view.setText(model.getName()))
+						.setOnClickListener(R.id.viewAll, (v -> mGithubPresenter.onCategoryClicked(model)))
+		));
 
 		mLayoutManager = new GridLayoutManager(this, MAX_SPAN_COUNT);
 		mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
