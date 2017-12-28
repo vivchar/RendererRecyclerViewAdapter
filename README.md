@@ -25,7 +25,44 @@ dependencies {
 ## Motivation
 https://vivchar.github.io/RendererRecyclerViewAdapter
 
-## Usage
+## Usage (v2.2.0 and above)
+* Step 1. Add the ViewModel interface to your UI model
+
+```java
+public class SomeModel implements ViewModel {
+	...
+}
+```
+
+* Step 2. Create your item_layout
+```xml
+<LinearLayout ... >
+	<TextView android:id = "@+id/title" ... />
+</LinearLayout>
+
+```
+
+* Step 3. Initialize Adapter and register the ViewBinder
+```java
+//...
+
+mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
+
+mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
+	R.layout.item_layout,
+	SomeModel.class,
+	getContext(),
+	(model, finder, payloads) -> finder
+		.find(R.id.title, (ViewProvider<TextView>) textView -> { ... })
+		.setOnClickListener(R.id.button, v -> { ... })
+));
+
+mRecyclerViewAdapter.registerRenderer(...); /* you can use several types of cells */
+
+//...
+```
+
+## Usage (All versions)
 * Step 1. Add the ViewModel interface to your UI model
 
 ```java
