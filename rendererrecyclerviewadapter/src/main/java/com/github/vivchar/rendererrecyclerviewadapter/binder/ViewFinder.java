@@ -20,25 +20,25 @@ public class ViewFinder extends ViewHolder {
 	}
 
 	@NonNull
-	public <T extends View> ViewFinder find(@IdRes final int ID, @NonNull final ViewProvider<T> viewProvider) {
-		viewProvider.provide((T) findViewById(ID));
+	public <V extends View> ViewFinder find(@IdRes final int ID, @NonNull final ViewProvider<V> viewProvider) {
+		viewProvider.provide((V) findViewById(ID));
 		return this;
 	}
 
 	@NonNull
-	public <T extends View> T find(@IdRes final int ID) {
-		return (T) findViewById(ID);
+	public <V extends View> V find(@IdRes final int ID) {
+		return (V) findViewById(ID);
 	}
 
 	@NonNull
-	public <T extends View> ViewFinder getRootView(@NonNull final ViewProvider<T> viewProvider) {
-		viewProvider.provide((T) itemView);
+	public <V extends View> ViewFinder getRootView(@NonNull final ViewProvider<V> viewProvider) {
+		viewProvider.provide((V) itemView);
 		return this;
 	}
 
 	@NonNull
-	public <T extends View> T getRootView() {
-		return (T) itemView;
+	public <V extends View> V getRootView() {
+		return (V) itemView;
 	}
 
 	@NonNull

@@ -79,12 +79,11 @@ public class GithubActivity extends AppCompatActivity {
 				.registerRenderer(createStargazerRenderer(R.layout.item_user_150))
 		);
 
-//		mRecyclerViewAdapter.registerRenderer(createCategoryRenderer());
 		mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
 				R.layout.item_category,
 				CategoryModel.class,
 				this,
-				(model, finder) -> finder
+				(model, finder, payloads) -> finder
 						.find(R.id.title, (ViewProvider<TextView>) view -> view.setText(model.getName()))
 						.setOnClickListener(R.id.viewAll, (v -> mGithubPresenter.onCategoryClicked(model)))
 		));

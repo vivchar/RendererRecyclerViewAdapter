@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Universal ViewRenderer without ViewHolder
  * <p>
@@ -32,7 +35,12 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewFinder
 
 	@Override
 	public void bindView(@NonNull final M model, @NonNull final ViewFinder finder) {
-		mBinder.bindView(model, finder);
+		mBinder.bindView(model, finder, new ArrayList<>());
+	}
+
+	@Override
+	public void rebindView(@NonNull final M model, @NonNull final ViewFinder finder, @NonNull final List<Object> payloads) {
+		mBinder.bindView(model, finder, payloads);
 	}
 
 	@NonNull
@@ -43,6 +51,6 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewFinder
 
 	public interface Binder <M> {
 
-		void bindView(@NonNull M model, @NonNull ViewFinder finder);
+		void bindView(@NonNull M model, @NonNull ViewFinder finder, @NonNull final List<Object> payloads);
 	}
 }
