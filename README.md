@@ -15,8 +15,15 @@
 https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
 
 ## Example
-![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/example.gif)
 
+| All | View Renderer | View Finder | Load More |
+| --- | --- | --- | --- |
+![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/example.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/view-renderer.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/view-renderer.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/load-more.gif) |
+
+
+| Composite | ViewState | Diff Util| Payload | 
+| --- | --- | --- | --- |
+| ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/composite.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/view-state.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/diff-util.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/payload.gif) |
 ## Gradle
 ```gradle
 dependencies {
