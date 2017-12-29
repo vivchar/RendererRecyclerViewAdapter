@@ -4,21 +4,28 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
+
 /**
  * Created by Vivchar Vitaly on 12/26/17.
- * <p>
- * Use {@link com.github.vivchar.rendererrecyclerviewadapter.binder.FinderHolder}
  */
-@Deprecated
 public class ViewHolder extends RecyclerView.ViewHolder {
 
 	public static final int UNDEFINED = -1;
 
 	private int mViewStateID = UNDEFINED;
 	private Class<? extends ViewModel> mType;
+	@NonNull
+	private final ViewFinder mViewFinder;
 
 	public ViewHolder(final View itemView) {
 		super(itemView);
+		mViewFinder = new ViewFinderImpl(itemView);
+	}
+
+	@NonNull
+	public ViewFinder getViewFinder() {
+		return mViewFinder;
 	}
 
 	/**

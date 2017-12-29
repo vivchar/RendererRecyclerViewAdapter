@@ -1,4 +1,4 @@
-package com.github.vivchar.rendererrecyclerviewadapter.binder;
+package com.github.vivchar.rendererrecyclerviewadapter;
 
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -6,6 +6,9 @@ import android.support.annotation.StringRes;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
+
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
 
 /**
  * Created by Vivchar Vitaly on 29.12.17.
@@ -18,7 +21,7 @@ class ViewFinderImpl implements ViewFinder {
 	@NonNull
 	private final View mItemView;
 
-	public ViewFinderImpl(@NonNull final View itemView) {
+	ViewFinderImpl(@NonNull final View itemView) {
 		mItemView = itemView;
 	}
 

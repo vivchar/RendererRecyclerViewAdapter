@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by Vivchar Vitaly on 29.12.17.
  */
 
-public class CompositeViewBinder <M extends CompositeViewModel> extends CompositeViewRenderer<M, CompositeFinderHolder> {
+public class CompositeViewBinder <M extends CompositeViewModel> extends CompositeViewRenderer<M, CompositeViewHolder> {
 
 	@IdRes
 	private final int mRecyclerViewID;
@@ -31,7 +32,7 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 	@NonNull
 	private final List<RecyclerView.ItemDecoration> mDecorations = new ArrayList<>();
 	@Nullable
-	private CompositeViewStateProvider<M> mViewStateProvider = null;
+	private CompositeViewStateProvider<M, CompositeViewHolder> mViewStateProvider = null;
 
 	public CompositeViewBinder(final int layoutID,
 	                           @IdRes final int recyclerViewID,
@@ -39,7 +40,7 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 	                           @NonNull final Context context,
 	                           @NonNull final ViewBinder.Binder<M> binder,
 	                           @NonNull final List<? extends RecyclerView.ItemDecoration> decorations,
-	                           @Nullable final CompositeViewStateProvider<M> viewStateProvider) {
+	                           @Nullable final CompositeViewStateProvider<M, CompositeViewHolder> viewStateProvider) {
 		super(type, context);
 		mLayoutID = layoutID;
 		mRecyclerViewID = recyclerViewID;
@@ -94,7 +95,7 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 	                           @IdRes final int recyclerViewID,
 	                           @NonNull final Class<M> type,
 	                           @NonNull final Context context,
-	                           @Nullable final CompositeViewStateProvider<M> viewStateProvider) {
+	                           @Nullable final CompositeViewStateProvider<M, CompositeViewHolder> viewStateProvider) {
 		this(layoutID, recyclerViewID, type, context);
 		mViewStateProvider = viewStateProvider;
 	}
@@ -104,22 +105,22 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 	                           @NonNull final Class<M> type,
 	                           @NonNull final Context context,
 	                           @NonNull final List<? extends RecyclerView.ItemDecoration> decorations,
-	                           @Nullable final CompositeViewStateProvider<M> viewStateProvider) {
+	                           @Nullable final CompositeViewStateProvider<M, CompositeViewHolder> viewStateProvider) {
 		this(layoutID, recyclerViewID, type, context);
 		mViewStateProvider = viewStateProvider;
 		mDecorations.addAll(decorations);
 	}
 
 	@Override
-	public void bindView(@NonNull final M model, @NonNull final CompositeFinderHolder holder) {
+	public void bindView(@NonNull final M model, @NonNull final CompositeViewHolder holder) {
 		super.bindView(model, holder);
-		mBinder.bindView(model, holder, new ArrayList<>());
+		mBinder.bindView(model, holder.getViewFinder(), new ArrayList<>());
 	}
 
 	@Override
-	public void rebindView(@NonNull final M model, @NonNull final CompositeFinderHolder holder, @NonNull final List<Object> payloads) {
+	public void rebindView(@NonNull final M model, @NonNull final CompositeViewHolder holder, @NonNull final List<Object> payloads) {
 		super.rebindView(model, holder, payloads);
-		mBinder.bindView(model, holder, payloads);
+		mBinder.bindView(model, holder.getViewFinder(), payloads);
 	}
 
 	@NonNull
@@ -130,7 +131,7 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 
 	@Nullable
 	@Override
-	public ViewState createViewState(@NonNull final CompositeFinderHolder holder) {
+	public ViewState createViewState(@NonNull final CompositeViewHolder holder) {
 		return mViewStateProvider != null ? mViewStateProvider.createViewState(holder) : super.createViewState(holder);
 	}
 
@@ -141,7 +142,7 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 
 	@NonNull
 	@Override
-	protected CompositeFinderHolder createCompositeViewHolder(@Nullable final ViewGroup parent) {
-		return new CompositeFinderHolder(mRecyclerViewID, inflate(mLayoutID, parent));
+	protected CompositeViewHolder createCompositeViewHolder(@Nullable final ViewGroup parent) {
+		return new CompositeViewHolder(mRecyclerViewID, inflate(mLayoutID, parent));
 	}
 }

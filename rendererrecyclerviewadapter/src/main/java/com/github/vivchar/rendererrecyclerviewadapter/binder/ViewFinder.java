@@ -7,6 +7,8 @@ import android.view.View;
 
 /**
  * Created by Vivchar Vitaly on 29.12.17.
+ *  * <p>
+ * More detail you can get there: https://github.com/vivchar/ViewFinder
  */
 
 public interface ViewFinder {

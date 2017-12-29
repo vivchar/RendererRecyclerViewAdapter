@@ -1,6 +1,5 @@
 package com.github.vivchar.example.pages.simple;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,14 +13,12 @@ import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
-import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewState;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeFinderHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewStateProvider;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
@@ -55,9 +52,9 @@ public class ViewStateFragment extends BaseScreenFragment {
 						StateViewModel.class,
 						getContext(),
 						Collections.singletonList(new BetweenSpacesItemDecoration(10, 10)),
-						new CompositeViewStateProvider<StateViewModel>() {
+						new CompositeViewStateProvider<StateViewModel, CompositeViewHolder>() {
 							@Override
-							public ViewState createViewState(@NonNull final CompositeFinderHolder holder) {
+							public ViewState createViewState(@NonNull final CompositeViewHolder holder) {
 								return new CompositeViewState(holder);
 							}
 
