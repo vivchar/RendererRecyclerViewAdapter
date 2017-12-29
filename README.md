@@ -16,12 +16,12 @@ https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
 
 ## Example
 
-| All | View Renderer | View Finder | Load More |
+| [All](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/github/GithubFragment.java#L78) | [View Renderer](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/ViewRendererFragment.java#L37) | [View Binder](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/ViewBinderFragment.java#L33) | [Load More](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/LoadMoreFragment.java#L45) |
 | --- | --- | --- | --- |
 ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/example.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/view-renderer.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/view-renderer.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/load-more.gif) |
 
 
-| Composite | ViewState | Diff Util| Payload | 
+| [Composite](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/CompositeViewRendererFragment.java#L42) | [ViewState](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/ViewStateFragment.java#L46) | [Diff Util](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/DiffUtilFragment.java#L42) | [Payload](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/PayloadFragment.java#L43) | 
 | --- | --- | --- | --- |
 | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/composite.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/view-state.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/diff-util.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/payload.gif) |
 ## Gradle
