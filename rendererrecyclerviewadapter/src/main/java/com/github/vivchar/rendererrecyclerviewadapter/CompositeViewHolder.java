@@ -7,8 +7,10 @@ import android.view.View;
 
 /**
  * Created by Vivchar Vitaly on 8/25/17.
+ * <p>
+ * Use {@link com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeFinderHolder}
  */
-
+@Deprecated
 public abstract class CompositeViewHolder extends ViewHolder {
 
 	public RecyclerView recyclerView;

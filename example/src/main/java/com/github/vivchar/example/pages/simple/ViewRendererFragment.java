@@ -21,7 +21,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 /**
  * Created by Vivchar Vitaly on 12/28/17.
  */
-
+@Deprecated
 public class ViewRendererFragment extends BaseScreenFragment {
 
 	private YourDataProvider mYourDataProvider = new YourDataProvider();

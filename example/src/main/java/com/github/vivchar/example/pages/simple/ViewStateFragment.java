@@ -21,6 +21,9 @@ import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapte
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeFinderHolder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewStateProvider;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
 
@@ -46,10 +49,24 @@ public class ViewStateFragment extends BaseScreenFragment {
 		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
 
 		adapter.registerRenderer(
-				new StateViewRenderer(StateViewModel.class, getContext())
-						.registerRenderer(getAnyViewRenderer())
-//						.registerRenderer(...)
-//						.registerRenderer(...)
+				new CompositeViewBinder<>(
+						R.layout.item_simple_composite,
+						R.id.recycler_view,
+						StateViewModel.class,
+						getContext(),
+						Collections.singletonList(new BetweenSpacesItemDecoration(10, 10)),
+						new CompositeViewStateProvider<StateViewModel>() {
+							@Override
+							public ViewState createViewState(@NonNull final CompositeFinderHolder holder) {
+								return new CompositeViewState(holder);
+							}
+
+							@Override
+							public int createViewStateID(@NonNull final StateViewModel model) {
+								return model.getID();
+							}
+						}
+				).registerRenderer(getAnyViewRenderer())
 		);
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);
@@ -67,50 +84,6 @@ public class ViewStateFragment extends BaseScreenFragment {
 		return new ViewBinder<>(R.layout.item_simple_square, DiffUtilFragment.DiffViewModel.class, getContext(),
 				(model, finder, payloads) -> finder.find(R.id.text, (ViewProvider<TextView>) textView -> textView.setText(model.getText()))
 		);
-	}
-
-	private class StateViewRenderer extends CompositeViewRenderer<StateViewModel, StateViewHolder> {
-
-		private StateViewRenderer(@NonNull final Class<StateViewModel> type, @NonNull final Context context) {
-			super(type, context);
-		}
-
-		@Override
-		public void bindView(@NonNull final StateViewModel model, @NonNull final StateViewHolder holder) {
-			holder.getAdapter().setItems(model.getItems());
-			holder.getAdapter().notifyDataSetChanged();
-		}
-
-		@NonNull
-		@Override
-		protected List<? extends RecyclerView.ItemDecoration> createItemDecorations() {
-			return Collections.singletonList(new BetweenSpacesItemDecoration(10, 10));
-		}
-
-		@NonNull
-		@Override
-		protected StateViewHolder createCompositeViewHolder(@Nullable final ViewGroup parent) {
-			return new StateViewHolder(inflate(R.layout.item_simple_composite, parent));
-		}
-
-		@Nullable
-		@Override
-		public ViewState createViewState(@NonNull final StateViewHolder holder) {
-			return new CompositeViewState(holder);
-		}
-
-		@Override
-		public int createViewStateID(@NonNull final StateViewModel model) {
-			return model.getID();
-		}
-	}
-
-	private class StateViewHolder extends CompositeViewHolder {
-
-		private StateViewHolder(final View itemView) {
-			super(itemView);
-			recyclerView = (RecyclerView) itemView.findViewById(R.id.recycler_view);
-		}
 	}
 
 	public static class StateViewModel extends DefaultCompositeViewModel {

@@ -13,8 +13,10 @@ import java.util.List;
 
 /**
  * Created by Vivchar Vitaly on 8/25/17.
+ * <p>
+ * Use {@link com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewBinder}
  */
-
+@Deprecated
 public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH extends CompositeViewHolder> extends ViewRenderer<M, VH> {
 
 	@NonNull

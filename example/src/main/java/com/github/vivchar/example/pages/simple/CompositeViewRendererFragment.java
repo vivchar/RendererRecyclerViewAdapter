@@ -15,9 +15,18 @@ import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
+import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewState;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewHolder;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewStateProvider;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeFinderHolder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewStateProvider;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.FinderHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
 
@@ -42,10 +51,13 @@ public class CompositeViewRendererFragment extends BaseScreenFragment {
 		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
 
 		adapter.registerRenderer(
-				new SimpleCompositeViewRenderer(DefaultCompositeViewModel.class, getContext())
-						.registerRenderer(getAnyViewRenderer())
-//						.registerRenderer(...)
-//						.registerRenderer(...)
+				new CompositeViewBinder<>(
+						R.layout.item_simple_composite,
+						R.id.recycler_view,
+						DefaultCompositeViewModel.class,
+						getContext(),
+						Collections.singletonList(new BetweenSpacesItemDecoration(10, 10))
+				).registerRenderer(getAnyViewRenderer())
 		);
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);
@@ -66,38 +78,5 @@ public class CompositeViewRendererFragment extends BaseScreenFragment {
 				getContext(),
 				(model, finder, payloads) -> finder.find(R.id.text, (ViewProvider<TextView>) textView -> textView.setText(model.getText()))
 		);
-	}
-
-	public class SimpleCompositeViewRenderer extends CompositeViewRenderer<DefaultCompositeViewModel, SimpleCompositeViewHolder> {
-
-		public SimpleCompositeViewRenderer(@NonNull final Class<DefaultCompositeViewModel> type, @NonNull final Context context) {
-			super(type, context);
-		}
-
-		@Override
-		public void bindView(@NonNull final DefaultCompositeViewModel model, @NonNull final SimpleCompositeViewHolder holder) {
-			holder.getAdapter().setItems(model.getItems());
-			holder.getAdapter().notifyDataSetChanged();
-		}
-
-		@NonNull
-		@Override
-		protected List<? extends RecyclerView.ItemDecoration> createItemDecorations() {
-			return Collections.singletonList(new BetweenSpacesItemDecoration(10, 10));
-		}
-
-		@NonNull
-		@Override
-		protected SimpleCompositeViewHolder createCompositeViewHolder(@Nullable final ViewGroup parent) {
-			return new SimpleCompositeViewHolder(inflate(R.layout.item_simple_composite, parent));
-		}
-	}
-
-	public class SimpleCompositeViewHolder extends CompositeViewHolder {
-
-		public SimpleCompositeViewHolder(final View itemView) {
-			super(itemView);
-			recyclerView = (RecyclerView) itemView.findViewById(R.id.recycler_view);
-		}
 	}
 }

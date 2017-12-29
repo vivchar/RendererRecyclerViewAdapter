@@ -6,8 +6,10 @@ import android.view.View;
 
 /**
  * Created by Vivchar Vitaly on 12/26/17.
+ * <p>
+ * Use {@link com.github.vivchar.rendererrecyclerviewadapter.binder.FinderHolder}
  */
-
+@Deprecated
 public class ViewHolder extends RecyclerView.ViewHolder {
 
 	public static final int UNDEFINED = -1;

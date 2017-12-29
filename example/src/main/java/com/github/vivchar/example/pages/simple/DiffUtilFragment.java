@@ -16,6 +16,9 @@ import com.github.vivchar.example.widgets.ItemOffsetDecoration;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewStateProvider;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.FinderHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
 

@@ -6,7 +6,7 @@ import android.view.View;
 /**
  * Created by Vivchar Vitaly on 05.11.17.
  */
-
+@Deprecated
 public class LoadMoreViewHolder extends ViewHolder {
 
 	public LoadMoreViewHolder(@NonNull final View itemView) {

@@ -2,59 +2,27 @@ package com.github.vivchar.rendererrecyclerviewadapter.binder;
 
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.util.SparseArray;
+import android.support.annotation.StringRes;
 import android.view.View;
 
-import com.github.vivchar.rendererrecyclerviewadapter.ViewHolder;
-
 /**
- * More detail you can get there: https://github.com/vivchar/ViewFinder
+ * Created by Vivchar Vitaly on 29.12.17.
  */
-public class ViewFinder extends ViewHolder {
+
+public interface ViewFinder {
 
 	@NonNull
-	private final SparseArray<View> mCachedViews = new SparseArray<>();
-
-	public ViewFinder(@NonNull final View view) {
-		super(view);
-	}
-
+	<V extends View> ViewFinder find(@IdRes int ID, @NonNull ViewProvider<V> viewProvider);
 	@NonNull
-	public <V extends View> ViewFinder find(@IdRes final int ID, @NonNull final ViewProvider<V> viewProvider) {
-		viewProvider.provide((V) findViewById(ID));
-		return this;
-	}
-
+	<V extends View> V find(@IdRes int ID);
 	@NonNull
-	public <V extends View> V find(@IdRes final int ID) {
-		return (V) findViewById(ID);
-	}
-
+	<V extends View> ViewFinder getRootView(@NonNull ViewProvider<V> viewProvider);
 	@NonNull
-	public <V extends View> ViewFinder getRootView(@NonNull final ViewProvider<V> viewProvider) {
-		viewProvider.provide((V) itemView);
-		return this;
-	}
-
+	<V extends View> V getRootView();
 	@NonNull
-	public <V extends View> V getRootView() {
-		return (V) itemView;
-	}
-
+	ViewFinder setOnClickListener(@IdRes int ID, @NonNull View.OnClickListener onClickListener);
 	@NonNull
-	public ViewFinder setOnClickListener(@IdRes final int ID, @NonNull final View.OnClickListener onClickListener) {
-		findViewById(ID).setOnClickListener(onClickListener);
-		return this;
-	}
-
+	ViewFinder setText(@IdRes int ID, CharSequence text);
 	@NonNull
-	private View findViewById(@IdRes final int ID) {
-		final View cachedView = mCachedViews.get(ID);
-		if (cachedView != null) {
-			return cachedView;
-		}
-		final View view = itemView.findViewById(ID);
-		mCachedViews.put(ID, view);
-		return view;
-	}
+	ViewFinder setText(@IdRes int ID, @StringRes int textID);
 }

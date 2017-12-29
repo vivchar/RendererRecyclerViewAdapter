@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewStateProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +19,14 @@ import java.util.List;
  * <p>
  * More detail you can get there: https://github.com/vivchar/ViewFinder
  */
-public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewFinder> {
+public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, FinderHolder> {
 
 	@LayoutRes
 	private final int mLayoutID;
 	@NonNull
 	private final Binder mBinder;
+	@Nullable
+	private ViewStateProvider<M, FinderHolder> mViewStateProvider = null;
 
 	public ViewBinder(@LayoutRes final int layoutID,
 	                  @NonNull final Class<M> type,
@@ -33,20 +37,42 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewFinder
 		mBinder = binder;
 	}
 
+	public ViewBinder(@LayoutRes final int layoutID,
+	                  @NonNull final Class<M> type,
+	                  @NonNull final Context context,
+	                  @NonNull final Binder<M> binder,
+	                  @Nullable final ViewStateProvider<M, FinderHolder> viewStateProvider) {
+		super(type, context);
+		mLayoutID = layoutID;
+		mBinder = binder;
+		mViewStateProvider = viewStateProvider;
+	}
+
 	@Override
-	public void bindView(@NonNull final M model, @NonNull final ViewFinder finder) {
+	public void bindView(@NonNull final M model, @NonNull final FinderHolder finder) {
 		mBinder.bindView(model, finder, new ArrayList<>());
 	}
 
 	@Override
-	public void rebindView(@NonNull final M model, @NonNull final ViewFinder finder, @NonNull final List<Object> payloads) {
+	public void rebindView(@NonNull final M model, @NonNull final FinderHolder finder, @NonNull final List<Object> payloads) {
 		mBinder.bindView(model, finder, payloads);
+	}
+
+	@Nullable
+	@Override
+	public ViewState createViewState(@NonNull final FinderHolder holder) {
+		return mViewStateProvider != null ? mViewStateProvider.createViewState(holder) : super.createViewState(holder);
+	}
+
+	@Override
+	public int createViewStateID(@NonNull final M model) {
+		return mViewStateProvider != null ? mViewStateProvider.createViewStateID(model) : super.createViewStateID(model);
 	}
 
 	@NonNull
 	@Override
-	public ViewFinder createViewHolder(@Nullable final ViewGroup parent) {
-		return new ViewFinder(inflate(mLayoutID, parent));
+	public FinderHolder createViewHolder(@Nullable final ViewGroup parent) {
+		return new FinderHolder(inflate(mLayoutID, parent));
 	}
 
 	public interface Binder <M> {

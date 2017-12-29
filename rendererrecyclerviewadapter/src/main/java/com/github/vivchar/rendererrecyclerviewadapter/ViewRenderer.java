@@ -13,8 +13,11 @@ import java.util.List;
 
 /**
  * Created by Vivchar Vitaly on 1/10/17.
+ * <p>
+ * Use {@link com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder}
  */
-public abstract class ViewRenderer <M extends ViewModel, VH extends ViewHolder> {
+@Deprecated
+public abstract class ViewRenderer <M extends ViewModel, VH extends ViewHolder> implements ViewStateProvider<M, VH> {
 
 	@NonNull
 	private final Type mType;

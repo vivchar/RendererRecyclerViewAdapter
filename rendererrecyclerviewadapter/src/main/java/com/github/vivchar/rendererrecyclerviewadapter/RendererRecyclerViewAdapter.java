@@ -224,7 +224,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 	/**
 	 * If you want to show a some custom data in a Load More Indicator
-	 * then you should set your custom {@link LoadMoreViewModel} and create your custom {@link LoadMoreViewRenderer}
+	 * then you should set your custom {@link LoadMoreViewModel} and createViewState your custom {@link LoadMoreViewRenderer}
 	 * <p>
 	 * Use the {@link #registerRenderer(ViewRenderer)} to set your custom {@link LoadMoreViewRenderer}
 	 *

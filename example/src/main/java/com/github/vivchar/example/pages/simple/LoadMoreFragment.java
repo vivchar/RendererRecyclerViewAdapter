@@ -14,7 +14,7 @@ import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.EndlessScrollListener;
 import com.github.vivchar.example.widgets.ItemOffsetDecoration;
-import com.github.vivchar.rendererrecyclerviewadapter.LoadMoreViewModel;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.LoadMoreViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
@@ -47,9 +47,7 @@ public class LoadMoreFragment extends BaseScreenFragment {
 
 
 //		mAdapter.setLoadMoreModel(new YourLoadMoreModel()); /* you can change the LoadMoreModel if needed */
-		mAdapter.registerRenderer(new ViewBinder<>(R.layout.item_load_more, LoadMoreViewModel.class, getContext(),
-				(model, finder, payloads) -> {}
-		));
+		mAdapter.registerRenderer(new LoadMoreViewBinder(R.layout.item_load_more, getContext()));
 		mAdapter.registerRenderer(new ViewBinder<>(R.layout.item_simple_square, SimpleViewModel.class, getContext(),
 				(model, finder, payloads) -> finder.find(R.id.text, (ViewProvider<TextView>) textView -> textView.setText(model.getText()))
 		));

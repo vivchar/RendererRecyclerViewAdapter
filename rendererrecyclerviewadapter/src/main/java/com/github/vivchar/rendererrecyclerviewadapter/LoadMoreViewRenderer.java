@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 
 /**
  * Created by Vivchar Vitaly on 05.11.17.
+ * <p>
+ * Use {@link com.github.vivchar.rendererrecyclerviewadapter.binder.LoadMoreViewBinder}
  */
-
+@Deprecated
 public class LoadMoreViewRenderer extends ViewRenderer<LoadMoreViewModel, LoadMoreViewHolder> {
 
 	@LayoutRes
