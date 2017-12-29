@@ -54,7 +54,7 @@ public class ViewStateFragment extends BaseScreenFragment {
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);
 
-		adapter.setItems(mYourDataProvider.generateStateItems());
+		adapter.setItems(mYourDataProvider.getStateItems());
 
 		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 		recyclerView.setAdapter(adapter);

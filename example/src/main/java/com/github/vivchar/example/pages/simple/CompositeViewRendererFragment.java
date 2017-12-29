@@ -50,7 +50,7 @@ public class CompositeViewRendererFragment extends BaseScreenFragment {
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);
 
-		adapter.setItems(mYourDataProvider.generateCompositeSimpleItems());
+		adapter.setItems(mYourDataProvider.getCompositeSimpleItems());
 
 		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 		recyclerView.setAdapter(adapter);

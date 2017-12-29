@@ -56,7 +56,7 @@ public class LoadMoreFragment extends BaseScreenFragment {
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);
 
-		mAdapter.setItems(mYourDataProvider.generateLoadMoreItems());
+		mAdapter.setItems(mYourDataProvider.getLoadMoreItems());
 
 		mLayoutManager = new GridLayoutManager(getContext(), COLUMNS_COUNT);
 		mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -80,7 +80,7 @@ public class LoadMoreFragment extends BaseScreenFragment {
 				Log.d("#####", "onLoadMore " + page);
 				mAdapter.showLoadMore();
 //				mAdapter.hideLoadMore(); /* if you need force hide progress or call setItems() */
-				mYourDataProvider.generateLoadMoreItems(list -> getActivity().runOnUiThread(() -> mAdapter.setItems(list)));
+				mYourDataProvider.getLoadMoreItems(list -> getActivity().runOnUiThread(() -> mAdapter.setItems(list)));
 			}
 		});
 

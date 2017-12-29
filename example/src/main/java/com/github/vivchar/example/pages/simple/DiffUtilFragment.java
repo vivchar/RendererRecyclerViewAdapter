@@ -19,7 +19,6 @@ import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,13 +48,13 @@ public class DiffUtilFragment extends BaseScreenFragment {
 				(model, finder, payloads) -> finder
 						.find(R.id.text, (ViewProvider<TextView>) textView -> textView.setText(model.getText()))
 						.setOnClickListener(R.id.text, v -> {
-							reloadItems();
+							reloadItems(model);
 						})
 		));
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);
 
-		mAdapter.setItems(mYourDataProvider.generateDiffItems());
+		mAdapter.setItems(mYourDataProvider.getDiffItems());
 
 		mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 		mRecyclerView.setAdapter(mAdapter);
@@ -65,10 +64,8 @@ public class DiffUtilFragment extends BaseScreenFragment {
 		return view;
 	}
 
-	private void reloadItems() {
-		final List<ViewModel> list = mYourDataProvider.generateDiffItems();
-		Collections.shuffle(list); /* https://stackoverflow.com/a/43461324/4894238 */
-		mAdapter.setItems(list);
+	private void reloadItems(@NonNull final DiffViewModel model) {
+		mAdapter.setItems(mYourDataProvider.getUpdatedDiffItems(model));
 	}
 
 	private class DiffCallback extends DefaultDiffCallback<DiffViewModel> {
@@ -95,6 +92,30 @@ public class DiffUtilFragment extends BaseScreenFragment {
 
 		public int getID() {
 			return mID;
+		}
+
+		@Override
+		public boolean equals(final Object o) {
+			if (this == o) {
+				return true;
+			}
+			if (o == null || getClass() != o.getClass()) {
+				return false;
+			}
+
+			final DiffViewModel that = (DiffViewModel) o;
+
+			if (mID != that.mID) {
+				return false;
+			}
+			return mText != null ? mText.equals(that.mText) : that.mText == null;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = mID;
+			result = 31 * result + (mText != null ? mText.hashCode() : 0);
+			return result;
 		}
 	}
 }

@@ -42,7 +42,7 @@ public class ViewBinderFragment extends ViewRendererFragment {
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);
 
-		adapter.setItems(mYourDataProvider.generateSquareItems());
+		adapter.setItems(mYourDataProvider.getSquareItems());
 
 		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 		recyclerView.setAdapter(adapter);

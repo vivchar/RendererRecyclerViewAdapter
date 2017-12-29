@@ -6,6 +6,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -24,16 +25,26 @@ public class YourDataProvider {
 
 	private ArrayList<LoadMoreFragment.SimpleViewModel> mLoadMoreItems = new ArrayList<>();
 	private ThreadPoolExecutor mExecutor = new ThreadPoolExecutor(2, 2, 2, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+	private ArrayList<ViewModel> mDiffItems = new ArrayList<>();
 
-	public List<ViewModel> generateDiffItems() {
-		final ArrayList<ViewModel> items = new ArrayList<>();
+	public List<ViewModel> getDiffItems() {
 		for (int i = 0; i < 50; i++) {
-			items.add(new DiffViewModel(i, String.valueOf(i)));
+			mDiffItems.add(new DiffViewModel(i, String.valueOf(i)));
 		}
-		return items;
+		return mDiffItems;
 	}
 
-	public List<ViewModel> generateSquareItems() {
+	public List<ViewModel> getUpdatedDiffItems(final DiffViewModel model) {
+		final int clickedIndex = mDiffItems.indexOf(model);
+		final ViewModel clickedModel = mDiffItems.remove(clickedIndex);
+		final ViewModel remove = mDiffItems.remove(0);
+		Collections.shuffle(mDiffItems);
+		mDiffItems.add(0, remove); /* https://stackoverflow.com/a/43461324/4894238 */
+		mDiffItems.add(clickedIndex, clickedModel);
+		return mDiffItems;
+	}
+
+	public List<ViewModel> getSquareItems() {
 		final ArrayList<ViewModel> items = new ArrayList<>();
 		for (int i = 0; i < 50; i++) {
 			items.add(new RectViewModel(String.valueOf(i)));
@@ -41,23 +52,23 @@ public class YourDataProvider {
 		return items;
 	}
 
-	public List<ViewModel> generateCompositeSimpleItems() {
+	public List<ViewModel> getCompositeSimpleItems() {
 		final ArrayList<ViewModel> items = new ArrayList<>();
 		for (int i = 0; i < 50; i++) {
-			items.add(new DefaultCompositeViewModel(generateDiffItems()));
+			items.add(new DefaultCompositeViewModel(getDiffItems()));
 		}
 		return items;
 	}
 
-	public List<ViewModel> generateStateItems() {
+	public List<ViewModel> getStateItems() {
 		final ArrayList<ViewModel> items = new ArrayList<>();
 		for (int i = 0; i < 50; i++) {
-			items.add(new StateViewModel(i, generateDiffItems()));
+			items.add(new StateViewModel(i, getDiffItems()));
 		}
 		return items;
 	}
 
-	public List<PayloadViewModel> generatePayloadItems() {
+	public List<PayloadViewModel> getPayloadItems() {
 		if (mPayloadItems.isEmpty()) {
 			for (int i = 0; i < 50; i++) {
 				mPayloadItems.add(new PayloadViewModel(i, String.valueOf(i), "model ID: " + i));
@@ -66,7 +77,7 @@ public class YourDataProvider {
 		return mPayloadItems;
 	}
 
-	public List<PayloadViewModel> generateChangedPayloadItems(final PayloadViewModel model) {
+	public List<PayloadViewModel> getChangedPayloadItems(final PayloadViewModel model) {
 		/* Just for example */
 		final ArrayList<PayloadViewModel> newList = new ArrayList<>();
 
@@ -88,7 +99,7 @@ public class YourDataProvider {
 		return mPayloadItems;
 	}
 
-	public List<? extends ViewModel> generateLoadMoreItems() {
+	public List<? extends ViewModel> getLoadMoreItems() {
 		final int size = mLoadMoreItems.size();
 		for (int i = size; i < size + 30; i++) {
 			mLoadMoreItems.add(new LoadMoreFragment.SimpleViewModel(String.valueOf(i)));
@@ -96,7 +107,7 @@ public class YourDataProvider {
 		return mLoadMoreItems;
 	}
 
-	public void generateLoadMoreItems(final Listener listener) {
+	public void getLoadMoreItems(final Listener listener) {
 		mExecutor.execute(() -> {
 			try {
 				Thread.sleep(2000);

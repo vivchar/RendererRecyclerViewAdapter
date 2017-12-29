@@ -70,7 +70,7 @@ public class PayloadFragment extends BaseScreenFragment {
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);
 
-		mAdapter.setItems(mYourDataProvider.generatePayloadItems());
+		mAdapter.setItems(mYourDataProvider.getPayloadItems());
 
 		mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 		mRecyclerView.setAdapter(mAdapter);
@@ -81,7 +81,7 @@ public class PayloadFragment extends BaseScreenFragment {
 	}
 
 	private void changeItem(@NonNull final PayloadViewModel model) {
-		mAdapter.setItems(mYourDataProvider.generateChangedPayloadItems(model));
+		mAdapter.setItems(mYourDataProvider.getChangedPayloadItems(model));
 	}
 
 	private class PayloadDiffCallback extends DefaultDiffCallback<PayloadViewModel> {
