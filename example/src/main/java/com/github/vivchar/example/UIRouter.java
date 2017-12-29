@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.github.vivchar.example.pages.github.GithubFragment;
 import com.github.vivchar.example.pages.simple.CompositeViewRendererFragment;
 import com.github.vivchar.example.pages.simple.DiffUtilFragment;
+import com.github.vivchar.example.pages.simple.LoadMoreFragment;
+import com.github.vivchar.example.pages.simple.PayloadFragment;
 import com.github.vivchar.example.pages.simple.ViewBinderFragment;
 import com.github.vivchar.example.pages.simple.ViewRendererFragment;
 import com.github.vivchar.example.pages.simple.ViewStateFragment;
@@ -69,5 +71,12 @@ public class UIRouter {
 
 	public void openDiffUtilPage() {
 		showFragment(new DiffUtilFragment());
+	}
+
+	public void openPayloadPage() {
+		showFragment(new PayloadFragment());
+	}
+	public void openLoadMorePage() {
+		showFragment(new LoadMoreFragment());
 	}
 }

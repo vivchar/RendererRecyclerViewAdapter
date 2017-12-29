@@ -12,4 +12,5 @@
 	<string name = "diff_util">Diff Util</string>
 	<string name = "main">Main</string>
 	<string name = "view_binder">View Binder</string>
+	<string name = "payload">Payload</string>
 </resources>

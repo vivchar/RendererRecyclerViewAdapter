@@ -1,5 +1,6 @@
 package com.github.vivchar.example;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 /**
@@ -7,4 +8,15 @@ import android.support.v4.app.Fragment;
  */
 
 public class BaseScreenFragment extends Fragment {
+
+
+	@NonNull
+	public UIRouter getUIRouter() {
+		return ((MainActivity)getActivity()).getUIRouter();
+	}
+
+	@NonNull
+	public OptionsMenuController getMenuController() {
+		return ((MainActivity)getActivity()).getMenuController();
+	}
 }

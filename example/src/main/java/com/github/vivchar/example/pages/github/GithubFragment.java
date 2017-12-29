@@ -65,6 +65,8 @@ public class GithubFragment extends BaseScreenFragment {
 		View inflate = inflater.inflate(R.layout.fragment_github, container, false);
 
 		mGithubPresenter = new GithubPresenter(
+				getUIRouter(),
+				getMenuController(),
 				MainManager.getInstance().getStargazersManager(),
 				MainManager.getInstance().getForksManager(),
 				mMainPresenterView
@@ -210,18 +212,6 @@ public class GithubFragment extends BaseScreenFragment {
 		public void clearSelections() {
 			mRecyclerViewAdapter.clearViewStates();
 			mRecyclerViewAdapter.notifyDataSetChanged();
-		}
-
-		@Override
-		public void showDoneButton() {
-			mDoneItemVisibility = true;
-			getActivity().invalidateOptionsMenu();
-		}
-
-		@Override
-		public void hideDoneButton() {
-			mDoneItemVisibility = false;
-			getActivity().invalidateOptionsMenu();
 		}
 
 		@Override

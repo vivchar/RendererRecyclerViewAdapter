@@ -57,6 +57,7 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
 		If we do need to reload some more data, we execute onLoadMore to fetch the data.
 		*/
 		if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+			this.previousTotalItemCount++; /* we will add the LoadMoreItem */
 			onLoadMore(currentPage + 1, totalItemCount);
 			loading = true;
 		}

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.vivchar.example.R;
-import com.github.vivchar.example.pages.simple.items.SimpleViewModel;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
@@ -33,18 +32,17 @@ public class ViewBinderFragment extends ViewRendererFragment {
 
 		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
 
-		adapter.registerRenderer(new ViewBinder<>(
-				R.layout.item_simple,
-				SimpleViewModel.class,
-				getContext(),
+		adapter.registerRenderer(new ViewBinder<>(R.layout.item_simple, RectViewModel.class, getContext(),
 				(model, finder, payloads) -> finder
 						.find(R.id.text, (ViewProvider<TextView>) textView -> textView.setText(model.getText()))
 						.setOnClickListener(R.id.text, v -> {
-							Toast.makeText(getContext(), "Text Clicked", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getContext(), "Text Clicked " + model.getText(), Toast.LENGTH_SHORT).show();
 						})
 		));
+//		adapter.registerRenderer(...);
+//		adapter.registerRenderer(...);
 
-		adapter.setItems(mYourDataProvider.generateSimpleItems());
+		adapter.setItems(mYourDataProvider.generateSquareItems());
 
 		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 		recyclerView.setAdapter(adapter);

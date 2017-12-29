@@ -3,18 +3,24 @@ package com.github.vivchar.example.pages.simple;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
-import com.github.vivchar.example.pages.simple.items.SimpleViewModel;
-import com.github.vivchar.example.pages.simple.items.SimpleViewRenderer;
-import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
+import com.github.vivchar.example.widgets.ItemOffsetDecoration;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Vivchar Vitaly on 28.12.17.
@@ -23,6 +29,8 @@ import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapte
 public class DiffUtilFragment extends BaseScreenFragment {
 
 	private YourDataProvider mYourDataProvider = new YourDataProvider();
+	private RendererRecyclerViewAdapter mAdapter;
+	private RecyclerView mRecyclerView;
 
 	@Nullable
 	@Override
@@ -32,26 +40,61 @@ public class DiffUtilFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+		mAdapter = new RendererRecyclerViewAdapter();
 
-		adapter.setDiffCallback(new DiffCallback());
+		mAdapter.setDiffCallback(new DiffCallback());
+//		adapter.enableDiffUtil(); /* Or just call it to enable DiffUtil with DefaultDiffCallback */
 
-		adapter.registerRenderer(new SimpleViewRenderer(SimpleViewModel.class, getContext()));
+		mAdapter.registerRenderer(new ViewBinder<>(R.layout.item_simple_square, DiffViewModel.class, getContext(),
+				(model, finder, payloads) -> finder
+						.find(R.id.text, (ViewProvider<TextView>) textView -> textView.setText(model.getText()))
+						.setOnClickListener(R.id.text, v -> {
+							reloadItems();
+						})
+		));
+//		adapter.registerRenderer(...);
+//		adapter.registerRenderer(...);
 
-		adapter.setItems(mYourDataProvider.generateSimpleItems());
+		mAdapter.setItems(mYourDataProvider.generateDiffItems());
 
-		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-		recyclerView.setAdapter(adapter);
-		recyclerView.addItemDecoration(new BetweenSpacesItemDecoration(10, 10));
+		mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+		mRecyclerView.setAdapter(mAdapter);
+		mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+		mRecyclerView.addItemDecoration(new ItemOffsetDecoration(10));
 
 		return view;
 	}
 
-	private class DiffCallback extends DefaultDiffCallback<SimpleViewModel> {
+	private void reloadItems() {
+		final List<ViewModel> list = mYourDataProvider.generateDiffItems();
+		Collections.shuffle(list); /* https://stackoverflow.com/a/43461324/4894238 */
+		mAdapter.setItems(list);
+	}
+
+	private class DiffCallback extends DefaultDiffCallback<DiffViewModel> {
 
 		@Override
-		public boolean areItemsTheSame(@NonNull final SimpleViewModel oldItem, @NonNull final SimpleViewModel newItem) {
-			return super.areItemsTheSame(oldItem, newItem);
+		public boolean areItemsTheSame(@NonNull final DiffViewModel oldItem, @NonNull final DiffViewModel newItem) {
+			return oldItem.getID() == newItem.getID();
+		}
+	}
+
+	public static class DiffViewModel implements ViewModel {
+
+		private final int mID;
+		private final String mText;
+
+		public DiffViewModel(final int ID, final String text) {
+			mID = ID;
+			mText = text;
+		}
+
+		public String getText() {
+			return mText;
+		}
+
+		public int getID() {
+			return mID;
 		}
 	}
 }

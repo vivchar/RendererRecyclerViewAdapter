@@ -4,8 +4,11 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.annimon.stream.Stream;
-import com.github.vivchar.example.IView;
 import com.github.vivchar.example.BasePresenter;
+import com.github.vivchar.example.IView;
+import com.github.vivchar.example.MenuItemID;
+import com.github.vivchar.example.OptionsMenuController;
+import com.github.vivchar.example.UIRouter;
 import com.github.vivchar.example.pages.github.items.category.CategoryModel;
 import com.github.vivchar.example.pages.github.items.fork.ForkModel;
 import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
@@ -33,6 +36,10 @@ class GithubPresenter extends BasePresenter {
 	private static final String TAG = GithubPresenter.class.getSimpleName();
 
 	@NonNull
+	private final UIRouter mUiRouter;
+	@NonNull
+	private final OptionsMenuController mMenuController;
+	@NonNull
 	private final StargazersManager mStargazersManager;
 	@NonNull
 	private final ForksManager mForksManager;
@@ -43,9 +50,13 @@ class GithubPresenter extends BasePresenter {
 	private final ArrayList<StargazerModel> mSelectedUsers = new ArrayList<>();
 	private boolean mLoadingMore = false;
 
-	GithubPresenter(@NonNull final StargazersManager stargazersManager,
+	GithubPresenter(@NonNull final UIRouter uiRouter,
+	                @NonNull final OptionsMenuController menuController,
+	                @NonNull final StargazersManager stargazersManager,
 	                @NonNull final ForksManager forksManager,
 	                @NonNull final View view) {
+		mUiRouter = uiRouter;
+		mMenuController = menuController;
 		mStargazersManager = stargazersManager;
 		mForksManager = forksManager;
 		mView = view;
@@ -146,6 +157,12 @@ class GithubPresenter extends BasePresenter {
 						},
 						throwable -> Log.d(TAG, "Can't update list: " + throwable.getMessage())
 				));
+
+		addSubscription(mMenuController.getItemSelection().subscribe(integer -> {
+			if (integer == MenuItemID.DONE) {
+				onDoneClicked();
+			}
+		}));
 	}
 
 	public void onRefresh() {
@@ -164,9 +181,9 @@ class GithubPresenter extends BasePresenter {
 		}
 
 		if (mSelectedUsers.isEmpty()) {
-			mView.hideDoneButton();
+			mMenuController.hideMenuItem(MenuItemID.DONE);
 		} else {
-			mView.showDoneButton();
+			mMenuController.showMenuItem(MenuItemID.DONE);
 		}
 	}
 
@@ -190,7 +207,7 @@ class GithubPresenter extends BasePresenter {
 			/* vivchar: ideally we should map to other model */
 			mView.showSelectedUsers(new ArrayList<>(mSelectedUsers));
 			mView.clearSelections();
-			mView.hideDoneButton();
+			mMenuController.hideMenuItem(MenuItemID.DONE);
 			mSelectedUsers.clear();
 		}
 	}
@@ -212,8 +229,6 @@ class GithubPresenter extends BasePresenter {
 		void showMessageView(@NonNull String message);
 		void showSelectedUsers(@NonNull ArrayList<ViewModel> list);
 		void clearSelections();
-		void showDoneButton();
-		void hideDoneButton();
 		void showLoadMoreView();
 	}
 }
