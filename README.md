@@ -46,7 +46,7 @@ public class SomeModel implements ViewModel {
 ```xml
 <LinearLayout ... >
 	<TextView android:id = "@+id/title" ... />
-	<Button android:id="@+id/button" ... />
+	<Button android:id = "@+id/button" ... />
 </LinearLayout>
 ```
 
