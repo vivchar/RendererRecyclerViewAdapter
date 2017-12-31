@@ -79,6 +79,13 @@ mRecyclerViewAdapter.notifyDataSetChanged();
 ## Migration to v2.0
 //TODO
 
+## Applications using RendererRecyclerViewAdapter
+* [Camfrog](https://play.google.com/store/apps/details?id=com.camshare.camfrog.android): ;
+* [Paltalk](https://play.google.com/store/apps/details?id=com.paltalk.chat.android): ;
+* [Deskroll](https://play.google.com/store/apps/details?id=com.deskroll.client1): ;
+
+Send me a pull request with modified README.md to get a shoutout!
+
 ## License
 
     Copyright 2017 Vitaly Vivchar
