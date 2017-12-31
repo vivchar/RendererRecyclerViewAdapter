@@ -27,7 +27,7 @@ https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
 ## Gradle
 ```gradle
 dependencies {
-    compile 'com.github.vivchar:RendererRecyclerViewAdapter:+'
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.3.0'
 }
 ```
 ## Motivation
