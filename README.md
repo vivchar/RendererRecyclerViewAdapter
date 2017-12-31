@@ -86,6 +86,13 @@ mRecyclerViewAdapter.notifyDataSetChanged();
 
 Send me a pull request with modified README.md to get a shoutout!
 
+## Communication
+* If you need help, please use [Stack Overflow](https://stackoverflow.com/questions/tagged/RendererRecyclerViewAdapter+Android). (Tag 'RendererRecyclerViewAdapter' and 'Android')
+* If you'd like to ask a general question, please use [Stack Overflow](https://stackoverflow.com/questions/tagged/RendererRecyclerViewAdapter+Android).
+* If you found a bug, please open an issue.
+* If you have a feature request, please open an issue.
+* If you want to contribute, please submit a pull request.
+
 ## License
 
     Copyright 2017 Vitaly Vivchar
