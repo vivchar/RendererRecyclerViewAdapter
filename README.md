@@ -88,9 +88,9 @@ Send me a pull request with modified README.md to get a shoutout!
 
 ## Communication
 * If you need help, please use [Stack Overflow](https://stackoverflow.com/questions/tagged/RendererRecyclerViewAdapter+Android).
-* If you found a bug, please open an [issue](https://github.com/vivchar/RendererRecyclerViewAdapter/labels/bug).
-* If you have a feature request, please open an [issue](https://github.com/vivchar/RendererRecyclerViewAdapter/labels/feature%20request).
-* If you want to contribute, please submit a [pull request](https://github.com/vivchar/RendererRecyclerViewAdapter/pulls).
+* If you found a bug, please open [Issue](https://github.com/vivchar/RendererRecyclerViewAdapter/labels/bug).
+* If you have a feature request, please open [Issue](https://github.com/vivchar/RendererRecyclerViewAdapter/labels/feature%20request).
+* If you want to contribute, please submit a [Pull request](https://github.com/vivchar/RendererRecyclerViewAdapter/pulls).
 
 ## License
 
