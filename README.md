@@ -52,8 +52,6 @@ public class SomeModel implements ViewModel {
 
 * Step 3. Initialize Adapter and register the ViewBinder
 ```java
-//...
-
 mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
 
 mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
@@ -66,14 +64,14 @@ mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
 ));
 mRecyclerViewAdapter.registerRenderer(...); /* you can use several types of cells */
 
+/* Regular code:
 mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 mRecyclerView.setAdapter(mRecyclerViewAdapter);
 
 mRecyclerViewAdapter.setItems(getItems());
 mRecyclerViewAdapter.notifyDataSetChanged();
-
-//...
+*/
 ```
 
 ## Migration to v2.0
