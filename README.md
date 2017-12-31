@@ -80,9 +80,9 @@ mRecyclerViewAdapter.notifyDataSetChanged();
 //TODO
 
 ## Applications using RendererRecyclerViewAdapter
-* [Camfrog](https://play.google.com/store/apps/details?id=com.camshare.camfrog.android): ;
-* [Paltalk](https://play.google.com/store/apps/details?id=com.paltalk.chat.android): ;
-* [Deskroll](https://play.google.com/store/apps/details?id=com.deskroll.client1): ;
+* [Camfrog](https://play.google.com/store/apps/details?id=com.camshare.camfrog.android): Group Video Chat;
+* [Paltalk](https://play.google.com/store/apps/details?id=com.paltalk.chat.android): Free group video calls & chat rooms;
+* [DeskRoll](https://play.google.com/store/apps/details?id=com.deskroll.client1): Gives you secure remote access to computers.
 
 Send me a pull request with modified README.md to get a shoutout!
 
