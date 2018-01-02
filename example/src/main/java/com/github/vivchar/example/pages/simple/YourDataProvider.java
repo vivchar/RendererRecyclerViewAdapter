@@ -1,8 +1,11 @@
 package com.github.vivchar.example.pages.simple;
 
+import android.support.v7.util.ListUpdateCallback;
+
 import com.github.vivchar.example.pages.simple.DiffUtilFragment.DiffViewModel;
 import com.github.vivchar.example.pages.simple.PayloadFragment.PayloadViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
+import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 
 import java.util.ArrayList;
@@ -39,7 +42,11 @@ public class YourDataProvider {
 		final ViewModel clickedModel = mDiffItems.remove(clickedIndex);
 		final ViewModel remove = mDiffItems.remove(0);
 		Collections.shuffle(mDiffItems);
-		mDiffItems.add(0, remove); /* https://stackoverflow.com/a/43461324/4894238 */
+
+		/* https://stackoverflow.com/a/43461324/4894238
+		 * use RendererRecyclerViewAdapter.setUpdateCallback(ListUpdateCallback) if you want
+		 * */
+		mDiffItems.add(0, remove);
 		mDiffItems.add(clickedIndex, clickedModel);
 		return mDiffItems;
 	}

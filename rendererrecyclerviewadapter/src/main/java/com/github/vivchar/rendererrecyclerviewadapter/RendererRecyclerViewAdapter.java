@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
+import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.ViewGroup;
@@ -31,6 +32,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	@NonNull
 	protected final ArrayList<ViewHolder> mBoundViewHolders = new ArrayList<>();
 
+	@Nullable
+	private ListUpdateCallback mUpdateCallback = null;
 	@NonNull
 	protected DiffCallback mDiffCallback = new DefaultDiffCallback();
 	@NonNull
@@ -170,6 +173,10 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		enableDiffUtil();
 	}
 
+	public void setUpdateCallback(@NonNull final ListUpdateCallback updateCallback) {
+		mUpdateCallback = updateCallback;
+	}
+
 	public void setItems(@NonNull final List<? extends ViewModel> items) {
 		if (mDiffUtilEnabled) {
 			mDiffCallback.setItems(mItems, items);
@@ -179,7 +186,39 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 			mItems.clear();
 			mItems.addAll(items);
 
-			diffResult.dispatchUpdatesTo(this);
+			diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
+				@Override
+				public void onInserted(final int position, final int count) {
+					if (mUpdateCallback != null) {
+						mUpdateCallback.onInserted(position, count);
+					}
+					notifyItemRangeInserted(position, count);
+				}
+
+				@Override
+				public void onRemoved(final int position, final int count) {
+					if (mUpdateCallback != null) {
+						mUpdateCallback.onRemoved(position, count);
+					}
+					notifyItemRangeRemoved(position, count);
+				}
+
+				@Override
+				public void onMoved(final int fromPosition, final int toPosition) {
+					if (mUpdateCallback != null) {
+						mUpdateCallback.onMoved(fromPosition, toPosition);
+					}
+					notifyItemMoved(fromPosition, toPosition);
+				}
+
+				@Override
+				public void onChanged(final int position, final int count, final Object payload) {
+					if (mUpdateCallback != null) {
+						mUpdateCallback.onChanged(position, count, payload);
+					}
+					notifyItemRangeChanged(position, count, payload);
+				}
+			});
 		} else {
 			mItems.clear();
 			mItems.addAll(items);

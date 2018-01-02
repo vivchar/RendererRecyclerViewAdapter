@@ -106,6 +106,7 @@ class GithubPresenter extends BasePresenter {
 					 *
 					 * I don't change the first item position because here is the bug
 					 * https://stackoverflow.com/a/43461324/4894238
+					 * use RendererRecyclerViewAdapter.setUpdateCallback(ListUpdateCallback) if you want
 					 */
 
 					Log.d(TAG, "topStargazersModels: " + topStargazersModels.size());
