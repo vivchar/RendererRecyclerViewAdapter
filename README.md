@@ -60,7 +60,6 @@ mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
 	getContext(),
 	(model, finder, payloads) -> finder
 		.find(R.id.title, (ViewProvider<TextView>) textView -> { ... })
-		.setOnClickListener(R.id.button, v -> { ... })
 ));
 mRecyclerViewAdapter.registerRenderer(...); /* you can use several types of cells */
 
