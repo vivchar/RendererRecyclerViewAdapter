@@ -11,8 +11,9 @@
 * [Can be used without ViewHolder - use ViewBinder instead of ViewRenderer](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-View-Binder);
 * Using this library will help you to follow SOLID principles.
 
-## Wiki
-https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
+## Motivation
+* [A RecyclerView with multiple item types  —  Medium](https://medium.com/@vivchar/a-recyclerview-with-multiple-item-types-dfba3979050)
+* [Easy handling of lists  —  Medium](https://medium.com/@vivchar/easy-handling-of-lists-rendererrecyclerviewadapter-part-2-3b18c8ea6f1b)
 
 ## Example
 
@@ -24,15 +25,16 @@ https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
 | [Composite](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/CompositeViewRendererFragment.java#L38) | [ViewState](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/ViewStateFragment.java#L46) | [Diff Util](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/DiffUtilFragment.java#L40) | [Payload](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/PayloadFragment.java#L43) | 
 | --- | --- | --- | --- |
 | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/composite.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/view-state.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/diff-util.gif) | ![Example](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/payload.gif) |
+
+## Wiki
+https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
+
 ## Gradle
 ```gradle
 dependencies {
     compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.3.1'
 }
 ```
-## Motivation
-* [A RecyclerView with multiple item types  —  Medium](https://medium.com/@vivchar/a-recyclerview-with-multiple-item-types-dfba3979050)
-* [Easy handling of lists  —  Medium](https://medium.com/@vivchar/easy-handling-of-lists-rendererrecyclerviewadapter-part-2-3b18c8ea6f1b)
 
 ## Usage
 * Step 1. Add the ViewModel interface to your UI model
