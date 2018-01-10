@@ -31,8 +31,8 @@ dependencies {
 }
 ```
 ## Motivation
-* [A RecyclerView with multiple item types - Medium](https://medium.com/@vivchar/a-recyclerview-with-multiple-item-types-dfba3979050)
-* [Easy handling of lists — Medium](https://medium.com/@vivchar/easy-handling-of-lists-rendererrecyclerviewadapter-part-2-3b18c8ea6f1b)
+* [A RecyclerView with multiple item types  —  Medium](https://medium.com/@vivchar/a-recyclerview-with-multiple-item-types-dfba3979050)
+* [Easy handling of lists  —  Medium](https://medium.com/@vivchar/easy-handling-of-lists-rendererrecyclerviewadapter-part-2-3b18c8ea6f1b)
 
 ## Usage
 * Step 1. Add the ViewModel interface to your UI model
