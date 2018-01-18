@@ -49,20 +49,22 @@ public class SomeModel implements ViewModel {
 ```xml
 <LinearLayout ... >
 	<TextView android:id = "@+id/title" ... />
+	<ImageView android:id = "@+id/image" ... />
 	<Button android:id = "@+id/button" ... />
 </LinearLayout>
 ```
 
 * Step 3. Initialize Adapter and register the ViewBinder
 ```java
-mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
+mRecyclerViewAdapter = new RendererRecyclerViewAdapter(getContext());
 
 mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
 	R.layout.item_layout,
 	SomeModel.class,
-	getContext(),
 	(model, finder, payloads) -> finder
-		.find(R.id.title, (ViewProvider<TextView>) textView -> { ... })
+		//.find(R.id.custom, (ViewProvider<CustomView>) customView -> { ... })
+		.setBackground(R.id.image, model.getBackground())
+		.setText(R.id.text, model.getText())
 		.setOnClickListener(R.id.button, v -> { ... })
 ));
 mRecyclerViewAdapter.registerRenderer(...); /* you can use several types of cells */
