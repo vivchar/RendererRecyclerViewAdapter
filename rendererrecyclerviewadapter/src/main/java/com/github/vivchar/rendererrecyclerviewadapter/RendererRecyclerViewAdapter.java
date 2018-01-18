@@ -84,7 +84,9 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	public void registerRenderer(@NonNull final ViewRenderer renderer) {
-		renderer.setContext(mContext);
+		if (mContext != null) {
+			renderer.setContext(mContext);
+		}
 		final Type type = renderer.getType();
 
 		if (!mTypes.contains(type)) {
