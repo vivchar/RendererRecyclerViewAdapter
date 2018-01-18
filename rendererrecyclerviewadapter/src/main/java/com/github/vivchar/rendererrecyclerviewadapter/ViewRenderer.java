@@ -22,10 +22,23 @@ public abstract class ViewRenderer <M extends ViewModel, VH extends ViewHolder> 
 	@NonNull
 	private final Type mType;
 	@NonNull
-	private final Context mContext;
+	private Context mContext;
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public ViewRenderer(@NonNull final Class<M> type, @NonNull final Context context) {
 		mType = type;
+		mContext = context;
+	}
+
+	public ViewRenderer(@NonNull final Class<M> type) {
+		mType = type;
+	}
+
+	public void setContext(@NonNull final Context context) {
 		mContext = context;
 	}
 

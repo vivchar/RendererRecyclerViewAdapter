@@ -17,8 +17,8 @@ public class LoadMoreViewRenderer extends ViewRenderer<LoadMoreViewModel, LoadMo
 	@LayoutRes
 	protected final int mLayoutID;
 
-	public LoadMoreViewRenderer(@LayoutRes final int layoutID, @NonNull final Context context) {
-		super(LoadMoreViewModel.class, context);
+	public LoadMoreViewRenderer(@LayoutRes final int layoutID) {
+		super(LoadMoreViewModel.class);
 		mLayoutID = layoutID;
 	}
 

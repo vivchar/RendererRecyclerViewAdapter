@@ -1,5 +1,7 @@
 package com.github.vivchar.example.widgets;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -16,6 +18,10 @@ import java.util.List;
 public class NestedAdapter extends RendererRecyclerViewAdapter {
 
 	private static final String TAG = NestedAdapter.class.getSimpleName();
+
+	public NestedAdapter(@NonNull final Context context) {
+		super(context);
+	}
 
 	@Override
 	public ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {

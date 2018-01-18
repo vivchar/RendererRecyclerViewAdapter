@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
+import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
@@ -27,6 +28,11 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder
 	@Nullable
 	private ViewStateProvider<M, ViewHolder> mViewStateProvider = null;
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public ViewBinder(@LayoutRes final int layoutID,
 	                  @NonNull final Class<M> type,
 	                  @NonNull final Context context,
@@ -36,12 +42,35 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder
 		mBinder = binder;
 	}
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public ViewBinder(@LayoutRes final int layoutID,
 	                  @NonNull final Class<M> type,
 	                  @NonNull final Context context,
 	                  @NonNull final Binder<M> binder,
 	                  @Nullable final ViewStateProvider<M, ViewHolder> viewStateProvider) {
 		super(type, context);
+		mLayoutID = layoutID;
+		mBinder = binder;
+		mViewStateProvider = viewStateProvider;
+	}
+
+	public ViewBinder(@LayoutRes final int layoutID,
+	                  @NonNull final Class<M> type,
+	                  @NonNull final Binder<M> binder) {
+		super(type);
+		mLayoutID = layoutID;
+		mBinder = binder;
+	}
+
+	public ViewBinder(@LayoutRes final int layoutID,
+	                  @NonNull final Class<M> type,
+	                  @NonNull final Binder<M> binder,
+	                  @Nullable final ViewStateProvider<M, ViewHolder> viewStateProvider) {
+		super(type);
 		mLayoutID = layoutID;
 		mBinder = binder;
 		mViewStateProvider = viewStateProvider;

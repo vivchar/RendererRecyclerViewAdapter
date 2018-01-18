@@ -1,6 +1,7 @@
 package com.github.vivchar.example.pages.simple;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,10 +15,12 @@ import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.EndlessScrollListener;
 import com.github.vivchar.example.widgets.ItemOffsetDecoration;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.BinderAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.LoadMoreViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
 
 import java.lang.reflect.Type;
@@ -42,14 +45,14 @@ public class LoadMoreFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		mAdapter = new RendererRecyclerViewAdapter();
+		mAdapter = new RendererRecyclerViewAdapter(getContext());
 		mAdapter.enableDiffUtil();
 
 
 //		mAdapter.setLoadMoreModel(new YourLoadMoreModel()); /* you can change the LoadMoreModel if needed */
 		mAdapter.registerRenderer(new LoadMoreViewBinder(R.layout.item_load_more, getContext()));
-		mAdapter.registerRenderer(new ViewBinder<>(R.layout.item_simple_square, SimpleViewModel.class, getContext(),
-				(model, finder, payloads) -> finder.find(R.id.text, (ViewProvider<TextView>) textView -> textView.setText(model.getText()))
+		mAdapter.registerRenderer(new ViewBinder<>(R.layout.item_simple_square, SimpleViewModel.class,
+				(model, finder, payloads) -> finder.setText(R.id.text, model.getText())
 		));
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);

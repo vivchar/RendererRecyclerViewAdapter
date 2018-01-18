@@ -30,11 +30,11 @@ public class ViewBinderFragment extends ViewRendererFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter(getContext());
 
-		adapter.registerRenderer(new ViewBinder<>(R.layout.item_simple, RectViewModel.class, getContext(),
+		adapter.registerRenderer(new ViewBinder<>(R.layout.item_simple, RectViewModel.class,
 				(model, finder, payloads) -> finder
-						.find(R.id.text, (ViewProvider<TextView>) textView -> textView.setText(model.getText()))
+						.setText(R.id.text, model.getText())
 						.setOnClickListener(R.id.text, v -> {
 							Toast.makeText(getContext(), "Text Clicked " + model.getText(), Toast.LENGTH_SHORT).show();
 						})

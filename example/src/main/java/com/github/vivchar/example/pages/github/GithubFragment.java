@@ -36,6 +36,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.LoadMoreViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.LoadMoreViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
 
@@ -75,9 +76,9 @@ public class GithubFragment extends BaseScreenFragment {
 		mSwipeToRefresh = (SwipeRefreshLayout) inflate.findViewById(R.id.refresh);
 		mSwipeToRefresh.setOnRefreshListener(() -> mGithubPresenter.onRefresh());
 
-		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
+		mRecyclerViewAdapter = new RendererRecyclerViewAdapter(getContext());
 		mRecyclerViewAdapter.setDiffCallback(new ItemsDiffCallback());
-		mRecyclerViewAdapter.registerRenderer(new LoadMoreViewRenderer(R.layout.item_load_more, getContext()));
+		mRecyclerViewAdapter.registerRenderer(new LoadMoreViewBinder(R.layout.item_load_more));
 		mRecyclerViewAdapter.registerRenderer(createStargazerRenderer(R.layout.item_user_full_width));
 		mRecyclerViewAdapter.registerRenderer(createListRenderer()
 				.registerRenderer(createForkRenderer())
@@ -87,7 +88,6 @@ public class GithubFragment extends BaseScreenFragment {
 		mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
 				R.layout.item_category,
 				CategoryModel.class,
-				getContext(),
 				(model, finder, payloads) -> finder
 						.find(R.id.title, (ViewProvider<TextView>) view -> view.setText(model.getName()))
 						.setOnClickListener(R.id.viewAll, (v -> mGithubPresenter.onCategoryClicked(model)))
@@ -133,28 +133,28 @@ public class GithubFragment extends BaseScreenFragment {
 
 	@NonNull
 	private ViewRenderer createForkRenderer() {
-		return new ForkViewRenderer(getContext(), new Listener());
+		return new ForkViewRenderer(new Listener());
 	}
 
 	@NonNull
 	private ViewRenderer createStargazerRenderer(final int layout) {
-		return new StargazerViewRenderer(layout, getContext(), new Listener());
+		return new StargazerViewRenderer(layout, new Listener());
 	}
 
 	@NonNull
 	private ViewRenderer createCategoryRenderer() {
-		return new CategoryViewRenderer(getContext(), new Listener());
+		return new CategoryViewRenderer(new Listener());
 	}
 
 	@NonNull
 	private CompositeViewRenderer createListRenderer() {
-		return new RecyclerViewRenderer(getContext());
+		return new RecyclerViewRenderer();
 	}
 
 	@NonNull
 	private ViewRenderer createUserRenderer() {
 		/* vivchar: ideally we should use other model */
-		return new UserViewRenderer(getContext());
+		return new UserViewRenderer();
 	}
 
 	@NonNull
@@ -191,7 +191,7 @@ public class GithubFragment extends BaseScreenFragment {
 
 		@Override
 		public void showSelectedUsers(@NonNull final ArrayList<ViewModel> list) {
-			final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+			final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter(getContext());
 			adapter.registerRenderer(createUserRenderer());
 
 			final LayoutInflater inflater = LayoutInflater.from(getContext());

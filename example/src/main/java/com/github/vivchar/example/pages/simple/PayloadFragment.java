@@ -40,12 +40,12 @@ public class PayloadFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		mAdapter = new RendererRecyclerViewAdapter();
+		mAdapter = new RendererRecyclerViewAdapter(getContext());
 
 		mAdapter.setDiffCallback(new PayloadDiffCallback());
 
 		mAdapter.registerRenderer(new ViewBinder<>(
-				R.layout.item_payload_square, PayloadViewModel.class, getContext(),
+				R.layout.item_payload_square, PayloadViewModel.class,
 				(model, finder, payloads) -> {
 					finder.setOnClickListener(R.id.text, v -> changeItem(model));
 					final TextView textView = finder.find(R.id.text);
@@ -53,7 +53,7 @@ public class PayloadFragment extends BaseScreenFragment {
 					if (payloads.isEmpty()) {
 						/* full bind */
 						textView.setText(model.getText());
-						finder.find(R.id.desciption, (ViewProvider<TextView>) desciption -> desciption.setText(model.getDescription()));
+						finder.setText(R.id.desciption, model.getDescription());
 					} else {
 						/* partially bind */
 						final Object payload = payloads.get(0);
@@ -62,7 +62,7 @@ public class PayloadFragment extends BaseScreenFragment {
 							textView.animate().rotation(360).start();
 							textView.setText(model.getText());
 						} else if (payload.equals(DESCRIPTION_CHANGED)) {
-							finder.find(R.id.desciption, (ViewProvider<TextView>) desciption -> desciption.setText(model.getDescription()));
+							finder.setText(R.id.desciption, model.getDescription());
 						}
 					}
 				}

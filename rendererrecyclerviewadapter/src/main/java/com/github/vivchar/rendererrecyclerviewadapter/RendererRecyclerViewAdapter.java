@@ -1,5 +1,6 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
+import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 @SuppressWarnings("unchecked")
 public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
+	private Context mContext;
 	@NonNull
 	protected final ArrayList<ViewModel> mItems = new ArrayList<>();
 	@NonNull
@@ -42,6 +44,16 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected boolean mDiffUtilEnabled = false;
 	protected boolean mLoadMoreVisible = false;
 	protected int mLoadMorePosition;
+
+	/**
+	 * Please use {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
+	public RendererRecyclerViewAdapter() {}
+
+	public RendererRecyclerViewAdapter(@NonNull final Context context) {
+		mContext = context;
+	}
 
 	@Override
 	public ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
@@ -72,6 +84,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	public void registerRenderer(@NonNull final ViewRenderer renderer) {
+		renderer.setContext(mContext);
 		final Type type = renderer.getType();
 
 		if (!mTypes.contains(type)) {

@@ -37,14 +37,14 @@ public class DiffUtilFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		mAdapter = new RendererRecyclerViewAdapter();
+		mAdapter = new RendererRecyclerViewAdapter(getContext());
 
 		mAdapter.setDiffCallback(new DiffCallback());
 //		adapter.enableDiffUtil(); /* Or just call it to enable DiffUtil with DefaultDiffCallback */
 
-		mAdapter.registerRenderer(new ViewBinder<>(R.layout.item_simple_square, DiffViewModel.class, getContext(),
+		mAdapter.registerRenderer(new ViewBinder<>(R.layout.item_simple_square, DiffViewModel.class,
 				(model, finder, payloads) -> finder
-						.find(R.id.text, (ViewProvider<TextView>) textView -> textView.setText(model.getText()))
+						.setText(R.id.text, model.getText())
 						.setOnClickListener(R.id.text, v -> {
 							reloadItems(model);
 						})

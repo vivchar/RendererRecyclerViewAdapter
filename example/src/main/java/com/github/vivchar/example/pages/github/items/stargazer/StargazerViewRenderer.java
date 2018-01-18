@@ -28,8 +28,8 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 	private final Listener mListener;
 	private final int mLayoutID;
 
-	public StargazerViewRenderer(final int layoutID, final Context context, @NonNull final Listener listener) {
-		super(StargazerModel.class, context);
+	public StargazerViewRenderer(final int layoutID, @NonNull final Listener listener) {
+		super(StargazerModel.class);
 		mLayoutID = layoutID;
 		mListener = listener;
 	}

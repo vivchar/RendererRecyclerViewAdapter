@@ -26,8 +26,8 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 
 	private static final String TAG = RecyclerViewRenderer.class.getSimpleName();
 
-	public RecyclerViewRenderer(@NonNull final Context context) {
-		super(RecyclerViewModel.class, context);
+	public RecyclerViewRenderer() {
+		super(RecyclerViewModel.class);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 	@NonNull
 	@Override
 	protected RendererRecyclerViewAdapter createAdapter() {
-		final NestedAdapter nestedAdapter = new NestedAdapter();
+		final NestedAdapter nestedAdapter = new NestedAdapter(getContext());
 		nestedAdapter.setDiffCallback(new DefaultDiffCallback());
 		return nestedAdapter;
 	}

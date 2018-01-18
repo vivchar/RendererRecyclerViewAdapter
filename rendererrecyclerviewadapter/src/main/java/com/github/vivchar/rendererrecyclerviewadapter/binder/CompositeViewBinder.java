@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
+import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
@@ -34,6 +35,11 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 	@Nullable
 	private CompositeViewStateProvider<M, CompositeViewHolder> mViewStateProvider = null;
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public CompositeViewBinder(final int layoutID,
 	                           @IdRes final int recyclerViewID,
 	                           @NonNull final Class<M> type,
@@ -49,6 +55,11 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 		mDecorations.addAll(decorations);
 	}
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public CompositeViewBinder(final int layoutID,
 	                           @IdRes final int recyclerViewID,
 	                           @NonNull final Class<M> type,
@@ -60,6 +71,11 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 		mBinder = binder;
 	}
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public CompositeViewBinder(final int layoutID,
 	                           @IdRes final int recyclerViewID,
 	                           @NonNull final Class<M> type,
@@ -72,6 +88,11 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 		mBinder = binder;
 	}
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public CompositeViewBinder(final int layoutID,
 	                           @IdRes final int recyclerViewID,
 	                           @NonNull final Class<M> type,
@@ -82,6 +103,11 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 		});
 	}
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public CompositeViewBinder(final int layoutID,
 	                           @IdRes final int recyclerViewID,
 	                           @NonNull final Class<M> type,
@@ -91,6 +117,11 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 		mDecorations.addAll(decorations);
 	}
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public CompositeViewBinder(final int layoutID,
 	                           @IdRes final int recyclerViewID,
 	                           @NonNull final Class<M> type,
@@ -100,6 +131,11 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 		mViewStateProvider = viewStateProvider;
 	}
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public CompositeViewBinder(final int layoutID,
 	                           @IdRes final int recyclerViewID,
 	                           @NonNull final Class<M> type,
@@ -107,6 +143,77 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 	                           @NonNull final List<? extends RecyclerView.ItemDecoration> decorations,
 	                           @Nullable final CompositeViewStateProvider<M, CompositeViewHolder> viewStateProvider) {
 		this(layoutID, recyclerViewID, type, context);
+		mViewStateProvider = viewStateProvider;
+		mDecorations.addAll(decorations);
+	}
+
+
+	public CompositeViewBinder(final int layoutID,
+	                           @IdRes final int recyclerViewID,
+	                           @NonNull final Class<M> type,
+	                           @NonNull final ViewBinder.Binder<M> binder,
+	                           @NonNull final List<? extends RecyclerView.ItemDecoration> decorations,
+	                           @Nullable final CompositeViewStateProvider<M, CompositeViewHolder> viewStateProvider) {
+		super(type);
+		mLayoutID = layoutID;
+		mRecyclerViewID = recyclerViewID;
+		mBinder = binder;
+		mViewStateProvider = viewStateProvider;
+		mDecorations.addAll(decorations);
+	}
+
+	public CompositeViewBinder(final int layoutID,
+	                           @IdRes final int recyclerViewID,
+	                           @NonNull final Class<M> type,
+	                           @NonNull final ViewBinder.Binder<M> binder) {
+		super(type);
+		mLayoutID = layoutID;
+		mRecyclerViewID = recyclerViewID;
+		mBinder = binder;
+	}
+
+	public CompositeViewBinder(final int layoutID,
+	                           @IdRes final int recyclerViewID,
+	                           @NonNull final Class<M> type,
+	                           @NonNull final ViewBinder.Binder<M> binder,
+	                           @NonNull final ViewRenderer... renderers) {
+		super(type, renderers);
+		mLayoutID = layoutID;
+		mRecyclerViewID = recyclerViewID;
+		mBinder = binder;
+	}
+
+	public CompositeViewBinder(final int layoutID,
+	                           @IdRes final int recyclerViewID,
+	                           @NonNull final Class<M> type) {
+		this(layoutID, recyclerViewID, type, new ViewBinder.Binder<M>() {
+			@Override
+			public void bindView(@NonNull final M model, @NonNull final ViewFinder finder, @NonNull final List<Object> payloads) {}
+		});
+	}
+
+	public CompositeViewBinder(final int layoutID,
+	                           @IdRes final int recyclerViewID,
+	                           @NonNull final Class<M> type,
+	                           @NonNull final List<? extends RecyclerView.ItemDecoration> decorations) {
+		this(layoutID, recyclerViewID, type);
+		mDecorations.addAll(decorations);
+	}
+
+	public CompositeViewBinder(final int layoutID,
+	                           @IdRes final int recyclerViewID,
+	                           @NonNull final Class<M> type,
+	                           @Nullable final CompositeViewStateProvider<M, CompositeViewHolder> viewStateProvider) {
+		this(layoutID, recyclerViewID, type);
+		mViewStateProvider = viewStateProvider;
+	}
+
+	public CompositeViewBinder(final int layoutID,
+	                           @IdRes final int recyclerViewID,
+	                           @NonNull final Class<M> type,
+	                           @NonNull final List<? extends RecyclerView.ItemDecoration> decorations,
+	                           @Nullable final CompositeViewStateProvider<M, CompositeViewHolder> viewStateProvider) {
+		this(layoutID, recyclerViewID, type);
 		mViewStateProvider = viewStateProvider;
 		mDecorations.addAll(decorations);
 	}

@@ -1,10 +1,12 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinderFactory;
 
 /**
  * Created by Vivchar Vitaly on 12/26/17.
@@ -15,16 +17,18 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
 	private int mViewStateID = UNDEFINED;
 	private Class<? extends ViewModel> mType;
-	@NonNull
-	private final ViewFinder mViewFinder;
+	@Nullable
+	private ViewFinder mViewFinder;
 
 	public ViewHolder(final View itemView) {
 		super(itemView);
-		mViewFinder = new ViewFinderImpl(itemView);
 	}
 
 	@NonNull
 	public ViewFinder getViewFinder() {
+		if (mViewFinder == null) {
+			mViewFinder = ViewFinderFactory.create(itemView);
+		}
 		return mViewFinder;
 	}
 

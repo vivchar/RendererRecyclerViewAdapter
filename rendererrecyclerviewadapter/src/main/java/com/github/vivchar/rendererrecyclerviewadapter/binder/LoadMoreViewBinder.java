@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.github.vivchar.rendererrecyclerviewadapter.LoadMoreViewModel;
+import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -13,6 +14,11 @@ import java.util.List;
 
 public class LoadMoreViewBinder extends ViewBinder<LoadMoreViewModel> {
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public LoadMoreViewBinder(final int layoutID,
 	                          @NonNull final Class<LoadMoreViewModel> type,
 	                          @NonNull final Context context,
@@ -20,6 +26,11 @@ public class LoadMoreViewBinder extends ViewBinder<LoadMoreViewModel> {
 		super(layoutID, type, context, binder);
 	}
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public LoadMoreViewBinder(final int layoutID,
 	                          @NonNull final Class<LoadMoreViewModel> type,
 	                          @NonNull final Context context) {
@@ -31,7 +42,32 @@ public class LoadMoreViewBinder extends ViewBinder<LoadMoreViewModel> {
 		});
 	}
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public LoadMoreViewBinder(final int layoutID, @NonNull final Context context) {
 		this(layoutID, LoadMoreViewModel.class, context);
+	}
+
+	public LoadMoreViewBinder(final int layoutID,
+	                          @NonNull final Class<LoadMoreViewModel> type,
+	                          @NonNull final Binder<LoadMoreViewModel> binder) {
+		super(layoutID, type, binder);
+	}
+
+	public LoadMoreViewBinder(final int layoutID,
+	                          @NonNull final Class<LoadMoreViewModel> type) {
+		this(layoutID, type, new Binder<LoadMoreViewModel>() {
+			@Override
+			public void bindView(@NonNull final LoadMoreViewModel model,
+			                     @NonNull final ViewFinder finder,
+			                     @NonNull final List<Object> payloads) {}
+		});
+	}
+
+	public LoadMoreViewBinder(final int layoutID) {
+		this(layoutID, LoadMoreViewModel.class);
 	}
 }

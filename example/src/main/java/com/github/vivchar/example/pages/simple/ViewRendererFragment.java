@@ -34,9 +34,9 @@ public class ViewRendererFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter(getContext());
 
-		adapter.registerRenderer(new RectViewRenderer(RectViewModel.class, getContext()));
+		adapter.registerRenderer(new RectViewRenderer(RectViewModel.class));
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);
 
@@ -51,8 +51,8 @@ public class ViewRendererFragment extends BaseScreenFragment {
 
 	public static class RectViewRenderer extends ViewRenderer<RectViewModel, RectViewHolder> {
 
-		public RectViewRenderer(@NonNull final Class<RectViewModel> type, @NonNull final Context context) {
-			super(type, context);
+		public RectViewRenderer(@NonNull final Class<RectViewModel> type) {
+			super(type);
 		}
 
 		@Override

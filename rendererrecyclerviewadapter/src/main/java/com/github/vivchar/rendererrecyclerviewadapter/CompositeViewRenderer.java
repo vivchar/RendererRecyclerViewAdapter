@@ -22,12 +22,31 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 	@NonNull
 	private final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public CompositeViewRenderer(@NonNull final Class<M> type, @NonNull final Context context) {
 		super(type, context);
 	}
 
+	/**
+	 * Please use a constructor without Context
+	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
+	 */
+	@Deprecated
 	public CompositeViewRenderer(@NonNull final Class<M> type, @NonNull final Context context, @NonNull final ViewRenderer... renderers) {
 		super(type, context);
+		Collections.addAll(mRenderers, renderers);
+	}
+
+	public CompositeViewRenderer(@NonNull final Class<M> type) {
+		super(type);
+	}
+
+	public CompositeViewRenderer(@NonNull final Class<M> type, @NonNull final ViewRenderer... renderers) {
+		super(type);
 		Collections.addAll(mRenderers, renderers);
 	}
 
@@ -85,7 +104,7 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 
 	@NonNull
 	protected RendererRecyclerViewAdapter createAdapter() {
-		return new RendererRecyclerViewAdapter();
+		return new RendererRecyclerViewAdapter(getContext());
 	}
 
 	@NonNull

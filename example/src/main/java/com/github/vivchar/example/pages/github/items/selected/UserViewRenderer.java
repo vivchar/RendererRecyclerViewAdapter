@@ -20,8 +20,8 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
  */
 public class UserViewRenderer extends ViewRenderer<StargazerModel, UserViewHolder> {
 
-	public UserViewRenderer(@NonNull final Context context) {
-		super(StargazerModel.class, context);
+	public UserViewRenderer() {
+		super(StargazerModel.class);
 	}
 
 	@Override

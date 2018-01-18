@@ -17,8 +17,8 @@ public class CategoryViewRenderer extends ViewRenderer<CategoryModel, CategoryVi
 	@NonNull
 	private final Listener mListener;
 
-	public CategoryViewRenderer(final Context context, @NonNull final Listener listener) {
-		super(CategoryModel.class, context);
+	public CategoryViewRenderer(@NonNull final Listener listener) {
+		super(CategoryModel.class);
 		mListener = listener;
 	}
 

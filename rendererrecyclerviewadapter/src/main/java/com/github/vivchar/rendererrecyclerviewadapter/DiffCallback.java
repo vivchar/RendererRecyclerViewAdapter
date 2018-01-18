@@ -12,10 +12,10 @@ import java.util.List;
  */
 public abstract class DiffCallback <BM extends ViewModel> extends DiffUtil.Callback {
 
-	private final List<BM> mOldItems = new ArrayList<>();
-	private final List<BM> mNewItems = new ArrayList<>();
+	protected final List<BM> mOldItems = new ArrayList<>();
+	protected final List<BM> mNewItems = new ArrayList<>();
 
-	void setItems(@NonNull final List<BM> oldItems, @NonNull final List<BM> newItems) {
+	public void setItems(@NonNull final List<BM> oldItems, @NonNull final List<BM> newItems) {
 		mOldItems.clear();
 		mOldItems.addAll(oldItems);
 

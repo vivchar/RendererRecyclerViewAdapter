@@ -43,14 +43,13 @@ public class ViewStateFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter(getContext());
 
 		adapter.registerRenderer(
 				new CompositeViewBinder<>(
 						R.layout.item_simple_composite,
 						R.id.recycler_view,
 						StateViewModel.class,
-						getContext(),
 						Collections.singletonList(new BetweenSpacesItemDecoration(10, 10)),
 						new CompositeViewStateProvider<StateViewModel, CompositeViewHolder>() {
 							@Override
@@ -78,8 +77,8 @@ public class ViewStateFragment extends BaseScreenFragment {
 	}
 
 	private ViewRenderer getAnyViewRenderer() {
-		return new ViewBinder<>(R.layout.item_simple_square, DiffUtilFragment.DiffViewModel.class, getContext(),
-				(model, finder, payloads) -> finder.find(R.id.text, (ViewProvider<TextView>) textView -> textView.setText(model.getText()))
+		return new ViewBinder<>(R.layout.item_simple_square, DiffUtilFragment.DiffViewModel.class,
+				(model, finder, payloads) -> finder.setText(R.id.text, model.getText())
 		);
 	}
 
