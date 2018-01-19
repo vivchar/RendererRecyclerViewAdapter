@@ -51,6 +51,7 @@ public class SomeModel implements ViewModel {
 	<TextView android:id = "@+id/title" ... />
 	<ImageView android:id = "@+id/image" ... />
 	<Button android:id = "@+id/button" ... />
+	<Custom android:id = "@+id/custom" ... />
 </LinearLayout>
 ```
 
@@ -62,7 +63,7 @@ mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
 	R.layout.item_layout,
 	SomeModel.class,
 	(model, finder, payloads) -> finder
-		//.find(R.id.custom, (ViewProvider<CustomView>) customView -> { ... })
+		.find(R.id.custom, (ViewProvider<CustomView>) customView -> { ... })
 		.setBackground(R.id.image, model.getBackground())
 		.setText(R.id.text, model.getText())
 		.setOnClickListener(R.id.button, v -> { ... })
