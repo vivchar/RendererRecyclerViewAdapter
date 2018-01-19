@@ -13,7 +13,7 @@
 
 ## Motivation
 * [A RecyclerView with multiple item types  —  Medium](https://medium.com/@vivchar/a-recyclerview-with-multiple-item-types-dfba3979050)
-* [How to easily add Nested RecyclerView —  Medium](https://medium.com/@vivchar/easy-handling-of-lists-rendererrecyclerviewadapter-part-2-3b18c8ea6f1b)
+* [How to easily add Nested RecyclerView  —  Medium](https://medium.com/@vivchar/easy-handling-of-lists-rendererrecyclerviewadapter-part-2-3b18c8ea6f1b)
 
 ## Example
 
