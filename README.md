@@ -51,7 +51,7 @@ public class SomeModel implements ViewModel {
 	<TextView android:id = "@+id/title" ... />
 	<ImageView android:id = "@+id/image" ... />
 	<Button android:id = "@+id/button" ... />
-	<Custom android:id = "@+id/custom" ... />
+	<CustomView android:id = "@+id/custom" ... />
 </LinearLayout>
 ```
 
