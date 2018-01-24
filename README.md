@@ -11,11 +11,11 @@
 * [Can be used without ViewHolder - use ViewBinder instead of ViewRenderer](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-View-Binder);
 * Using this library will help you to follow SOLID principles.
 
-## Motivation
+## Articles
 * [A RecyclerView with multiple item types  —  Medium](https://medium.com/@vivchar/a-recyclerview-with-multiple-item-types-dfba3979050)
 * [How to easily add Nested RecyclerView  —  Medium](https://medium.com/@vivchar/easy-handling-of-lists-rendererrecyclerviewadapter-part-2-3b18c8ea6f1b)
 
-## Example
+## Examples
 
 | [All](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/github/GithubFragment.java#L78) | [View Renderer](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/ViewRendererFragment.java#L37) | [View Binder](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/ViewBinderFragment.java#L33) | [Load More](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/LoadMoreFragment.java#L45) |
 | --- | --- | --- | --- |
