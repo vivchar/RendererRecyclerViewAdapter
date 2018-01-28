@@ -7,19 +7,24 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 /**
  * Created by Vivchar Vitaly on 29.12.17.
- *  * <p>
- * More detail you can get there: https://github.com/vivchar/ViewFinder
+ * <p>
+ * Library: https://github.com/vivchar/ViewFinder
  */
 
 @SuppressWarnings({"unused", "UnusedReturnValue"})
@@ -34,11 +39,19 @@ public interface ViewFinder {
 	@NonNull
 	<V extends View> V getRootView();
 	@NonNull
-	ViewFinder setOnClickListener(@IdRes int ID, @NonNull View.OnClickListener onClickListener);
+	ViewFinder setOnClickListener(@IdRes int ID, View.OnClickListener listener);
 	@NonNull
-	ViewFinder setOnLongClickListener(@IdRes int ID, @NonNull View.OnLongClickListener onClickListener);
+	ViewFinder setOnTouchListener(@IdRes int ID, View.OnTouchListener listener);
 	@NonNull
-	ViewFinder setOnClickListener(@NonNull View.OnClickListener onClickListener);
+	ViewFinder setOnLongClickListener(@IdRes int ID, View.OnLongClickListener listener);
+	@NonNull
+	ViewFinder setOnClickListener(@NonNull View.OnClickListener listener);
+	@NonNull
+	ViewFinder setOnCheckedChangeListener(@IdRes int ID, CompoundButton.OnCheckedChangeListener listener);
+	@NonNull
+	ViewFinder setClickable(@IdRes int ID, boolean clickable);
+	@NonNull
+	ViewFinder setLongClickable(@IdRes int ID, boolean clickable);
 	@NonNull
 	ViewFinder setText(@IdRes int ID, CharSequence text);
 	@NonNull
@@ -48,9 +61,9 @@ public interface ViewFinder {
 	@NonNull
 	ViewFinder setTextSize(@IdRes int ID, float size);
 	@NonNull
-	ViewFinder setTypeface(int ID, Typeface typeface, int style);
+	ViewFinder setTypeface(@IdRes int ID, Typeface typeface, int style);
 	@NonNull
-	ViewFinder setTypeface(int ID, Typeface typeface);
+	ViewFinder setTypeface(@IdRes int ID, Typeface typeface);
 	@NonNull
 	ViewFinder setError(@IdRes int ID, CharSequence error);
 	@NonNull
@@ -104,17 +117,49 @@ public interface ViewFinder {
 	@NonNull
 	ViewFinder removeAllViews(@IdRes int ID);
 	@NonNull
-	ViewFinder setEnabled(int ID, boolean enable);
+	ViewFinder setEnabled(@IdRes int ID, boolean enable);
 	@NonNull
-	ViewFinder setEnabled(int ID);
+	ViewFinder setEnabled(@IdRes int ID);
 	@NonNull
-	ViewFinder setDisabled(int ID);
+	ViewFinder setDisabled(@IdRes int ID);
 	@NonNull
-	ViewFinder setTag(int ID, Object tag);
+	ViewFinder setTag(@IdRes int ID, Object tag);
 	@NonNull
-	ViewFinder setChecked(int ID, boolean checked);
+	ViewFinder setTag(@IdRes int ID, int key, Object tag);
 	@NonNull
-	ViewFinder setSelected(int ID, boolean selected);
+	ViewFinder setChecked(@IdRes int ID, boolean checked);
 	@NonNull
-	ViewFinder setPressed(int ID, boolean pressed);
+	ViewFinder setSelected(@IdRes int ID, boolean selected);
+	@NonNull
+	ViewFinder setPressed(@IdRes int ID, boolean pressed);
+	@NonNull
+	ViewFinder setProgress(@IdRes int ID, int progress);
+	@NonNull @RequiresApi(api = Build.VERSION_CODES.N)
+	ViewFinder setProgress(@IdRes int ID, int progress, boolean animate);
+	@NonNull
+	ViewFinder setMaxProgress(@IdRes int ID, int max);
+	@NonNull @RequiresApi(api = Build.VERSION_CODES.O)
+	ViewFinder setMinProgress(@IdRes int ID, int min);
+	@NonNull
+	ViewFinder setProgress(@IdRes int ID, int progress, int max);
+	@NonNull @RequiresApi(api = Build.VERSION_CODES.O)
+	ViewFinder setProgress(@IdRes int ID, int progress, int min, int max);
+	@NonNull
+	ViewFinder setRating(@IdRes int ID, float rating);
+	@NonNull
+	ViewFinder setMaxRating(@IdRes int ID, int max);
+	@NonNull @RequiresApi(api = Build.VERSION_CODES.O)
+	ViewFinder setMinRating(@IdRes int ID, int min);
+	@NonNull
+	ViewFinder setRating(@IdRes int ID, float rating, int max);
+	@NonNull @RequiresApi(api = Build.VERSION_CODES.O)
+	ViewFinder setRating(@IdRes int ID, float rating, int min, int max);
+	@NonNull
+	ViewFinder setAdapter(@IdRes int ID, Adapter adapter);
+	@NonNull
+	ViewFinder setOnItemClickListener(@IdRes int ID, AdapterView.OnItemClickListener listener);
+	@NonNull
+	ViewFinder setOnItemLongClickListener(@IdRes int ID, AdapterView.OnItemLongClickListener listener);
+	@NonNull
+	ViewFinder setOnItemSelectedListener(@IdRes int ID, AdapterView.OnItemSelectedListener listener);
 }

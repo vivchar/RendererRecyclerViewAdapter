@@ -18,8 +18,13 @@ import android.support.annotation.StringRes;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Checkable;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 
@@ -66,22 +71,50 @@ class ViewFinderImpl implements ViewFinder {
 
 	@NonNull
 	@Override
-	public ViewFinder setOnClickListener(final int ID, @NonNull final View.OnClickListener onClickListener) {
-		findViewById(ID).setOnClickListener(onClickListener);
+	public ViewFinder setOnClickListener(final int ID, final View.OnClickListener listener) {
+		findViewById(ID).setOnClickListener(listener);
 		return this;
 	}
 
 	@NonNull
 	@Override
-	public ViewFinder setOnLongClickListener(final int ID, @NonNull final View.OnLongClickListener onClickListener) {
-		find(ID).setOnLongClickListener(onClickListener);
+	public ViewFinder setOnTouchListener(final int ID, final View.OnTouchListener listener) {
+		find(ID).setOnTouchListener(listener);
 		return this;
 	}
 
 	@NonNull
 	@Override
-	public ViewFinder setOnClickListener(@NonNull final View.OnClickListener onClickListener) {
-		getRootView().setOnClickListener(onClickListener);
+	public ViewFinder setOnLongClickListener(final int ID, final View.OnLongClickListener listener) {
+		find(ID).setOnLongClickListener(listener);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setOnClickListener(@NonNull final View.OnClickListener listener) {
+		getRootView().setOnClickListener(listener);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setOnCheckedChangeListener(final int ID, final CompoundButton.OnCheckedChangeListener listener) {
+		((CompoundButton) find(ID)).setOnCheckedChangeListener(listener);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setClickable(final int ID, final boolean clickable) {
+		find(ID).setClickable(clickable);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setLongClickable(final int ID, final boolean clickable) {
+		find(ID).setLongClickable(clickable);
 		return this;
 	}
 
@@ -157,7 +190,7 @@ class ViewFinderImpl implements ViewFinder {
 
 	@NonNull
 	@Override
-	public ViewFinder setBackgroundColor(int ID, @ColorInt final int color) {
+	public ViewFinder setBackgroundColor(final int ID, @ColorInt final int color) {
 		find(ID).setBackgroundColor(color);
 		return this;
 	}
@@ -339,6 +372,13 @@ class ViewFinderImpl implements ViewFinder {
 
 	@NonNull
 	@Override
+	public ViewFinder setTag(final int ID, final int key, final Object tag) {
+		find(ID).setTag(key, tag);
+		return this;
+	}
+
+	@NonNull
+	@Override
 	public ViewFinder setChecked(final int ID, final boolean checked) {
 		((Checkable) find(ID)).setChecked(checked);
 		return this;
@@ -355,6 +395,126 @@ class ViewFinderImpl implements ViewFinder {
 	@Override
 	public ViewFinder setPressed(final int ID, final boolean pressed) {
 		find(ID).setPressed(pressed);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setProgress(final int ID, final int progress) {
+		((ProgressBar) find(ID)).setProgress(progress);
+		return this;
+	}
+
+	@RequiresApi(api = Build.VERSION_CODES.N)
+	@NonNull
+	@Override
+	public ViewFinder setProgress(final int ID, final int progress, final boolean animate) {
+		((ProgressBar) find(ID)).setProgress(progress, animate);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setMaxProgress(final int ID, final int max) {
+		((ProgressBar) find(ID)).setMax(max);
+		return this;
+	}
+
+	@RequiresApi(api = Build.VERSION_CODES.O)
+	@NonNull
+	@Override
+	public ViewFinder setMinProgress(final int ID, final int min) {
+		((ProgressBar) find(ID)).setMin(min);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setProgress(final int ID, final int progress, final int max) {
+		final ProgressBar progressBar = find(ID);
+		progressBar.setMax(max);
+		progressBar.setProgress(progress);
+		return this;
+	}
+
+	@RequiresApi(api = Build.VERSION_CODES.O)
+	@NonNull
+	@Override
+	public ViewFinder setProgress(final int ID, final int progress, final int min, final int max) {
+		final ProgressBar progressBar = find(ID);
+		progressBar.setProgress(progress);
+		progressBar.setMin(min);
+		progressBar.setMax(max);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setRating(final int ID, final float rating) {
+		((RatingBar) find(ID)).setRating(rating);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setMaxRating(final int ID, final int max) {
+		((RatingBar) find(ID)).setMax(max);
+		return this;
+	}
+
+	@RequiresApi(api = Build.VERSION_CODES.O)
+	@NonNull
+	@Override
+	public ViewFinder setMinRating(final int ID, final int min) {
+		((RatingBar) find(ID)).setMin(min);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setRating(final int ID, final float rating, final int max) {
+		final RatingBar ratingBar = find(ID);
+		ratingBar.setRating(rating);
+		ratingBar.setMax(max);
+		return this;
+	}
+
+	@RequiresApi(api = Build.VERSION_CODES.O)
+	@NonNull
+	@Override
+	public ViewFinder setRating(final int ID, final float rating, final int min, final int max) {
+		final RatingBar ratingBar = find(ID);
+		ratingBar.setRating(rating);
+		ratingBar.setMin(min);
+		ratingBar.setMax(max);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setAdapter(final int ID, final Adapter adapter) {
+		((AdapterView) find(ID)).setAdapter(adapter);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setOnItemClickListener(final int ID, final AdapterView.OnItemClickListener listener) {
+		((AdapterView) find(ID)).setOnItemClickListener(listener);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setOnItemLongClickListener(final int ID, final AdapterView.OnItemLongClickListener listener) {
+		((AdapterView) find(ID)).setOnItemLongClickListener(listener);
+		return this;
+	}
+
+	@NonNull
+	@Override
+	public ViewFinder setOnItemSelectedListener(final int ID, final AdapterView.OnItemSelectedListener listener) {
+		((AdapterView) find(ID)).setOnItemSelectedListener(listener);
 		return this;
 	}
 
