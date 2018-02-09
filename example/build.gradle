@@ -39,6 +39,7 @@ dependencies {
 	compile "jp.wasabeef:glide-transformations:$rootProject.ext.glideTransformationsVersion"
 	compile "jp.co.cyberagent.android.gpuimage:gpuimage-library:$rootProject.ext.gpuImageVersion"
 
+//	compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.5.0'
 	compile project(path: ':rendererrecyclerviewadapter')
 	compile project(path: ':network')
 }
