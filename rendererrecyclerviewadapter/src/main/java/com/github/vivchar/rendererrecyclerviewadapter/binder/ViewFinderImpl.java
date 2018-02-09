@@ -302,7 +302,7 @@ class ViewFinderImpl implements ViewFinder {
 
 	@NonNull
 	@Override
-	public ViewFinder setAlpha(final int ID, final int alpha) {
+	public ViewFinder setAlpha(final int ID, final float alpha) {
 		find(ID).setAlpha(alpha);
 		return this;
 	}

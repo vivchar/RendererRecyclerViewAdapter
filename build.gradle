@@ -37,10 +37,10 @@ ext {
 	versionName = "1.0"
 	versionCode = 1
 	minSdkVersion = 14
-	targetSdkVersion = 25
-	compileSdkVersion = 25
-	buildToolsVersion = "26.0.2"
-	supportLibraryVersion = "25.3.1"
+	targetSdkVersion = 26
+	compileSdkVersion = 26
+	buildToolsVersion = "27.0.3"
+	supportLibraryVersion = "27.0.2"
 	constraintVersion = "1.0.2"
 	retrofit2Version = "2.3.0"
 	glideVersion = "4.0.0"

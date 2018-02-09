@@ -105,7 +105,7 @@ public interface ViewFinder {
 	@NonNull
 	ViewFinder setVisibility(@IdRes int ID, int visibility);
 	@NonNull
-	ViewFinder setAlpha(@IdRes int ID, int alpha);
+	ViewFinder setAlpha(@IdRes int ID, float alpha);
 	@NonNull
 	ViewFinder addView(@IdRes int ID, View child);
 	@NonNull
