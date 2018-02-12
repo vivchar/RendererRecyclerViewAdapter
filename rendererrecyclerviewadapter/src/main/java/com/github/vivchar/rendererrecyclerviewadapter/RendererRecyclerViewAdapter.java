@@ -34,7 +34,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected final ArrayList<ViewHolder> mBoundViewHolders = new ArrayList<>();
 
 	@Nullable
-	private ListUpdateCallback mUpdateCallback = null;
+	protected ListUpdateCallback mUpdateCallback = null;
 	@NonNull
 	protected DiffCallback mDiffCallback = new DefaultDiffCallback();
 	@NonNull
