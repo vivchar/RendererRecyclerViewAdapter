@@ -30,7 +30,7 @@ public class ViewBinderFragment extends ViewRendererFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter(getContext());
+		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
 
 		adapter.registerRenderer(new ViewBinder<>(R.layout.item_simple, RectViewModel.class,
 				(model, finder, payloads) -> finder

@@ -65,7 +65,7 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 	@NonNull
 	@Override
 	protected RendererRecyclerViewAdapter createAdapter() {
-		final NestedAdapter nestedAdapter = new NestedAdapter(getContext());
+		final NestedAdapter nestedAdapter = new NestedAdapter();
 		nestedAdapter.setDiffCallback(new DefaultDiffCallback());
 		return nestedAdapter;
 	}

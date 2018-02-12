@@ -16,7 +16,6 @@ public class LoadMoreViewBinder extends ViewBinder<LoadMoreViewModel> {
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public LoadMoreViewBinder(final int layoutID,
@@ -28,7 +27,6 @@ public class LoadMoreViewBinder extends ViewBinder<LoadMoreViewModel> {
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public LoadMoreViewBinder(final int layoutID,
@@ -44,7 +42,6 @@ public class LoadMoreViewBinder extends ViewBinder<LoadMoreViewModel> {
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public LoadMoreViewBinder(final int layoutID, @NonNull final Context context) {

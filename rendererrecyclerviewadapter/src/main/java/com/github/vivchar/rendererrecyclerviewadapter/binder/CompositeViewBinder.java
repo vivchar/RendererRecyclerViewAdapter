@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
-import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
@@ -37,7 +36,6 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public CompositeViewBinder(final int layoutID,
@@ -57,7 +55,6 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public CompositeViewBinder(final int layoutID,
@@ -73,7 +70,6 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public CompositeViewBinder(final int layoutID,
@@ -90,7 +86,6 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public CompositeViewBinder(final int layoutID,
@@ -105,7 +100,6 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public CompositeViewBinder(final int layoutID,
@@ -119,7 +113,6 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public CompositeViewBinder(final int layoutID,
@@ -133,7 +126,6 @@ public class CompositeViewBinder <M extends CompositeViewModel> extends Composit
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public CompositeViewBinder(final int layoutID,

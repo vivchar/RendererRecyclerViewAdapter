@@ -19,8 +19,8 @@ public class NestedAdapter extends RendererRecyclerViewAdapter {
 
 	private static final String TAG = NestedAdapter.class.getSimpleName();
 
-	public NestedAdapter(@NonNull final Context context) {
-		super(context);
+	public NestedAdapter() {
+		super();
 	}
 
 	@Override

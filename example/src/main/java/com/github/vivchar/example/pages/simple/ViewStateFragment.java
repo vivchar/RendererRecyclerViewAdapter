@@ -43,7 +43,7 @@ public class ViewStateFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter(getContext());
+		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
 
 		adapter.registerRenderer(
 				new CompositeViewBinder<>(

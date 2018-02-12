@@ -76,7 +76,7 @@ public class GithubFragment extends BaseScreenFragment {
 		mSwipeToRefresh = (SwipeRefreshLayout) inflate.findViewById(R.id.refresh);
 		mSwipeToRefresh.setOnRefreshListener(() -> mGithubPresenter.onRefresh());
 
-		mRecyclerViewAdapter = new RendererRecyclerViewAdapter(getContext());
+		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
 		mRecyclerViewAdapter.setDiffCallback(new ItemsDiffCallback());
 		mRecyclerViewAdapter.registerRenderer(new LoadMoreViewBinder(R.layout.item_load_more));
 		mRecyclerViewAdapter.registerRenderer(createStargazerRenderer(R.layout.item_user_full_width));
@@ -191,7 +191,7 @@ public class GithubFragment extends BaseScreenFragment {
 
 		@Override
 		public void showSelectedUsers(@NonNull final ArrayList<ViewModel> list) {
-			final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter(getContext());
+			final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
 			adapter.registerRenderer(createUserRenderer());
 
 			final LayoutInflater inflater = LayoutInflater.from(getContext());

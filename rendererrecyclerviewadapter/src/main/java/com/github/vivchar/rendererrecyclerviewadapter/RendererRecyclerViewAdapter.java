@@ -22,7 +22,6 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 @SuppressWarnings("unchecked")
 public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-	private Context mContext;
 	@NonNull
 	protected final ArrayList<ViewModel> mItems = new ArrayList<>();
 	@NonNull
@@ -45,20 +44,15 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected boolean mLoadMoreVisible = false;
 	protected int mLoadMorePosition;
 
-	/**
-	 * Please use {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
-	 */
-	@Deprecated
 	public RendererRecyclerViewAdapter() {}
 
-	public RendererRecyclerViewAdapter(@NonNull final Context context) {
-		mContext = context;
-	}
+	@Deprecated
+	public RendererRecyclerViewAdapter(@NonNull final Context context) {}
 
 	@Override
 	public ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
 		final ViewRenderer renderer = mRenderers.get(typeIndex);
-		return renderer.createViewHolder(parent);
+		return renderer.performCreateViewHolder(parent);
 	}
 
 	@Override
@@ -84,9 +78,6 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	public void registerRenderer(@NonNull final ViewRenderer renderer) {
-		if (mContext != null) {
-			renderer.setContext(mContext);
-		}
 		final Type type = renderer.getType();
 
 		if (!mTypes.contains(type)) {

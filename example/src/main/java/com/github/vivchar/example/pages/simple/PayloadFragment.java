@@ -40,7 +40,7 @@ public class PayloadFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		mAdapter = new RendererRecyclerViewAdapter(getContext());
+		mAdapter = new RendererRecyclerViewAdapter();
 
 		mAdapter.setDiffCallback(new PayloadDiffCallback());
 

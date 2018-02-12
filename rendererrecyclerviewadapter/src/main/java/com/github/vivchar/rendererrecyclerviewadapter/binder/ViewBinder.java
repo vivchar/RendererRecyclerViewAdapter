@@ -30,7 +30,6 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public ViewBinder(@LayoutRes final int layoutID,
@@ -44,7 +43,6 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public ViewBinder(@LayoutRes final int layoutID,

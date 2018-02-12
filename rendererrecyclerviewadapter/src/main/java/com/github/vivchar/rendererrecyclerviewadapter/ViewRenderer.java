@@ -21,12 +21,10 @@ public abstract class ViewRenderer <M extends ViewModel, VH extends ViewHolder> 
 
 	@NonNull
 	private final Type mType;
-	@NonNull
 	private Context mContext;
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public ViewRenderer(@NonNull final Class<M> type, @NonNull final Context context) {
@@ -42,9 +40,17 @@ public abstract class ViewRenderer <M extends ViewModel, VH extends ViewHolder> 
 		mContext = context;
 	}
 
-	@NonNull
+	/**
+	 * @return Context or null if called before {@link #createViewHolder(ViewGroup)} method
+	 */
 	protected Context getContext() {
 		return mContext;
+	}
+
+	@NonNull
+	protected ViewHolder performCreateViewHolder(final ViewGroup parent) {
+		setContext(parent.getContext());
+		return createViewHolder(parent);
 	}
 
 	protected void performRebindView(@NonNull final M model, @NonNull final VH holder, @NonNull final List<Object> payloads) {
@@ -79,7 +85,7 @@ public abstract class ViewRenderer <M extends ViewModel, VH extends ViewHolder> 
 	public abstract void bindView(@NonNull M model, @NonNull VH holder);
 
 	@NonNull
-	public abstract VH createViewHolder(@Nullable ViewGroup parent);
+	public abstract VH createViewHolder(ViewGroup parent);
 
 	/**
 	 * Called when a view created by your adapter has been recycled.
@@ -101,12 +107,12 @@ public abstract class ViewRenderer <M extends ViewModel, VH extends ViewHolder> 
 	}
 
 	@NonNull
-	protected View inflate(@LayoutRes final int layoutID, @Nullable final ViewGroup parent, final boolean attachToRoot) {
+	protected View inflate(@LayoutRes final int layoutID, final ViewGroup parent, final boolean attachToRoot) {
 		return LayoutInflater.from(getContext()).inflate(layoutID, parent, attachToRoot);
 	}
 
 	@NonNull
-	protected View inflate(@LayoutRes final int layoutID, final @Nullable ViewGroup parent) {
+	protected View inflate(@LayoutRes final int layoutID, final ViewGroup parent) {
 		return inflate(layoutID, parent, false);
 	}
 }

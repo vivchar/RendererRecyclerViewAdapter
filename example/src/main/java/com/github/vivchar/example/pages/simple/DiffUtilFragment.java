@@ -37,7 +37,7 @@ public class DiffUtilFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		mAdapter = new RendererRecyclerViewAdapter(getContext());
+		mAdapter = new RendererRecyclerViewAdapter();
 
 		mAdapter.setDiffCallback(new DiffCallback());
 //		adapter.enableDiffUtil(); /* Or just call it to enable DiffUtil with DefaultDiffCallback */

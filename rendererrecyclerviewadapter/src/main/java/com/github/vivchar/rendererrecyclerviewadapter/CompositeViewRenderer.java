@@ -20,11 +20,10 @@ import java.util.List;
 public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH extends CompositeViewHolder> extends ViewRenderer<M, VH> {
 
 	@NonNull
-	private final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
+	protected final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public CompositeViewRenderer(@NonNull final Class<M> type, @NonNull final Context context) {
@@ -33,7 +32,6 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 
 	/**
 	 * Please use a constructor without Context
-	 * and set Context via {@link RendererRecyclerViewAdapter#RendererRecyclerViewAdapter(Context)}
 	 */
 	@Deprecated
 	public CompositeViewRenderer(@NonNull final Class<M> type, @NonNull final Context context, @NonNull final ViewRenderer... renderers) {
@@ -58,8 +56,7 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 
 	@NonNull
 	@Override
-	public VH createViewHolder(@Nullable final ViewGroup parent) {
-
+	public VH createViewHolder(final ViewGroup parent) {
 		final RendererRecyclerViewAdapter adapter = createAdapter();
 		for (final ViewRenderer renderer : mRenderers) {
 			adapter.registerRenderer(renderer);
@@ -95,7 +92,7 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 	}
 
 	@NonNull
-	protected abstract VH createCompositeViewHolder(@Nullable ViewGroup parent);
+	protected abstract VH createCompositeViewHolder(ViewGroup parent);
 
 	@NonNull
 	protected RecyclerView.LayoutManager createLayoutManager() {
@@ -104,7 +101,7 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 
 	@NonNull
 	protected RendererRecyclerViewAdapter createAdapter() {
-		return new RendererRecyclerViewAdapter(getContext());
+		return new RendererRecyclerViewAdapter();
 	}
 
 	@NonNull

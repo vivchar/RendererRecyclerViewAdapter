@@ -45,12 +45,12 @@ public class LoadMoreFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		mAdapter = new RendererRecyclerViewAdapter(getContext());
+		mAdapter = new RendererRecyclerViewAdapter();
 		mAdapter.enableDiffUtil();
 
 
 //		mAdapter.setLoadMoreModel(new YourLoadMoreModel()); /* you can change the LoadMoreModel if needed */
-		mAdapter.registerRenderer(new LoadMoreViewBinder(R.layout.item_load_more, getContext()));
+		mAdapter.registerRenderer(new LoadMoreViewBinder(R.layout.item_load_more));
 		mAdapter.registerRenderer(new ViewBinder<>(R.layout.item_simple_square, SimpleViewModel.class,
 				(model, finder, payloads) -> finder.setText(R.id.text, model.getText())
 		));

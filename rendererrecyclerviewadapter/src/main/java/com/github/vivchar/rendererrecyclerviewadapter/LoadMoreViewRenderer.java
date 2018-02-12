@@ -1,6 +1,5 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
-import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
