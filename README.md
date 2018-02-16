@@ -89,7 +89,7 @@ mRecyclerViewAdapter.notifyDataSetChanged();
 * [Paltalk](https://play.google.com/store/apps/details?id=com.paltalk.chat.android): Free group video calls & chat rooms;
 * [DeskRoll](https://play.google.com/store/apps/details?id=com.deskroll.client1): Gives you secure remote access to computers;
 * [MedikTest](https://play.google.com/store/apps/details?id=com.anisov.medical.accreditation): Preparation for accreditation of doctors;
-* [KFormMaster](https://github.com/TheJuki/KFormMaster): Easily build generic forms with minimal effort;
+* [KFormMaster](https://github.com/TheJuki/KFormMaster): Easily build generic forms with minimal effort.
 
 Send me a pull request with modified README.md to get a shoutout!
 
