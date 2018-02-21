@@ -58,7 +58,7 @@ public class SomeModel implements ViewModel {
 
 * Step 3. Initialize Adapter and register the ViewBinder
 ```java
-mRecyclerViewAdapter = new RendererRecyclerViewAdapter(getContext());
+mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
 
 mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
 	R.layout.item_layout,
