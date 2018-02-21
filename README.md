@@ -81,8 +81,8 @@ mRecyclerViewAdapter.notifyDataSetChanged();
 */
 ```
 
-## Migration to v2.0
-//TODO
+## Migrations
+[v2.5.0](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Migration-to-2.5.0)
 
 ## Projects using RendererRecyclerViewAdapter
 * [Camfrog](https://play.google.com/store/apps/details?id=com.camshare.camfrog.android): Group Video Chat;
