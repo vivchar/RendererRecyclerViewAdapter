@@ -38,7 +38,7 @@ dependencies {
 ```
 
 ## Usage
-* Step 1. Add the ViewModel interface to your UI model
+* **Step 1:** Add the ViewModel interface to your UI model
 
 ```java
 public class SomeModel implements ViewModel {
@@ -46,7 +46,7 @@ public class SomeModel implements ViewModel {
 }
 ```
 
-* Step 2. Create your item_layout
+* **Step 2:** Create your item_layout
 ```xml
 <LinearLayout ... >
 	<TextView android:id = "@+id/title" ... />
@@ -56,7 +56,7 @@ public class SomeModel implements ViewModel {
 </LinearLayout>
 ```
 
-* Step 3. Initialize Adapter and register the ViewBinder
+* **Step 3:** Initialize Adapter and register the ViewBinder
 ```java
 mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
 
