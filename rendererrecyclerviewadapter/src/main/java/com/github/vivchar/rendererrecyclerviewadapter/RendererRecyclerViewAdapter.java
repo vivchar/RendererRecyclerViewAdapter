@@ -336,4 +336,12 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected RendererRecyclerViewAdapter getChildAdapter(@NonNull final CompositeViewHolder holder) {
 		return holder.getAdapter();
 	}
+
+	public void onSaveInstanceState(@NonNull final Bundle outState) {
+		//TODO: implement it
+	}
+
+	public void onRestoreInstanceState(@Nullable final Bundle savedInstanceState) {
+		//TODO: implement it
+	}
 }
