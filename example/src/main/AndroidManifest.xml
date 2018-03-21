@@ -16,8 +16,8 @@
 
 		<activity
 			android:name = "com.github.vivchar.example.MainActivity"
-			android:screenOrientation = "portrait"
 			>
+			<!--android:screenOrientation = "portrait"-->
 			<intent-filter>
 				<action android:name = "android.intent.action.MAIN" />
 

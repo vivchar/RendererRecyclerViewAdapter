@@ -1,7 +1,9 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
@@ -10,9 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
 
@@ -22,6 +28,9 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 @SuppressWarnings("unchecked")
 public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
+	protected static final String ITEM_VIEW_STATES_KEY = "renderer_adapter_item_view_states_key";
+	protected static final String RECYCLER_VIEW_STATE_KEY = "renderer_adapter_recycler_view_state_key";
+
 	@NonNull
 	protected final ArrayList<ViewModel> mItems = new ArrayList<>();
 	@NonNull
@@ -29,10 +38,12 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	@NonNull
 	protected final ArrayList<Type> mTypes = new ArrayList<>();
 	@NonNull
-	protected SparseArray<ViewState> mViewStates = new SparseArray<>();
+	protected HashMap<Integer, ViewState> mViewStates = new HashMap<>();
 	@NonNull
 	protected final ArrayList<ViewHolder> mBoundViewHolders = new ArrayList<>();
 
+	@Nullable
+	protected RecyclerView mRecyclerView = null;
 	@Nullable
 	protected ListUpdateCallback mUpdateCallback = null;
 	@NonNull
@@ -43,6 +54,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected boolean mDiffUtilEnabled = false;
 	protected boolean mLoadMoreVisible = false;
 	protected int mLoadMorePosition;
+	@Nullable
+	private Bundle mSavedInstanceState;
 
 	public RendererRecyclerViewAdapter() {}
 
@@ -284,17 +297,55 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		return new ArrayList<>(mBoundViewHolders);
 	}
 
+	/**
+	 * Use {@link #getStates()}
+	 */
+	@Deprecated
 	@NonNull
 	public SparseArray<ViewState> getViewStates() {
-		return mViewStates;
+		final SparseArray<ViewState> list = new SparseArray<>();
+
+		final Iterator<Map.Entry<Integer, ViewState>> iterator = getStates().entrySet().iterator();
+		while (iterator.hasNext()) {
+			final Map.Entry<Integer, ViewState> next = iterator.next();
+			list.put(next.getKey(), next.getValue());
+		}
+
+		return list;
 	}
 
+	/**
+	 * Use {@link #setStates(HashMap)}
+	 */
+	@Deprecated
 	public void setViewStates(@NonNull final SparseArray<ViewState> states) {
-		mViewStates = states;
+		mViewStates.clear();
+		for (int i = 0; i < states.size(); i++) {
+			final int key = states.keyAt(i);
+			final ViewState value = states.get(key);
+			mViewStates.put(key, value);
+		}
+	}
+
+	@NonNull
+	public HashMap<Integer, ViewState> getStates() {
+		saveBoundViewState();
+		return new HashMap<>(mViewStates);
+	}
+
+	public void setStates(@NonNull final HashMap<Integer, ViewState> states) {
+		mViewStates.clear();
+		mViewStates.putAll(states);
 	}
 
 	public void clearViewStates() {
 		mViewStates.clear();
+	}
+
+	protected void saveBoundViewState() {
+		for (final ViewHolder holder : mBoundViewHolders) {
+			saveViewState(holder);
+		}
 	}
 
 	protected void saveViewState(@NonNull final ViewHolder holder) {
@@ -321,6 +372,25 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		}
 	}
 
+	protected void saveRecyclerViewState(@NonNull final Bundle outState) {
+		if (mRecyclerView != null) {
+			final Parcelable recyclerViewState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+			outState.putParcelable(RECYCLER_VIEW_STATE_KEY, recyclerViewState);
+		}
+	}
+
+	protected void restoreRecyclerViewState(@Nullable final Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			final Parcelable parcelable = savedInstanceState.getParcelable(RECYCLER_VIEW_STATE_KEY);
+			if (parcelable != null && mRecyclerView != null) {
+				mRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
+				mSavedInstanceState = null;
+			} else {
+				mSavedInstanceState = savedInstanceState;
+			}
+		}
+	}
+
 	protected void onChildrenViewsRecycled(@NonNull final RendererRecyclerViewAdapter adapter) {
 		final ArrayList<ViewHolder> boundViewHolders = adapter.getBoundViewHolders();
 		for (final ViewHolder viewHolder : boundViewHolders) {
@@ -332,16 +402,38 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		return holder instanceof CompositeViewHolder;
 	}
 
+	@Override
+	public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+		super.onAttachedToRecyclerView(recyclerView);
+		mRecyclerView = recyclerView;
+		restoreRecyclerViewState(mSavedInstanceState);
+	}
+
+	@Override
+	public void onDetachedFromRecyclerView(final RecyclerView recyclerView) {
+		super.onDetachedFromRecyclerView(recyclerView);
+		mRecyclerView = null;
+	}
+
 	@NonNull
 	protected RendererRecyclerViewAdapter getChildAdapter(@NonNull final CompositeViewHolder holder) {
 		return holder.getAdapter();
 	}
 
 	public void onSaveInstanceState(@NonNull final Bundle outState) {
-		//TODO: implement it
+		saveBoundViewState();
+		outState.putSerializable(ITEM_VIEW_STATES_KEY, getStates());
+
+		saveRecyclerViewState(outState);
 	}
 
 	public void onRestoreInstanceState(@Nullable final Bundle savedInstanceState) {
-		//TODO: implement it
+		if (savedInstanceState != null) {
+			final Serializable serializable = savedInstanceState.getSerializable(ITEM_VIEW_STATES_KEY);
+			if (serializable != null && serializable instanceof HashMap) {
+				setStates((HashMap) serializable);
+			}
+		}
+		restoreRecyclerViewState(savedInstanceState);
 	}
 }

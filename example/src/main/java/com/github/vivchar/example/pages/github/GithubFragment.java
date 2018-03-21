@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -51,6 +52,7 @@ import java.util.List;
 public class GithubFragment extends BaseScreenFragment {
 
 	public static final int MAX_SPAN_COUNT = 3;
+	public static final String RECYCLERVIEW = "recyclerview";
 	private boolean mDoneItemVisibility = false;
 	private RendererRecyclerViewAdapter mRecyclerViewAdapter;
 	private RecyclerView mRecyclerView;
@@ -116,6 +118,18 @@ public class GithubFragment extends BaseScreenFragment {
 			}
 		});
 		return inflate;
+	}
+
+	@Override
+	public void onViewStateRestored(@Nullable final Bundle savedInstanceState) {
+		super.onViewStateRestored(savedInstanceState);
+		mRecyclerViewAdapter.onRestoreInstanceState(savedInstanceState);
+	}
+
+	@Override
+	public void onSaveInstanceState(@NonNull final Bundle outState) {
+		super.onSaveInstanceState(outState);
+		mRecyclerViewAdapter.onSaveInstanceState(outState);
 	}
 
 	@Override

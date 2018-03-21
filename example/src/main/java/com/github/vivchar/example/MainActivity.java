@@ -19,10 +19,11 @@ public class MainActivity extends AppCompatActivity {
 		mUIRouter = new UIRouter(this);
 		mMenuController = new OptionsMenuController(this);
 		setContentView(R.layout.main);
-		final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		final Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		mPresenter = new MainPresenter(mMenuController, mUIRouter);
+		final boolean firstInit = savedInstanceState == null;
+		mPresenter = new MainPresenter(mMenuController, mUIRouter, firstInit);
 	}
 
 	@Override

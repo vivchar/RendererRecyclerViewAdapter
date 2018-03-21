@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
@@ -22,7 +21,6 @@ import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewStateProvider;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +32,7 @@ import java.util.List;
 public class ViewStateFragment extends BaseScreenFragment {
 
 	private final YourDataProvider mYourDataProvider = new YourDataProvider();
+	private RendererRecyclerViewAdapter mRecyclerViewAdapter;
 
 	@Nullable
 	@Override
@@ -43,9 +42,9 @@ public class ViewStateFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
 
-		adapter.registerRenderer(
+		mRecyclerViewAdapter.registerRenderer(
 				new CompositeViewBinder<>(
 						R.layout.item_simple_composite,
 						R.id.recycler_view,
@@ -66,14 +65,25 @@ public class ViewStateFragment extends BaseScreenFragment {
 		);
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);
-
-		adapter.setItems(mYourDataProvider.getStateItems());
+		mRecyclerViewAdapter.setItems(mYourDataProvider.getStateItems());
 
 		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-		recyclerView.setAdapter(adapter);
+		recyclerView.setAdapter(mRecyclerViewAdapter);
 		recyclerView.addItemDecoration(new BetweenSpacesItemDecoration(10, 10));
 
 		return view;
+	}
+
+	@Override
+	public void onViewStateRestored(@Nullable final Bundle savedInstanceState) {
+		super.onViewStateRestored(savedInstanceState);
+		mRecyclerViewAdapter.onRestoreInstanceState(savedInstanceState);
+	}
+
+	@Override
+	public void onSaveInstanceState(@NonNull final Bundle outState) {
+		super.onSaveInstanceState(outState);
+		mRecyclerViewAdapter.onSaveInstanceState(outState);
 	}
 
 	private ViewRenderer getAnyViewRenderer() {

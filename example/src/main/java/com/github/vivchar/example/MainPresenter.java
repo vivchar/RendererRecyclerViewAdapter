@@ -15,11 +15,13 @@ class MainPresenter extends BasePresenter {
 	@NonNull
 	private final UIRouter mUIRouter;
 
-	public MainPresenter(@NonNull final OptionsMenuController menuController, @NonNull final UIRouter UIRouter) {
+	public MainPresenter(@NonNull final OptionsMenuController menuController, @NonNull final UIRouter UIRouter, final boolean firstInit) {
 		mMenuController = menuController;
 		mUIRouter = UIRouter;
-		mUIRouter.openGithubPage();
 		mMenuController.hideMenuItem(DONE);
+		if (firstInit) {
+			mUIRouter.openGithubPage();
+		}
 	}
 
 	@Override
