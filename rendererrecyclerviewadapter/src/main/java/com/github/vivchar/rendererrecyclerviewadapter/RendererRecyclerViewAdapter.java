@@ -38,7 +38,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	@NonNull
 	protected final ArrayList<Type> mTypes = new ArrayList<>();
 	@NonNull
-	protected HashMap<Integer, ViewState> mViewStates = new HashMap<>();
+	protected final HashMap<Integer, ViewState> mViewStates = new HashMap<>();
 	@NonNull
 	protected final ArrayList<ViewHolder> mBoundViewHolders = new ArrayList<>();
 
