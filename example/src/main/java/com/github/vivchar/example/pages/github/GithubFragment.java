@@ -59,6 +59,8 @@ public class GithubFragment extends BaseScreenFragment {
 	private GridLayoutManager mLayoutManager;
 	private SwipeRefreshLayout mSwipeToRefresh;
 	private GithubPresenter mGithubPresenter;
+	@Nullable
+	private Bundle mSavedInstanceState;
 
 	@Nullable
 	@Override
@@ -123,7 +125,14 @@ public class GithubFragment extends BaseScreenFragment {
 	@Override
 	public void onViewStateRestored(@Nullable final Bundle savedInstanceState) {
 		super.onViewStateRestored(savedInstanceState);
-		mRecyclerViewAdapter.onRestoreInstanceState(savedInstanceState);
+		mSavedInstanceState = savedInstanceState;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		mRecyclerViewAdapter.onRestoreInstanceState(mSavedInstanceState);
+		mSavedInstanceState = null;
 	}
 
 	@Override

@@ -33,6 +33,8 @@ public class ViewStateFragment extends BaseScreenFragment {
 
 	private final YourDataProvider mYourDataProvider = new YourDataProvider();
 	private RendererRecyclerViewAdapter mRecyclerViewAdapter;
+	@Nullable
+	private Bundle mSavedInstanceState;
 
 	@Nullable
 	@Override
@@ -77,7 +79,14 @@ public class ViewStateFragment extends BaseScreenFragment {
 	@Override
 	public void onViewStateRestored(@Nullable final Bundle savedInstanceState) {
 		super.onViewStateRestored(savedInstanceState);
-		mRecyclerViewAdapter.onRestoreInstanceState(savedInstanceState);
+		mSavedInstanceState = savedInstanceState;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		mRecyclerViewAdapter.onRestoreInstanceState(mSavedInstanceState);
+		mSavedInstanceState = null;
 	}
 
 	@Override
