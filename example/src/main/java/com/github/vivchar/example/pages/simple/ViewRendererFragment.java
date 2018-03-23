@@ -79,10 +79,16 @@ public class ViewRendererFragment extends BaseScreenFragment {
 
 	public static class RectViewModel implements ViewModel {
 
+		private int mID;
 		private final String mText;
 
-		public RectViewModel(final String text) {
+		public RectViewModel(final int ID, final String text) {
+			mID = ID;
 			mText = text;
+		}
+
+		public int getID() {
+			return mID;
 		}
 
 		public String getText() {

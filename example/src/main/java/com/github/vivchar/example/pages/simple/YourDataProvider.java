@@ -54,7 +54,7 @@ public class YourDataProvider {
 	public List<ViewModel> getSquareItems() {
 		final ArrayList<ViewModel> items = new ArrayList<>();
 		for (int i = 0; i < 50; i++) {
-			items.add(new RectViewModel(String.valueOf(i)));
+			items.add(new RectViewModel(i, String.valueOf(i)));
 		}
 		return items;
 	}
