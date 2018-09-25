@@ -1,14 +1,11 @@
 package com.github.vivchar.example.pages.github.items.list;
 
-import android.support.annotation.NonNull;
-import android.util.SparseArray;
+import androidx.annotation.NonNull;
 
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewState;
-import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 /**
  * Created by Vivchar Vitaly on 21.10.17.

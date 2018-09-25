@@ -1,6 +1,6 @@
 package com.github.vivchar.example;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import static com.github.vivchar.example.MenuItemID.*;
 

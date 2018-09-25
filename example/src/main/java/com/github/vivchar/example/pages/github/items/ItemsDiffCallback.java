@@ -1,7 +1,7 @@
 package com.github.vivchar.example.pages.github.items;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;

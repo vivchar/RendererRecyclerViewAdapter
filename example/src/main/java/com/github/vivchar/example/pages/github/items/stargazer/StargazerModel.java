@@ -1,6 +1,6 @@
 package com.github.vivchar.example.pages.github.items.stargazer;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 

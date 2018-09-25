@@ -1,6 +1,6 @@
 package com.github.vivchar.example.pages.github;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.annimon.stream.Stream;

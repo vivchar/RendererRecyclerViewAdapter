@@ -1,11 +1,10 @@
 package com.github.vivchar.example.pages.simple;
 
-import android.support.v7.util.ListUpdateCallback;
+import androidx.recyclerview.widget.ListUpdateCallback;
 
 import com.github.vivchar.example.pages.simple.DiffUtilFragment.DiffViewModel;
 import com.github.vivchar.example.pages.simple.PayloadFragment.PayloadViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
-import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 
 import java.util.ArrayList;

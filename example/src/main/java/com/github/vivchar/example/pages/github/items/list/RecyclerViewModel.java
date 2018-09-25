@@ -1,6 +1,6 @@
 package com.github.vivchar.example.pages.github.items.list;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;

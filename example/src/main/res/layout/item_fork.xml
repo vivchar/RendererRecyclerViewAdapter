@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android = "http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android = "http://schemas.android.com/apk/res/android"
 	android:layout_width = "wrap_content"
 	android:layout_height = "wrap_content"
 	>
 
-	<android.support.v7.widget.AppCompatImageView
+	<androidx.appcompat.widget.AppCompatImageView
 		android:id = "@+id/fork_avatar"
 		android:layout_width = "40dp"
 		android:layout_height = "40dp"
 		android:layout_gravity = "center_vertical|start"
 		/>
 
-	<android.support.v7.widget.AppCompatTextView
+	<androidx.appcompat.widget.AppCompatTextView
 		android:id = "@+id/fork_name"
 		android:layout_width = "wrap_content"
 		android:layout_height = "wrap_content"
@@ -22,4 +22,4 @@
 		android:textSize = "16sp"
 		/>
 
-</android.support.v7.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

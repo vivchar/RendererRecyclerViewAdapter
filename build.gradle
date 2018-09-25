@@ -4,7 +4,7 @@ buildscript {
 		google()
 	}
 	dependencies {
-		classpath 'com.android.tools.build:gradle:3.0.1'
+		classpath 'com.android.tools.build:gradle:3.2.0'
 	}
 }
 
@@ -39,18 +39,19 @@ ext {
 	versionName = "1.0"
 	versionCode = 1
 	minSdkVersion = 14
-	targetSdkVersion = 26
-	compileSdkVersion = 26
-	buildToolsVersion = "27.0.3"
-	supportLibraryVersion = "27.0.2"
+	targetSdkVersion = 28
+	compileSdkVersion = 28
+	buildToolsVersion = "28.0.3"
+	androidxVersion = "1.0.0"
+	materialVersion = "1.0.0"
 	constraintVersion = "1.0.2"
 	retrofit2Version = "2.3.0"
 	glideVersion = "4.0.0"
 	glideTransformationsVersion = "3.0.1"
 	gpuImageVersion = "1.4.1"
-	rxJavaVersion = "2.1.6"
-	rxAndroidVersion = "2.0.1"
-	streamVersion = "1.1.9"
+	rxJavaVersion = "2.2.2"
+	rxAndroidVersion = "2.1.0"
+	streamVersion = "1.2.1"
 }
 
 apply plugin: 'android-reporting'
