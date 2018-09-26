@@ -26,12 +26,12 @@ android {
 }
 
 dependencies {
-	implementation 'androidx.appcompat:appcompat:1.0.0'
-	implementation 'androidx.cardview:cardview:1.0.0'
-	implementation 'androidx.percentlayout:percentlayout:1.0.0'
-	implementation 'com.google.android.material:material:1.0.0'
+	implementation "androidx.appcompat:appcompat:$rootProject.ext.androidxVersion"
+	implementation "androidx.cardview:cardview:$rootProject.ext.androidxVersion"
+	implementation "androidx.percentlayout:percentlayout:$rootProject.ext.androidxVersion"
+	implementation "com.google.android.material:material:$rootProject.ext.materialVersion"
 
-	implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+	implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintVersion"
 
 	implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
 	annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
@@ -43,7 +43,7 @@ dependencies {
 	implementation "jp.wasabeef:glide-transformations:$rootProject.ext.glideTransformationsVersion"
 	implementation "jp.co.cyberagent.android.gpuimage:gpuimage-library:$rootProject.ext.gpuImageVersion"
 
-//	compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.5.0'
+//	api 'com.github.vivchar:RendererRecyclerViewAdapter:2.5.0'
 	implementation project(path: ':rendererrecyclerviewadapter')
 	implementation project(path: ':network')
 }
