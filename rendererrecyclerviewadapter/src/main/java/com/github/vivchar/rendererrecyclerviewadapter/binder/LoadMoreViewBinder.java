@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Vivchar Vitaly on 29.12.17.
  */
-
+@SuppressWarnings("deprecation")
 public class LoadMoreViewBinder extends ViewBinder<LoadMoreViewModel> {
 
 	/**

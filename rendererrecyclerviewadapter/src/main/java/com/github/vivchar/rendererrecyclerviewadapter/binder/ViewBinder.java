@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * Universal ViewRenderer without ViewHolder
  */
+@SuppressWarnings("deprecation")
 public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder> {
 
 	@LayoutRes
@@ -74,11 +75,13 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void bindView(@NonNull final M model, @NonNull final ViewHolder finder) {
 		mBinder.bindView(model, finder.getViewFinder(), new ArrayList<>());
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void rebindView(@NonNull final M model, @NonNull final ViewHolder finder, @NonNull final List<Object> payloads) {
 		mBinder.bindView(model, finder.getViewFinder(), payloads);
 	}

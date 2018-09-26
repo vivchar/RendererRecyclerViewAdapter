@@ -44,7 +44,7 @@ ext {
 	buildToolsVersion = "28.0.3"
 	androidxVersion = "1.0.0"
 	materialVersion = "1.0.0"
-	constraintVersion = "1.0.2"
+	constraintVersion = "2.0.0-alpha2"
 	retrofit2Version = "2.3.0"
 	glideVersion = "4.0.0"
 	glideTransformationsVersion = "3.0.1"
