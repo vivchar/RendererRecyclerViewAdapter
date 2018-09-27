@@ -1,27 +1,23 @@
 package com.github.vivchar.example.pages.simple;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.EndlessScrollListener;
 import com.github.vivchar.example.widgets.ItemOffsetDecoration;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.BinderAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.LoadMoreViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
 
 import java.lang.reflect.Type;
 

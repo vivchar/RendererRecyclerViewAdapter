@@ -8,13 +8,13 @@
 	android:padding = "6dp"
 	>
 
-	<android.support.v7.widget.AppCompatImageView
+	<androidx.appcompat.widget.AppCompatImageView
 		android:id = "@+id/avatar"
 		android:layout_width = "48dp"
 		android:layout_height = "48dp"
 		/>
 
-	<android.support.v7.widget.AppCompatTextView
+	<androidx.appcompat.widget.AppCompatTextView
 		android:id = "@+id/name"
 		android:layout_width = "wrap_content"
 		android:layout_height = "wrap_content"

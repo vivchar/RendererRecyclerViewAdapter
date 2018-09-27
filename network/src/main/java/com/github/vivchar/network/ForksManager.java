@@ -1,6 +1,6 @@
 package com.github.vivchar.network;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.github.vivchar.network.models.GithubFork;
 
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.ReplaySubject;
 
 /**

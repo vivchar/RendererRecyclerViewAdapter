@@ -1,6 +1,6 @@
 package com.github.vivchar.network;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Vivchar Vitaly on 09.10.17.

@@ -1,7 +1,7 @@
 package com.github.vivchar.network;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.github.vivchar.network.models.GithubFork;
 import com.github.vivchar.network.models.GithubUser;

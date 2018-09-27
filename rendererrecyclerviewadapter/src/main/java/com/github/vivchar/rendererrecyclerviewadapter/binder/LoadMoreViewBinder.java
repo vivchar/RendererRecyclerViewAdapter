@@ -1,17 +1,16 @@
 package com.github.vivchar.rendererrecyclerviewadapter.binder;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.github.vivchar.rendererrecyclerviewadapter.LoadMoreViewModel;
-import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 
 import java.util.List;
 
 /**
  * Created by Vivchar Vitaly on 29.12.17.
  */
-
+@SuppressWarnings("deprecation")
 public class LoadMoreViewBinder extends ViewBinder<LoadMoreViewModel> {
 
 	/**

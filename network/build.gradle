@@ -21,10 +21,10 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
-    compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofit2Version"
-    compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofit2Version"
-    compile "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
-    compile "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
-    compile "com.annimon:stream:$rootProject.ext.streamVersion"
+    implementation "androidx.annotation:annotation:$androidxVersion"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofit2Version"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofit2Version"
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
+    implementation "com.annimon:stream:$rootProject.ext.streamVersion"
 }
