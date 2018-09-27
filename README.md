@@ -34,8 +34,13 @@ https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
 ## Gradle
 ```gradle
 dependencies {
-    compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.5.1' -- Update release version
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.6.0'
 }
+```
+# BETA
+```
+    maven { url 'https://oss.sonatype.org/content/groups/staging/' }
+    implementation 'com.github.vivchar:RendererRecyclerViewAdapter:2.7.0'
 ```
 
 ## Usage
