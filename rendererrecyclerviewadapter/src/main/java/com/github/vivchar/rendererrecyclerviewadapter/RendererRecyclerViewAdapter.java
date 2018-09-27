@@ -4,11 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListUpdateCallback;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
@@ -19,6 +14,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListUpdateCallback;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 
@@ -50,6 +52,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected DiffCallback mDiffCallback = new DefaultDiffCallback();
 	@NonNull
 	protected LoadMoreViewModel mLoadMoreModel = new LoadMoreViewModel();
+	@Nullable
+	protected RecyclerView.RecycledViewPool mNestedRecycledViewPool = null;
 
 	protected boolean mDiffUtilEnabled = false;
 	protected boolean mLoadMoreVisible = false;
@@ -65,6 +69,9 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	@Override
 	public ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
 		final ViewRenderer renderer = mRenderers.get(typeIndex);
+		if (isCompositeRenderer(renderer) && mNestedRecycledViewPool != null) {
+			((CompositeViewRenderer)renderer).setRecycledViewPool(mNestedRecycledViewPool);
+		}
 		return renderer.performCreateViewHolder(parent);
 	}
 
@@ -281,6 +288,18 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	/**
+	 * Recycled view pools allow multiple RecyclerViews to share a common pool of scrap views.
+	 * This can be useful if you have multiple RecyclerViews with adapters that use the same
+	 * view types, for example if you have several data sets with the same kinds of item views
+	 * displayed by a {@link ViewPager ViewPager}.
+	 *
+	 * @param pool Pool to set. If this parameter is null a new pool will be created and used.
+	 */
+	public void setNestedRecycledViewPool(@Nullable final RecyclerView.RecycledViewPool pool) {
+		mNestedRecycledViewPool = pool;
+	}
+
+	/**
 	 * If you want to show a some custom data in a Load More Indicator
 	 * then you should set your custom {@link LoadMoreViewModel} and createViewState your custom {@link LoadMoreViewRenderer}
 	 * <p>
@@ -400,6 +419,10 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 	protected boolean hasChildren(@NonNull final ViewHolder holder) {
 		return holder instanceof CompositeViewHolder;
+	}
+
+	protected boolean isCompositeRenderer(@NonNull final ViewRenderer renderer) {
+		return renderer instanceof CompositeViewRenderer;
 	}
 
 	@Override

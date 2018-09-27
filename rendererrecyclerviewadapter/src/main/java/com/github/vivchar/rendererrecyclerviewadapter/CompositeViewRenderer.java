@@ -1,15 +1,17 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by Vivchar Vitaly on 8/25/17.
@@ -21,6 +23,8 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 
 	@NonNull
 	protected final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
+	@Nullable
+	private RecyclerView.RecycledViewPool mRecycledViewPool;
 
 	/**
 	 * Please use a constructor without Context
@@ -68,6 +72,7 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 		if (viewHolder.getRecyclerView() != null) {
 			viewHolder.getRecyclerView().setLayoutManager(createLayoutManager());
 			viewHolder.getRecyclerView().setAdapter(adapter);
+			viewHolder.getRecyclerView().setRecycledViewPool(mRecycledViewPool);
 			for (final RecyclerView.ItemDecoration itemDecoration : createItemDecorations()) {
 				viewHolder.getRecyclerView().addItemDecoration(itemDecoration);
 			}
@@ -107,5 +112,19 @@ public abstract class CompositeViewRenderer <M extends CompositeViewModel, VH ex
 	@NonNull
 	protected List<? extends RecyclerView.ItemDecoration> createItemDecorations() {
 		return new ArrayList<>();
+	}
+
+	/**
+	 * Recycled view pools allow multiple RecyclerViews to share a common pool of scrap views.
+	 * This can be useful if you have multiple RecyclerViews with adapters that use the same
+	 * view types, for example if you have several data sets with the same kinds of item views
+	 * displayed by a {@link ViewPager ViewPager}.
+	 *
+	 * @param pool Pool to set. If this parameter is null a new pool will be created and used.
+	 */
+	@NonNull
+	public CompositeViewRenderer<M, VH> setRecycledViewPool(@Nullable final RecyclerView.RecycledViewPool pool) {
+		mRecycledViewPool = pool;
+		return this;
 	}
 }
