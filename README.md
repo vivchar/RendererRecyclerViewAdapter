@@ -40,7 +40,7 @@ dependencies {
 # BETA
 ```
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-    implementation 'com.github.vivchar:RendererRecyclerViewAdapter:2.7.0'
+    implementation 'com.github.vivchar:RendererRecyclerViewAdapter:2.7.0-SNAPSHOT'
 ```
 
 ## Usage
