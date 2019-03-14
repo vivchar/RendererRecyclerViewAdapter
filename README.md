@@ -19,7 +19,7 @@
 * [[RU] Легкая работа со списками — Habr](https://habr.com/ru/post/323862/)
 * [[RU] Легкая работа со списками ч.2 — Habr](https://habr.com/ru/post/337774/)
 * [[RU] Максимально упрощаем работу с RecyclerView - Habr](https://habr.com/ru/post/345954/)
-* [[RU] MobiFest - История оптимизации работы с RecyclerView](https://www.youtube.com/watch?v=mlal7UfaeI0)
+* [[RU] История оптимизации работы с RecyclerView - MobiFest 2018](https://www.youtube.com/watch?v=mlal7UfaeI0)
 
 ## Examples
 
