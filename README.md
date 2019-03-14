@@ -18,7 +18,7 @@
 * [Simplifying the work with RecyclerView  —  Medium](https://medium.com/@vivchar/simplifying-the-work-with-recyclerview-a64027bca8c3)
 
 ## Presentation 
-* [[RU]MobiFest - История оптимизации работы с RecyclerView](https://www.youtube.com/watch?v=mlal7UfaeI0)
+* [[RU] MobiFest - История оптимизации работы с RecyclerView](https://www.youtube.com/watch?v=mlal7UfaeI0)
 
 ## Examples
 
