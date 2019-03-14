@@ -17,6 +17,9 @@
 * [How to easily add Nested RecyclerView  —  Medium](https://medium.com/@vivchar/easy-handling-of-lists-rendererrecyclerviewadapter-part-2-3b18c8ea6f1b)
 * [Simplifying the work with RecyclerView  —  Medium](https://medium.com/@vivchar/simplifying-the-work-with-recyclerview-a64027bca8c3)
 
+## Presentation 
+* [[RU]MobiFest - История оптимизации работы с RecyclerView](https://www.youtube.com/watch?v=mlal7UfaeI0)
+
 ## Examples
 
 | [All](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/github/GithubFragment.java#L78) | [View Renderer](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/ViewRendererFragment.java#L37) | [View Binder](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/ViewBinderFragment.java#L33) | [Load More](https://github.com/vivchar/RendererRecyclerViewAdapter/blob/master/example/src/main/java/com/github/vivchar/example/pages/simple/LoadMoreFragment.java#L45) |
