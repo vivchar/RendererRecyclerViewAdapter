@@ -104,6 +104,7 @@ See [the Releases Page](https://github.com/vivchar/RendererRecyclerViewAdapter/r
 * [DeskRoll](https://play.google.com/store/apps/details?id=com.deskroll.client1): Gives you secure remote access to computers;
 * [MedikTest](https://play.google.com/store/apps/details?id=com.anisov.medical.accreditation): Preparation for accreditation of doctors;
 * [KFormMaster](https://github.com/TheJuki/KFormMaster): Easily build generic forms with minimal effort.
+* [KDV – интернет-магазин](https://play.google.com/store/apps/details?id=com.magonline.app): Интернет-магазин компании KDV, крупнейшего в России производителя снеков и кондитерских изделий.;
 
 Send me a pull request with modified README.md to get a shoutout!
 
