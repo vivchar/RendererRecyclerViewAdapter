@@ -103,8 +103,8 @@ See [the Releases Page](https://github.com/vivchar/RendererRecyclerViewAdapter/r
 * [Paltalk](https://play.google.com/store/apps/details?id=com.paltalk.chat.android): Free group video calls & chat rooms;
 * [DeskRoll](https://play.google.com/store/apps/details?id=com.deskroll.client1): Gives you secure remote access to computers;
 * [MedikTest](https://play.google.com/store/apps/details?id=com.anisov.medical.accreditation): Preparation for accreditation of doctors;
-* [KFormMaster](https://github.com/TheJuki/KFormMaster): Easily build generic forms with minimal effort.
-* [KDV – интернет-магазин](https://play.google.com/store/apps/details?id=com.magonline.app): Интернет-магазин компании KDV, крупнейшего в России производителя снеков и кондитерских изделий.;
+* [KFormMaster](https://github.com/TheJuki/KFormMaster): Easily build generic forms with minimal effort;
+* [KDV Online](https://play.google.com/store/apps/details?id=com.magonline.app): Online store of KDV, Russian producer of snacks and confectionery products, whose goods are well known and beloved not only in Russia but also well beyond.
 
 Send me a pull request with modified README.md to get a shoutout!
 
