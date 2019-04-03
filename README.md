@@ -16,10 +16,10 @@
 * [[EN] A RecyclerView with multiple item types  —  Medium](https://medium.com/@vivchar/a-recyclerview-with-multiple-item-types-dfba3979050)
 * [[EN] How to easily add Nested RecyclerView  —  Medium](https://medium.com/@vivchar/easy-handling-of-lists-rendererrecyclerviewadapter-part-2-3b18c8ea6f1b)
 * [[EN] Simplifying the work with RecyclerView  —  Medium](https://medium.com/@vivchar/simplifying-the-work-with-recyclerview-a64027bca8c3)
-* [[RU] Легкая работа со списками — Habr](https://habr.com/ru/post/323862/)
-* [[RU] Легкая работа со списками ч.2 — Habr](https://habr.com/ru/post/337774/)
-* [[RU] Максимально упрощаем работу с RecyclerView - Habr](https://habr.com/ru/post/345954/)
-* [[RU] История оптимизации работы с RecyclerView - MobiFest 2018](https://www.youtube.com/watch?v=mlal7UfaeI0)
+* [[RU] Легкая работа со списками  —  Habr](https://habr.com/ru/post/323862/)
+* [[RU] Легкая работа со списками ч.2  —  Habr](https://habr.com/ru/post/337774/)
+* [[RU] Максимально упрощаем работу с RecyclerView  —  Habr](https://habr.com/ru/post/345954/)
+* [[RU] История оптимизации работы с RecyclerView  —  MobiFest 2018](https://www.youtube.com/watch?v=mlal7UfaeI0)
 
 ## Examples
 
