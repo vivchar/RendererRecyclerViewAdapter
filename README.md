@@ -12,10 +12,14 @@
 * [Can be used without ViewHolder - use ViewBinder instead of ViewRenderer](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-View-Binder);
 * Using this library will help you to follow SOLID principles.
 
-## Articles
-* [A RecyclerView with multiple item types  —  Medium](https://medium.com/@vivchar/a-recyclerview-with-multiple-item-types-dfba3979050)
-* [How to easily add Nested RecyclerView  —  Medium](https://medium.com/@vivchar/easy-handling-of-lists-rendererrecyclerviewadapter-part-2-3b18c8ea6f1b)
-* [Simplifying the work with RecyclerView  —  Medium](https://medium.com/@vivchar/simplifying-the-work-with-recyclerview-a64027bca8c3)
+## Articles & Presentations
+* [[EN] A RecyclerView with multiple item types  —  Medium](https://medium.com/@vivchar/a-recyclerview-with-multiple-item-types-dfba3979050)
+* [[EN] How to easily add Nested RecyclerView  —  Medium](https://medium.com/@vivchar/easy-handling-of-lists-rendererrecyclerviewadapter-part-2-3b18c8ea6f1b)
+* [[EN] Simplifying the work with RecyclerView  —  Medium](https://medium.com/@vivchar/simplifying-the-work-with-recyclerview-a64027bca8c3)
+* [[RU] Легкая работа со списками — Habr](https://habr.com/ru/post/323862/)
+* [[RU] Легкая работа со списками ч.2 — Habr](https://habr.com/ru/post/337774/)
+* [[RU] Максимально упрощаем работу с RecyclerView - Habr](https://habr.com/ru/post/345954/)
+* [[RU] История оптимизации работы с RecyclerView - MobiFest 2018](https://www.youtube.com/watch?v=mlal7UfaeI0)
 
 ## Examples
 
@@ -39,8 +43,8 @@ dependencies {
 ```
 # BETA
 ```
-    maven { url 'https://oss.sonatype.org/content/groups/staging/' }
-    implementation 'com.github.vivchar:RendererRecyclerViewAdapter:2.7.0'
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    implementation 'com.github.vivchar:RendererRecyclerViewAdapter:2.7.0-SNAPSHOT'
 ```
 
 ## Usage
@@ -99,7 +103,8 @@ See [the Releases Page](https://github.com/vivchar/RendererRecyclerViewAdapter/r
 * [Paltalk](https://play.google.com/store/apps/details?id=com.paltalk.chat.android): Free group video calls & chat rooms;
 * [DeskRoll](https://play.google.com/store/apps/details?id=com.deskroll.client1): Gives you secure remote access to computers;
 * [MedikTest](https://play.google.com/store/apps/details?id=com.anisov.medical.accreditation): Preparation for accreditation of doctors;
-* [KFormMaster](https://github.com/TheJuki/KFormMaster): Easily build generic forms with minimal effort.
+* [KFormMaster](https://github.com/TheJuki/KFormMaster): Easily build generic forms with minimal effort;
+* [KDV Online](https://play.google.com/store/apps/details?id=com.magonline.app): Online store of KDV, Russian producer of snacks and confectionery products, whose goods are well known and beloved not only in Russia but also well beyond.
 
 Send me a pull request with modified README.md to get a shoutout!
 
