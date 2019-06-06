@@ -38,13 +38,8 @@ https://github.com/vivchar/RendererRecyclerViewAdapter/wiki
 ## Gradle
 ```gradle
 dependencies {
-    compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.7.0'
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.8.0'
 }
-```
-# BETA
-```
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-    implementation 'com.github.vivchar:RendererRecyclerViewAdapter:2.8.0-SNAPSHOT'
 ```
 
 ## Usage
