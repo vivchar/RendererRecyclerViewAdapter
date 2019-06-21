@@ -14,9 +14,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.AsyncDifferConfig;
+import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +36,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected static final String ITEM_VIEW_STATES_KEY = "renderer_adapter_item_view_states_key";
 	protected static final String RECYCLER_VIEW_STATE_KEY = "renderer_adapter_recycler_view_state_key";
 
+	@Nullable
+	protected AsyncListDiffer<ViewModel> mDiffer = null;
 	@NonNull
 	protected final ArrayList<ViewModel> mItems = new ArrayList<>();
 	@NonNull
@@ -48,8 +53,6 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected RecyclerView mRecyclerView = null;
 	@Nullable
 	protected ListUpdateCallback mUpdateCallback = null;
-	@NonNull
-	protected DiffCallback mDiffCallback = new DefaultDiffCallback();
 	@NonNull
 	protected LoadMoreViewModel mLoadMoreModel = new LoadMoreViewModel();
 	@Nullable
@@ -70,7 +73,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	public ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
 		final ViewRenderer renderer = mRenderers.get(typeIndex);
 		if (isCompositeRenderer(renderer) && mNestedRecycledViewPool != null) {
-			((CompositeViewRenderer)renderer).setRecycledViewPool(mNestedRecycledViewPool);
+			((CompositeViewRenderer) renderer).setRecycledViewPool(mNestedRecycledViewPool);
 		}
 		return renderer.performCreateViewHolder(parent);
 	}
@@ -178,15 +181,18 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 	@NonNull
 	public <T extends ViewModel> T getItem(final int position) {
-		return (T) mItems.get(position);
+		return mDiffUtilEnabled ? (T) mDiffer.getCurrentList().get(position) : (T) mItems.get(position);
 	}
 
 	@Override
 	public int getItemCount() {
-		return mItems.size();
+		return mDiffUtilEnabled ? mDiffer.getCurrentList().size() : mItems.size();
 	}
 
 	public void enableDiffUtil() {
+		if (mDiffer == null) {
+			setAsyncListDiffer(createAsyncListDiffer(new DefaultDiffCallback<>()));
+		}
 		mDiffUtilEnabled = true;
 	}
 
@@ -194,8 +200,21 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		mDiffUtilEnabled = false;
 	}
 
-	public void setDiffCallback(@NonNull final DiffCallback diffCallback) {
-		mDiffCallback = diffCallback;
+	public void setDiffCallback(@NonNull final DiffCallback<? extends ViewModel> diffCallback) {
+		setAsyncListDiffer(createAsyncListDiffer(diffCallback));
+	}
+
+	@NonNull
+	protected AsyncListDiffer<ViewModel> createAsyncListDiffer(@NonNull final DiffCallback<? extends ViewModel> diffCallback) {
+		return new AsyncListDiffer<>(
+				getListUpdateCallback(),
+				(AsyncDifferConfig<ViewModel>) new AsyncDifferConfig.Builder<>(diffCallback).build()
+		);
+	}
+
+	public void setAsyncListDiffer(@NonNull final AsyncListDiffer<ViewModel> differ) {
+		mDiffer = differ;
+
 		enableDiffUtil();
 	}
 
@@ -205,52 +224,50 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 	public void setItems(@NonNull final List<? extends ViewModel> items) {
 		if (mDiffUtilEnabled) {
-			mDiffCallback.setItems(mItems, items);
-
-			final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(mDiffCallback);
-
-			mItems.clear();
-			mItems.addAll(items);
-
-			diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
-				@Override
-				public void onInserted(final int position, final int count) {
-					if (mUpdateCallback != null) {
-						mUpdateCallback.onInserted(position, count);
-					}
-					notifyItemRangeInserted(position, count);
-				}
-
-				@Override
-				public void onRemoved(final int position, final int count) {
-					if (mUpdateCallback != null) {
-						mUpdateCallback.onRemoved(position, count);
-					}
-					notifyItemRangeRemoved(position, count);
-				}
-
-				@Override
-				public void onMoved(final int fromPosition, final int toPosition) {
-					if (mUpdateCallback != null) {
-						mUpdateCallback.onMoved(fromPosition, toPosition);
-					}
-					notifyItemMoved(fromPosition, toPosition);
-				}
-
-				@Override
-				public void onChanged(final int position, final int count, final Object payload) {
-					if (mUpdateCallback != null) {
-						mUpdateCallback.onChanged(position, count, payload);
-					}
-					notifyItemRangeChanged(position, count, payload);
-				}
-			});
+			mDiffer.submitList((List<ViewModel>) items);
 		} else {
 			mItems.clear();
 			mItems.addAll(items);
 		}
 
 		mLoadMoreVisible = false;
+	}
+
+	@NonNull
+	protected ListUpdateCallback getListUpdateCallback() {
+		return new ListUpdateCallback() {
+			@Override
+			public void onInserted(final int position, final int count) {
+				if (mUpdateCallback != null) {
+					mUpdateCallback.onInserted(position, count);
+				}
+				notifyItemRangeInserted(position, count);
+			}
+
+			@Override
+			public void onRemoved(final int position, final int count) {
+				if (mUpdateCallback != null) {
+					mUpdateCallback.onRemoved(position, count);
+				}
+				notifyItemRangeRemoved(position, count);
+			}
+
+			@Override
+			public void onMoved(final int fromPosition, final int toPosition) {
+				if (mUpdateCallback != null) {
+					mUpdateCallback.onMoved(fromPosition, toPosition);
+				}
+				notifyItemMoved(fromPosition, toPosition);
+			}
+
+			@Override
+			public void onChanged(final int position, final int count, final Object payload) {
+				if (mUpdateCallback != null) {
+					mUpdateCallback.onChanged(position, count, payload);
+				}
+				notifyItemRangeChanged(position, count, payload);
+			}
+		};
 	}
 
 	/**
@@ -261,29 +278,43 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	 * FYI: If you want to add a Load More Indicator to other position, then you should override this method
 	 */
 	public void showLoadMore() {
-		final Handler handler = new Handler();
-		final Runnable r = new Runnable() {
-			public void run() {
-				mLoadMoreVisible = true;
-				mItems.add(mLoadMoreModel);
-				mLoadMorePosition = getItemCount() - 1;
-				notifyItemInserted(mLoadMorePosition);
-			}
-		};
-		handler.post(r);
+		if (mDiffUtilEnabled) {
+			final List<ViewModel> currentList = new ArrayList<>(mDiffer.getCurrentList());
+			currentList.add(mLoadMoreModel);
+			mLoadMorePosition = getItemCount() - 1;
+			mDiffer.submitList(currentList);
+		} else {
+			final Handler handler = new Handler();
+			final Runnable r = new Runnable() {
+				public void run() {
+					mLoadMoreVisible = true;
+					mItems.add(mLoadMoreModel);
+					mLoadMorePosition = getItemCount() - 1;
+					notifyItemInserted(mLoadMorePosition);
+				}
+			};
+			handler.post(r);
+		}
 	}
 
 	public void hideLoadMore() {
 		if (mLoadMoreVisible && mLoadMorePosition < getItemCount()) {
-			final Handler handler = new Handler();
-			final Runnable r = new Runnable() {
-				public void run() {
-					mItems.remove(mLoadMorePosition);
-					notifyItemRemoved(mLoadMorePosition);
-					mLoadMoreVisible = false;
-				}
-			};
-			handler.post(r);
+			if (mDiffUtilEnabled) {
+				final List<ViewModel> currentList = new ArrayList<>(mDiffer.getCurrentList());
+				currentList.remove(mLoadMoreModel);
+				mDiffer.submitList(currentList);
+				mLoadMoreVisible = false;
+			} else {
+				final Handler handler = new Handler();
+				final Runnable r = new Runnable() {
+					public void run() {
+						mItems.remove(mLoadMorePosition);
+						notifyItemRemoved(mLoadMorePosition);
+						mLoadMoreVisible = false;
+					}
+				};
+				handler.post(r);
+			}
 		}
 	}
 
