@@ -21,6 +21,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewStateProvider;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
 
 import java.util.Collections;
 import java.util.List;
@@ -52,9 +53,9 @@ public class ViewStateFragment extends BaseScreenFragment {
 						R.id.recycler_view,
 						StateViewModel.class,
 						Collections.singletonList(new BetweenSpacesItemDecoration(10, 10)),
-						new CompositeViewStateProvider<StateViewModel, CompositeViewHolder>() {
+						new CompositeViewStateProvider<StateViewModel, CompositeViewHolder<ViewFinder>>() {
 							@Override
-							public ViewState createViewState(@NonNull final CompositeViewHolder holder) {
+							public ViewState createViewState(@NonNull final CompositeViewHolder<ViewFinder> holder) {
 								return new CompositeViewState(holder);
 							}
 

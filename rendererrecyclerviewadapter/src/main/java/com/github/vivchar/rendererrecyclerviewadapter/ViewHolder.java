@@ -3,6 +3,8 @@ package com.github.vivchar.rendererrecyclerviewadapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.View;
 
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
@@ -11,23 +13,27 @@ import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinderFactory;
 /**
  * Created by Vivchar Vitaly on 12/26/17.
  */
-public class ViewHolder extends RecyclerView.ViewHolder {
+public class ViewHolder <VF extends ViewFinder> extends RecyclerView.ViewHolder {
 
 	public static final int UNDEFINED = -1;
 
 	private int mViewStateID = UNDEFINED;
 	private Class<? extends ViewModel> mType;
 	@Nullable
-	private ViewFinder mViewFinder;
+	private VF mViewFinder;
 
 	public ViewHolder(final View itemView) {
 		super(itemView);
 	}
 
 	@NonNull
-	public ViewFinder getViewFinder() {
+	public VF getViewFinder() {
 		if (mViewFinder == null) {
-			mViewFinder = ViewFinderFactory.create(itemView);
+			try {
+				mViewFinder = (VF) ViewFinderFactory.create(itemView);
+			} catch (ClassCastException e) { //TODO vivchar: by some reason it does not catch
+				throw new RuntimeException("Looks like you use a custom ViewBinder, but forgot to implement a custom ViewFinder");
+			}
 		}
 		return mViewFinder;
 	}

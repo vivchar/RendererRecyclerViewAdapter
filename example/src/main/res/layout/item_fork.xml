@@ -4,7 +4,7 @@
 	android:layout_height = "wrap_content"
 	>
 
-	<androidx.appcompat.widget.AppCompatImageView
+	<com.github.vivchar.example.widgets.AvatarView
 		android:id = "@+id/fork_avatar"
 		android:layout_width = "40dp"
 		android:layout_height = "40dp"

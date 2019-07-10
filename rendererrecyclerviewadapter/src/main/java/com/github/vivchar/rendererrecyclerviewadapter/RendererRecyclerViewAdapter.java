@@ -7,6 +7,8 @@ import android.os.Parcelable;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinderFactory;
+
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -70,7 +72,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	public ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
 		final ViewRenderer renderer = mRenderers.get(typeIndex);
 		if (isCompositeRenderer(renderer) && mNestedRecycledViewPool != null) {
-			((CompositeViewRenderer)renderer).setRecycledViewPool(mNestedRecycledViewPool);
+			((CompositeViewRenderer) renderer).setRecycledViewPool(mNestedRecycledViewPool);
 		}
 		return renderer.performCreateViewHolder(parent);
 	}
@@ -458,5 +460,14 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 			}
 		}
 		restoreRecyclerViewState(savedInstanceState);
+	}
+
+	/**
+	 * Use this method to support your custom ViewFinder, so you will have ability easily work with your custom views
+	 *
+	 * @param creator
+	 */
+	public void registerViewFinder(@NonNull final ViewFinderFactory.Creator creator) {
+		ViewFinderFactory.setViewFinderCreator(creator);
 	}
 }

@@ -1,9 +1,11 @@
 package com.github.vivchar.rendererrecyclerviewadapter.binder;
 
 import android.content.Context;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.view.ViewGroup;
 
 import com.github.vivchar.rendererrecyclerviewadapter.ViewHolder;
@@ -19,14 +21,14 @@ import java.util.List;
  * Universal ViewRenderer without ViewHolder
  */
 @SuppressWarnings("deprecation")
-public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder> {
+public class ViewBinder <M extends ViewModel, VF extends ViewFinder> extends ViewRenderer<M, ViewHolder<VF>> {
 
 	@LayoutRes
 	private final int mLayoutID;
 	@NonNull
-	private final Binder mBinder;
+	private final Binder<M, VF> mBinder;
 	@Nullable
-	private ViewStateProvider<M, ViewHolder> mViewStateProvider = null;
+	private ViewStateProvider<M, ViewHolder<VF>> mViewStateProvider = null;
 
 	/**
 	 * Please use a constructor without Context
@@ -35,7 +37,7 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder
 	public ViewBinder(@LayoutRes final int layoutID,
 	                  @NonNull final Class<M> type,
 	                  @NonNull final Context context,
-	                  @NonNull final Binder<M> binder) {
+	                  @NonNull final Binder<M, VF> binder) {
 		super(type, context);
 		mLayoutID = layoutID;
 		mBinder = binder;
@@ -48,8 +50,8 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder
 	public ViewBinder(@LayoutRes final int layoutID,
 	                  @NonNull final Class<M> type,
 	                  @NonNull final Context context,
-	                  @NonNull final Binder<M> binder,
-	                  @Nullable final ViewStateProvider<M, ViewHolder> viewStateProvider) {
+	                  @NonNull final Binder<M, VF> binder,
+	                  @Nullable final ViewStateProvider<M, ViewHolder<VF>> viewStateProvider) {
 		super(type, context);
 		mLayoutID = layoutID;
 		mBinder = binder;
@@ -58,7 +60,7 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder
 
 	public ViewBinder(@LayoutRes final int layoutID,
 	                  @NonNull final Class<M> type,
-	                  @NonNull final Binder<M> binder) {
+	                  @NonNull final Binder<M, VF> binder) {
 		super(type);
 		mLayoutID = layoutID;
 		mBinder = binder;
@@ -66,8 +68,8 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder
 
 	public ViewBinder(@LayoutRes final int layoutID,
 	                  @NonNull final Class<M> type,
-	                  @NonNull final Binder<M> binder,
-	                  @Nullable final ViewStateProvider<M, ViewHolder> viewStateProvider) {
+	                  @NonNull final Binder<M, VF> binder,
+	                  @Nullable final ViewStateProvider<M, ViewHolder<VF>> viewStateProvider) {
 		super(type);
 		mLayoutID = layoutID;
 		mBinder = binder;
@@ -76,19 +78,27 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void bindView(@NonNull final M model, @NonNull final ViewHolder finder) {
-		mBinder.bindView(model, finder.getViewFinder(), new ArrayList<>());
+	public void bindView(@NonNull final M model, @NonNull final ViewHolder<VF> finder) {
+		try {
+			mBinder.bindView(model, finder.getViewFinder(), new ArrayList<>());
+		} catch (ClassCastException e) {
+			throw new WrongViewFinderException();
+		}
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void rebindView(@NonNull final M model, @NonNull final ViewHolder finder, @NonNull final List<Object> payloads) {
-		mBinder.bindView(model, finder.getViewFinder(), payloads);
+	public void rebindView(@NonNull final M model, @NonNull final ViewHolder<VF> finder, @NonNull final List<Object> payloads) {
+		try {
+			mBinder.bindView(model, finder.getViewFinder(), payloads);
+		} catch (ClassCastException e) {
+			throw new WrongViewFinderException();
+		}
 	}
 
 	@Nullable
 	@Override
-	public ViewState createViewState(@NonNull final ViewHolder holder) {
+	public ViewState createViewState(@NonNull final ViewHolder<VF> holder) {
 		return mViewStateProvider != null ? mViewStateProvider.createViewState(holder) : super.createViewState(holder);
 	}
 
@@ -99,12 +109,12 @@ public class ViewBinder <M extends ViewModel> extends ViewRenderer<M, ViewHolder
 
 	@NonNull
 	@Override
-	public ViewHolder createViewHolder(@Nullable final ViewGroup parent) {
-		return new ViewHolder(inflate(mLayoutID, parent));
+	public ViewHolder<VF> createViewHolder(@Nullable final ViewGroup parent) {
+		return (ViewHolder<VF>) new ViewHolder(inflate(mLayoutID, parent));
 	}
 
-	public interface Binder <M> {
+	public interface Binder <M, VF extends ViewFinder> {
 
-		void bindView(@NonNull M model, @NonNull ViewFinder finder, @NonNull final List<Object> payloads);
+		void bindView(@NonNull M model, @NonNull VF finder, @NonNull final List<Object> payloads);
 	}
 }

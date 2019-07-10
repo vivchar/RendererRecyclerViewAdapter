@@ -7,6 +7,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.github.vivchar.example.pages.github.items.fork.CustomViewBinder;
+import com.github.vivchar.example.pages.github.items.fork.CustomViewFinder;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewHolder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinderFactory;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinderImpl;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AlertDialog;
@@ -80,11 +87,19 @@ public class GithubFragment extends BaseScreenFragment {
 		mSwipeToRefresh.setOnRefreshListener(() -> mGithubPresenter.onRefresh());
 
 		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
+		mRecyclerViewAdapter.registerViewFinder(CustomViewFinder::new);
 		mRecyclerViewAdapter.setDiffCallback(new ItemsDiffCallback());
 		mRecyclerViewAdapter.registerRenderer(new LoadMoreViewBinder(R.layout.item_load_more));
 		mRecyclerViewAdapter.registerRenderer(createStargazerRenderer(R.layout.item_user_full_width));
 		mRecyclerViewAdapter.registerRenderer(createListRenderer()
-				.registerRenderer(createForkRenderer())
+				.registerRenderer(new ViewBinder<ForkModel, CustomViewFinder>(
+						R.layout.item_fork,
+						ForkModel.class,
+						(model, finder, p) -> {
+							finder.setUrl(R.id.fork_avatar, model.getAvatarUrl());
+							finder.setText(R.id.fork_name, model.getName());
+						}
+				))
 				.registerRenderer(createStargazerRenderer(R.layout.item_user_150))
 		);
 
