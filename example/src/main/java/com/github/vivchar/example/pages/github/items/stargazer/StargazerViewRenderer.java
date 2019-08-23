@@ -50,11 +50,11 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, Stargaze
 	private void bindInner(@NonNull final StargazerModel model, @NonNull final StargazerViewHolder holder) {
 		holder.name.setText(model.getName());
 		final String url = model.getAvatarUrl();
-		Glide.with(getContext())
-				.asBitmap()
-				.load(url)
-				.apply(bitmapTransform(new BlurTransformation(25)))
-				.into(holder.avatar);
+//		Glide.with(getContext())
+//				.asBitmap()
+//				.load(url)
+//				.apply(bitmapTransform(new BlurTransformation(25)))
+//				.into(holder.avatar);
 		holder.check.setVisibility(GONE);
 
 		holder.itemView.setOnClickListener(view -> {

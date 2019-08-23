@@ -27,14 +27,14 @@ public class UserViewRenderer extends ViewRenderer<StargazerModel, UserViewHolde
 	public void bindView(@NonNull final StargazerModel model, @NonNull final UserViewHolder holder) {
 		holder.name.setText(model.getName());
 
-		final RequestOptions options = new RequestOptions();
-		options.transform(new MultiTransformation(new BlurTransformation(25), new CircleCrop()));
+//		final RequestOptions options = new RequestOptions();
+//		options.transform(new MultiTransformation(new BlurTransformation(25), new CircleCrop()));
 
-		Glide.with(getContext())
-				.asBitmap()
-				.load(model.getAvatarUrl())
-				.apply(options)
-				.into(holder.avatar);
+//		Glide.with(getContext())
+//				.asBitmap()
+//				.load(model.getAvatarUrl())
+//				.apply(options)
+//				.into(holder.avatar);
 	}
 
 	@NonNull
