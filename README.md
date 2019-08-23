@@ -41,6 +41,15 @@ dependencies {
     compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.8.0'
 }
 ```
+## BETA
+```gradle
+maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+
+dependencies {
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.9.0-SNAPSHOT'
+}
+```
+
 
 ## Usage
 * **Step 1:** Add the ViewModel interface to your UI model
