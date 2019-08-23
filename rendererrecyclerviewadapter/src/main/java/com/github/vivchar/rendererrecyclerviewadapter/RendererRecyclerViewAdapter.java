@@ -2,7 +2,6 @@ package com.github.vivchar.rendererrecyclerviewadapter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.util.SparseArray;
 import android.view.ViewGroup;
@@ -10,11 +9,13 @@ import android.view.ViewGroup;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,8 +37,14 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected static final String ITEM_VIEW_STATES_KEY = "renderer_adapter_item_view_states_key";
 	protected static final String RECYCLER_VIEW_STATE_KEY = "renderer_adapter_recycler_view_state_key";
 
-	@Nullable
-	protected AsyncListDiffer<ViewModel> mDiffer = null;
+	@NonNull
+	protected DiffCallback<? extends ViewModel> mDiffCallback = new DefaultDiffCallback();
+	@NonNull
+	private AsyncListDiffer<ViewModel> mDiffer = createDiffer(mDiffCallback, false);
+	@NonNull
+	private final Collection<OnLatchListener> mOnLatchListeners = new LinkedList<>();
+	@NonNull
+	private final MainThreadExecutor mMainThreadExecutor = new MainThreadExecutor();
 	@NonNull
 	protected final ArrayList<ViewModel> mItems = new ArrayList<>();
 	@NonNull
@@ -63,6 +70,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected int mLoadMorePosition;
 	@Nullable
 	private Bundle mSavedInstanceState;
+
+	private boolean mSubmitting = false;
 
 	public RendererRecyclerViewAdapter() {}
 
@@ -181,53 +190,60 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 	@NonNull
 	public <T extends ViewModel> T getItem(final int position) {
-		return mDiffUtilEnabled ? (T) mDiffer.getCurrentList().get(position) : (T) mItems.get(position);
+		return (T) getReadOnlyItems().get(position);
 	}
 
 	@Override
 	public int getItemCount() {
-		return mDiffUtilEnabled ? mDiffer.getCurrentList().size() : mItems.size();
+		return getReadOnlyItems().size();
 	}
 
 	public void enableDiffUtil() {
-		if (mDiffer == null) {
-			setAsyncListDiffer(createAsyncListDiffer(new DefaultDiffCallback<>()));
-		}
+		enableDiffUtil(false);
+	}
+
+	public void enableDiffUtil(final boolean async) {
 		mDiffUtilEnabled = true;
+		mDiffer = createDiffer(mDiffCallback, async);
 	}
 
 	public void disableDiffUtil() {
 		mDiffUtilEnabled = false;
 	}
 
+	public void setDiffCallback(@NonNull final DiffCallback<? extends ViewModel> diffCallback, final boolean async) {
+		mDiffCallback = diffCallback;
+		enableDiffUtil(async);
+	}
+
 	public void setDiffCallback(@NonNull final DiffCallback<? extends ViewModel> diffCallback) {
-		setAsyncListDiffer(createAsyncListDiffer(diffCallback));
-	}
-
-	@NonNull
-	protected AsyncListDiffer<ViewModel> createAsyncListDiffer(@NonNull final DiffCallback<? extends ViewModel> diffCallback) {
-		return new AsyncListDiffer<>(
-				getListUpdateCallback(),
-				(AsyncDifferConfig<ViewModel>) new AsyncDifferConfig.Builder<>(diffCallback).build()
-		);
-	}
-
-	public void setAsyncListDiffer(@NonNull final AsyncListDiffer<ViewModel> differ) {
-		mDiffer = differ;
-
-		enableDiffUtil();
+		setDiffCallback(diffCallback, false);
 	}
 
 	public void setUpdateCallback(@NonNull final ListUpdateCallback updateCallback) {
 		mUpdateCallback = updateCallback;
 	}
 
+	/**
+	 * A helper method to perform actions after items latched.
+	 * Use it if some operations are supposed to be performed after the items latched, like scrolling.
+	 *
+	 * @param items           The data to insert in adapter
+	 * @param onLatchListener The function to be called after the items latched
+	 */
+	public void setItems(@NonNull final List<? extends ViewModel> items, @NonNull final OnLatchListener onLatchListener) {
+		mOnLatchListeners.add(onLatchListener);
+		setItems(items);
+	}
+
 	public void setItems(@NonNull final List<? extends ViewModel> items) {
 		if (mDiffUtilEnabled) {
-			mDiffer.submitList((List<ViewModel>) items);
+			mSubmitting = true;
+			mDiffer.submitList(new ArrayList<>(items));
 		} else {
 			mItems.clear();
 			mItems.addAll(items);
+			dispatchLatched();
 		}
 
 		mLoadMoreVisible = false;
@@ -238,6 +254,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		return new ListUpdateCallback() {
 			@Override
 			public void onInserted(final int position, final int count) {
+				dispatchLatched();
 				if (mUpdateCallback != null) {
 					mUpdateCallback.onInserted(position, count);
 				}
@@ -246,6 +263,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 			@Override
 			public void onRemoved(final int position, final int count) {
+				dispatchLatched();
 				if (mUpdateCallback != null) {
 					mUpdateCallback.onRemoved(position, count);
 				}
@@ -254,6 +272,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 			@Override
 			public void onMoved(final int fromPosition, final int toPosition) {
+				dispatchLatched();
 				if (mUpdateCallback != null) {
 					mUpdateCallback.onMoved(fromPosition, toPosition);
 				}
@@ -262,6 +281,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 			@Override
 			public void onChanged(final int position, final int count, final Object payload) {
+				dispatchLatched();
 				if (mUpdateCallback != null) {
 					mUpdateCallback.onChanged(position, count, payload);
 				}
@@ -279,41 +299,61 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	 */
 	public void showLoadMore() {
 		if (mDiffUtilEnabled) {
-			final List<ViewModel> currentList = new ArrayList<>(mDiffer.getCurrentList());
-			currentList.add(mLoadMoreModel);
-			mLoadMorePosition = getItemCount() - 1;
-			mDiffer.submitList(currentList);
-		} else {
-			final Handler handler = new Handler();
-			final Runnable r = new Runnable() {
-				public void run() {
-					mLoadMoreVisible = true;
-					mItems.add(mLoadMoreModel);
-					mLoadMorePosition = getItemCount() - 1;
-					notifyItemInserted(mLoadMorePosition);
+			final OnLatchListener listener = new OnLatchListener() {
+				@Override
+				public void onLatch() {
+					if (!mLoadMoreVisible) {
+						final List<ViewModel> items = new ArrayList<ViewModel>(getItemCount() + 1) {{
+							addAll(getReadOnlyItems());
+							add(mLoadMoreModel);
+						}};
+						mLoadMorePosition = getItemCount() - 1;
+						setItems(items);
+						mLoadMoreVisible = true;
+					}
 				}
 			};
-			handler.post(r);
+			if (mSubmitting) {
+				mOnLatchListeners.add(listener);
+			} else {
+				listener.onLatch();
+			}
+		} else {
+			mMainThreadExecutor.execute(new Runnable() {
+				public void run() {
+					if (!mLoadMoreVisible) {
+						mLoadMoreVisible = true;
+						mItems.add(mLoadMoreModel);
+						mLoadMorePosition = getItemCount() - 1;
+						notifyItemInserted(mLoadMorePosition);
+					}
+				}
+			});
 		}
 	}
 
 	public void hideLoadMore() {
 		if (mLoadMoreVisible && mLoadMorePosition < getItemCount()) {
 			if (mDiffUtilEnabled) {
-				final List<ViewModel> currentList = new ArrayList<>(mDiffer.getCurrentList());
-				currentList.remove(mLoadMoreModel);
-				mDiffer.submitList(currentList);
-				mLoadMoreVisible = false;
+				final List<ViewModel> items = new ArrayList<ViewModel>(getItemCount()) {{
+					addAll(getReadOnlyItems());
+					remove(mLoadMorePosition);
+				}};
+				setItems(items, new OnLatchListener() {
+					@Override
+					public void onLatch() {
+						notifyItemRemoved(mLoadMorePosition);
+						mLoadMoreVisible = false;
+					}
+				});
 			} else {
-				final Handler handler = new Handler();
-				final Runnable r = new Runnable() {
+				mMainThreadExecutor.execute(new Runnable() {
 					public void run() {
 						mItems.remove(mLoadMorePosition);
 						notifyItemRemoved(mLoadMorePosition);
 						mLoadMoreVisible = false;
 					}
-				};
-				handler.post(r);
+				});
 			}
 		}
 	}
@@ -489,5 +529,54 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 			}
 		}
 		restoreRecyclerViewState(savedInstanceState);
+	}
+
+	@NonNull
+	protected List<ViewModel> getReadOnlyItems() {
+		return mDiffUtilEnabled
+				? mDiffer.getCurrentList()
+				: Collections.unmodifiableList(mItems);
+	}
+
+	private void dispatchLatched() {
+		mSubmitting = false;
+		if (mOnLatchListeners.isEmpty()) {
+			return;
+		}
+		final Iterator<OnLatchListener> iterator = mOnLatchListeners.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().onLatch();
+			iterator.remove();
+		}
+	}
+
+	@NonNull
+	private AsyncListDiffer<ViewModel> createDiffer(@NonNull final DiffCallback<? extends ViewModel> diffCallback, final boolean async) {
+		return (AsyncListDiffer<ViewModel>) new AsyncListDiffer<>(getListUpdateCallback(), getConfig(diffCallback, async));
+	}
+
+	@NonNull
+	private <V extends ViewModel> AsyncDifferConfig<V> getConfig(@NonNull final DiffCallback<V> diffUtil, final boolean async) {
+		final AsyncDifferConfig.Builder<V> builder = new AsyncDifferConfig.Builder<>(new DiffUtil.ItemCallback<V>() {
+			@Override
+			public boolean areItemsTheSame(@NonNull final V oldItem, @NonNull final V newItem) {
+				return diffUtil.areItemsTheSame(oldItem, newItem);
+			}
+
+			@Override
+			public boolean areContentsTheSame(@NonNull final V oldItem, @NonNull final V newItem) {
+				return diffUtil.areContentsTheSame(oldItem, newItem);
+			}
+
+			@Nullable
+			@Override
+			public Object getChangePayload(@NonNull final V oldItem, @NonNull final V newItem) {
+				return diffUtil.getChangePayload(oldItem, newItem);
+			}
+		});
+		if (!async) {
+			builder.setBackgroundThreadExecutor(mMainThreadExecutor);
+		}
+		return builder.build();
 	}
 }
