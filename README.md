@@ -42,6 +42,7 @@ dependencies {
 }
 ```
 ## BETA
+Include this feature https://github.com/vivchar/RendererRecyclerViewAdapter/issues/32
 ```gradle
 maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 
