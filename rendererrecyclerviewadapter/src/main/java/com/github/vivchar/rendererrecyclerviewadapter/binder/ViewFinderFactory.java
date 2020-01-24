@@ -1,8 +1,8 @@
 package com.github.vivchar.rendererrecyclerviewadapter.binder;
 
-import androidx.annotation.NonNull;
-
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 
 /**
@@ -14,10 +14,9 @@ public class ViewFinderFactory {
 	private static Creator sViewFinderCreator = null;
 
 	public static ViewFinder create(@NonNull final View view) {
-		if (sViewFinderCreator != null) {
-			sViewFinderCreator.create(view);
-		}
-		return new ViewFinderImpl(view);
+		return sViewFinderCreator != null
+				? sViewFinderCreator.create(view)
+				: new ViewFinderImpl(view);
 	}
 
 	public static void setViewFinderCreator(@NonNull final Creator viewFinderCreator) {
