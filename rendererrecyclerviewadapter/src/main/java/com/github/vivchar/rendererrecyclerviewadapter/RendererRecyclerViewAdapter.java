@@ -50,7 +50,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	@NonNull
 	protected final ArrayList<ViewModel> mItems = new ArrayList<>();
 	@NonNull
-	protected final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
+	protected final ArrayList<BaseViewRenderer> mRenderers = new ArrayList<>();
 	@NonNull
 	protected final ArrayList<Type> mTypes = new ArrayList<>();
 	@NonNull
@@ -81,8 +81,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	public RendererRecyclerViewAdapter(@NonNull final Context context) {}
 
 	@Override
-	public ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
-		final ViewRenderer renderer = mRenderers.get(typeIndex);
+	public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int typeIndex) {
+		final BaseViewRenderer renderer = mRenderers.get(typeIndex);
 		if (isCompositeRenderer(renderer) && mNestedRecycledViewPool != null) {
 			((CompositeViewRenderer) renderer).setRecycledViewPool(mNestedRecycledViewPool);
 		}
@@ -96,7 +96,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	public void onBindViewHolder(final ViewHolder holder, final int position, @Nullable final List payloads) {
 		super.onBindViewHolder(holder, position, payloads);
 		final ViewModel item = getItem(position);
-		final ViewRenderer renderer = getRenderer(item);
+		final BaseViewRenderer renderer = getRenderer(item);
 
 		if (payloads == null || payloads.isEmpty()) {
 			/* Full bind */
@@ -111,7 +111,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		mBoundViewHolders.add(holder);
 	}
 
-	public void registerRenderer(@NonNull final ViewRenderer renderer) {
+	public void registerRenderer(@NonNull final BaseViewRenderer renderer) {
 		final Type type = renderer.getType();
 
 		if (!mTypes.contains(type)) {
@@ -123,19 +123,19 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	@NonNull
-	protected ViewRenderer getRenderer(final int position) {
+	protected BaseViewRenderer getRenderer(final int position) {
 		final int typeIndex = getTypeIndex(position);
 		return mRenderers.get(typeIndex);
 	}
 
 	@NonNull
-	protected ViewRenderer getRenderer(@NonNull final ViewModel model) {
+	protected BaseViewRenderer getRenderer(@NonNull final ViewModel model) {
 		final int typeIndex = getTypeIndex(model);
 		return mRenderers.get(typeIndex);
 	}
 
 	@NonNull
-	protected ViewRenderer getRenderer(@NonNull final Type type) {
+	protected BaseViewRenderer getRenderer(@NonNull final Type type) {
 		final int typeIndex = getTypeIndex(type);
 		return mRenderers.get(typeIndex);
 	}
@@ -176,7 +176,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	public void onViewRecycled(final ViewHolder holder) {
 		super.onViewRecycled(holder);
 
-		final ViewRenderer renderer = getRenderer(holder.getType());
+		final BaseViewRenderer renderer = getRenderer(holder.getType());
 		renderer.viewRecycled(holder);
 
 		final int position = holder.getAdapterPosition();
@@ -441,7 +441,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	protected void saveViewState(@NonNull final ViewHolder holder) {
-		final ViewRenderer viewRenderer = getRenderer(holder.getType());
+		final BaseViewRenderer viewRenderer = getRenderer(holder.getType());
 		final ViewState viewState = viewRenderer.createViewState(holder);
 		if (viewState != null) {
 			if (holder.isSupportViewState()) {
@@ -494,7 +494,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		return holder instanceof CompositeViewHolder;
 	}
 
-	protected boolean isCompositeRenderer(@NonNull final ViewRenderer renderer) {
+	protected boolean isCompositeRenderer(@NonNull final BaseViewRenderer renderer) {
 		return renderer instanceof CompositeViewRenderer;
 	}
 

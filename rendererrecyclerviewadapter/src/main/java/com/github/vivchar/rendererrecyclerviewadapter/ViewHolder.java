@@ -1,11 +1,10 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.View;
 
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinderFactory;
@@ -26,6 +25,7 @@ public class ViewHolder <VF extends ViewFinder> extends RecyclerView.ViewHolder 
 		super(itemView);
 	}
 
+	@SuppressWarnings("unchecked")
 	@NonNull
 	public VF getViewFinder() {
 		if (mViewFinder == null) {
