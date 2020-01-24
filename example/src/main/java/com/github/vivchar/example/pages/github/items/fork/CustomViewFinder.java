@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 /**
  * Created by Vivchar Vitaly on 10.07.19.
  */
-public class CustomViewFinder extends ViewFinderImpl {
+public class CustomViewFinder extends ViewFinderImpl<CustomViewFinder> {
 
 	public CustomViewFinder(final View itemView) {
 		super(itemView);

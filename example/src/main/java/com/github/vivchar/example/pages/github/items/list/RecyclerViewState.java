@@ -11,14 +11,14 @@ import java.io.Serializable;
  * Created by Vivchar Vitaly on 21.10.17.
  */
 
-public class RecyclerViewState extends CompositeViewState<RecyclerViewHolder> implements Serializable {
+public class RecyclerViewState extends CompositeViewState<CompositeViewHolder> implements Serializable {
 
 	public RecyclerViewState(@NonNull final CompositeViewHolder holder) {
 		super(holder);
 	}
 
 	@Override
-	public void restore(@NonNull final RecyclerViewHolder holder) {
+	public void restore(@NonNull final CompositeViewHolder holder) {
 		super.restore(holder);
 	}
 }

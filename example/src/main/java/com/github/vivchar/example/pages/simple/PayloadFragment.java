@@ -16,7 +16,7 @@ import com.github.vivchar.example.widgets.ItemOffsetDecoration;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
 /**
  * Created by Vivchar Vitaly on 12/29/17.
@@ -43,7 +43,7 @@ public class PayloadFragment extends BaseScreenFragment {
 
 		mAdapter.setDiffCallback(new PayloadDiffCallback());
 
-		mAdapter.registerRenderer(new ViewBinder<>(
+		mAdapter.registerRenderer(new ViewRenderer<>(
 				R.layout.item_payload_square, PayloadViewModel.class,
 				(model, finder, payloads) -> {
 					finder.setOnClickListener(R.id.text, v -> changeItem(model));
@@ -71,7 +71,7 @@ public class PayloadFragment extends BaseScreenFragment {
 
 		mAdapter.setItems(mYourDataProvider.getPayloadItems());
 
-		mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+		mRecyclerView = view.findViewById(R.id.recycler_view);
 		mRecyclerView.setAdapter(mAdapter);
 		mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
 		mRecyclerView.addItemDecoration(new ItemOffsetDecoration(10));

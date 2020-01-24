@@ -15,7 +15,7 @@ import com.github.vivchar.example.widgets.ItemOffsetDecoration;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
 /**
  * Created by Vivchar Vitaly on 28.12.17.
@@ -40,7 +40,7 @@ public class DiffUtilFragment extends BaseScreenFragment {
 		mAdapter.setDiffCallback(new DiffCallback());
 //		adapter.enableDiffUtil(); /* Or just call it to enable DiffUtil with DefaultDiffCallback */
 
-		mAdapter.registerRenderer(new ViewBinder<>(R.layout.item_simple_square, DiffViewModel.class,
+		mAdapter.registerRenderer(new ViewRenderer<>(R.layout.item_simple_square, DiffViewModel.class,
 				(model, finder, payloads) -> finder
 						.setText(R.id.text, model.getText())
 						.setOnClickListener(R.id.text, v -> {

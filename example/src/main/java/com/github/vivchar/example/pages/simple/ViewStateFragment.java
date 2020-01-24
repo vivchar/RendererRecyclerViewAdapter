@@ -12,15 +12,14 @@ import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
+import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewState;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewStateProvider;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
 
 import java.util.Collections;
@@ -48,7 +47,7 @@ public class ViewStateFragment extends BaseScreenFragment {
 		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
 
 		mRecyclerViewAdapter.registerRenderer(
-				new CompositeViewBinder<>(
+				new CompositeViewRenderer<>(
 						R.layout.item_simple_composite,
 						R.id.recycler_view,
 						StateViewModel.class,
@@ -97,7 +96,7 @@ public class ViewStateFragment extends BaseScreenFragment {
 	}
 
 	private ViewRenderer getAnyViewRenderer() {
-		return new ViewBinder<>(R.layout.item_simple_square, DiffUtilFragment.DiffViewModel.class,
+		return new ViewRenderer<>(R.layout.item_simple_square, DiffUtilFragment.DiffViewModel.class,
 				(model, finder, payloads) -> finder.setText(R.id.text, model.getText())
 		);
 	}

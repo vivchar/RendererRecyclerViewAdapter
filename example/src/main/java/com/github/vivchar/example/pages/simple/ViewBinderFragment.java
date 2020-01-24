@@ -1,10 +1,9 @@
 package com.github.vivchar.example.pages.simple;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SwitchCompat;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.widget.Toast;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
 /**
  * Created by Vivchar Vitaly on 28.12.17.
@@ -35,7 +34,7 @@ public class ViewBinderFragment extends ViewRendererFragment {
 
 		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
 
-		adapter.registerRenderer(new ViewBinder<>(R.layout.item_simple, RectViewModel.class,
+		adapter.registerRenderer(new ViewRenderer<>(R.layout.item_simple, RectViewModel.class,
 				(model, finder, payloads) -> finder
 						.setText(R.id.text, model.getText())
 						.setOnClickListener(R.id.text, v -> {

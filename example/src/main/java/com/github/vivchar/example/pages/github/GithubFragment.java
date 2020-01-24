@@ -4,32 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.github.vivchar.example.pages.github.items.fork.CustomViewBinder;
-import com.github.vivchar.example.pages.github.items.fork.CustomViewFinder;
-import com.github.vivchar.rendererrecyclerviewadapter.ViewHolder;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinderFactory;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinderImpl;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.pages.github.items.ItemsDiffCallback;
 import com.github.vivchar.example.pages.github.items.category.CategoryModel;
 import com.github.vivchar.example.pages.github.items.category.CategoryViewRenderer;
+import com.github.vivchar.example.pages.github.items.fork.CustomViewFinder;
 import com.github.vivchar.example.pages.github.items.fork.ForkModel;
 import com.github.vivchar.example.pages.github.items.fork.ForkViewRenderer;
 import com.github.vivchar.example.pages.github.items.list.RecyclerViewRenderer;
@@ -44,8 +37,8 @@ import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapte
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.LoadMoreViewBinder;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -92,7 +85,7 @@ public class GithubFragment extends BaseScreenFragment {
 		mRecyclerViewAdapter.registerRenderer(new LoadMoreViewBinder(R.layout.item_load_more));
 		mRecyclerViewAdapter.registerRenderer(createStargazerRenderer(R.layout.item_user_full_width));
 		mRecyclerViewAdapter.registerRenderer(createListRenderer()
-				.registerRenderer(new ViewBinder<ForkModel, CustomViewFinder>(
+				.registerRenderer(new ViewRenderer<ForkModel, CustomViewFinder>(
 						R.layout.item_fork,
 						ForkModel.class,
 						(model, finder, p) -> {
@@ -103,7 +96,7 @@ public class GithubFragment extends BaseScreenFragment {
 				.registerRenderer(createStargazerRenderer(R.layout.item_user_150))
 		);
 
-		mRecyclerViewAdapter.registerRenderer(new ViewBinder<>(
+		mRecyclerViewAdapter.registerRenderer(new ViewRenderer<>(
 				R.layout.item_category,
 				CategoryModel.class,
 				(model, finder, payloads) -> finder
@@ -123,7 +116,7 @@ public class GithubFragment extends BaseScreenFragment {
 			}
 		});
 
-		mRecyclerView = (RecyclerView) inflate.findViewById(R.id.recycler_view);
+		mRecyclerView = inflate.findViewById(R.id.recycler_view);
 		mRecyclerView.setLayoutManager(mLayoutManager);
 		mRecyclerView.setAdapter(mRecyclerViewAdapter);
 		mRecyclerView.addItemDecoration(new MyItemDecoration());

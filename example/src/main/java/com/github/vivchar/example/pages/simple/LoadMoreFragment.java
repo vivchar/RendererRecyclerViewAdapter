@@ -1,7 +1,7 @@
 package com.github.vivchar.example.pages.simple;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,10 +14,10 @@ import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.EndlessScrollListener;
 import com.github.vivchar.example.widgets.ItemOffsetDecoration;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.binder.LoadMoreViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
 
 import java.lang.reflect.Type;
 
@@ -47,7 +47,7 @@ public class LoadMoreFragment extends BaseScreenFragment {
 
 //		mAdapter.setLoadMoreModel(new YourLoadMoreModel()); /* you can change the LoadMoreModel if needed */
 		mAdapter.registerRenderer(new LoadMoreViewBinder(R.layout.item_load_more));
-		mAdapter.registerRenderer(new ViewBinder<>(R.layout.item_simple_square, SimpleViewModel.class,
+		mAdapter.registerRenderer(new ViewRenderer<>(R.layout.item_simple_square, SimpleViewModel.class,
 				(model, finder, payloads) -> finder.setText(R.id.text, model.getText())
 		));
 //		adapter.registerRenderer(...);

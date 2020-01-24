@@ -1,9 +1,11 @@
 package com.github.vivchar.example.pages.simple;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,9 @@ import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapte
 import com.github.vivchar.rendererrecyclerviewadapter.ViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
+import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
+
+import java.util.List;
 
 /**
  * Created by Vivchar Vitaly on 12/28/17.
@@ -23,75 +28,56 @@ import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 @Deprecated
 public class ViewRendererFragment extends BaseScreenFragment {
 
-	private YourDataProvider mYourDataProvider = new YourDataProvider();
+    private YourDataProvider mYourDataProvider = new YourDataProvider();
 
-	@Nullable
-	@Override
-	public View onCreateView(final LayoutInflater inflater,
-	                         @Nullable final ViewGroup container,
-	                         @Nullable final Bundle savedInstanceState) {
+    @Nullable
+    @Override
+    public View onCreateView(final LayoutInflater inflater,
+                             @Nullable final ViewGroup container,
+                             @Nullable final Bundle savedInstanceState) {
 
-		final View view = inflater.inflate(R.layout.fragment_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+        final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
 
-		adapter.registerRenderer(new RectViewRenderer(RectViewModel.class));
+        adapter.registerRenderer(new RectViewRenderer(RectViewModel.class));
 //		adapter.registerRenderer(...);
 //		adapter.registerRenderer(...);
 
-		adapter.setItems(mYourDataProvider.getSquareItems());
+        adapter.setItems(mYourDataProvider.getSquareItems());
 
-		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-		recyclerView.setAdapter(adapter);
-		recyclerView.addItemDecoration(new BetweenSpacesItemDecoration(10, 10));
+        final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new BetweenSpacesItemDecoration(10, 10));
 
-		return view;
-	}
+        return view;
+    }
 
-	public static class RectViewRenderer extends ViewRenderer<RectViewModel, RectViewHolder> {
+    public static class RectViewRenderer extends ViewRenderer<RectViewModel, ViewFinder> {
 
-		public RectViewRenderer(@NonNull final Class<RectViewModel> type) {
-			super(type);
-		}
+        public RectViewRenderer(@NonNull final Class<RectViewModel> type) {
+            super(R.layout.item_simple, type, (model, finder, payloads) -> finder
+                    .setText(R.id.text, model.getText())
+            );
+        }
+    }
 
-		@Override
-		public void bindView(@NonNull final RectViewModel model, @NonNull final RectViewHolder holder) {
-			holder.textView.setText(model.getText());
-		}
+    public static class RectViewModel implements ViewModel {
 
-		@NonNull
-		@Override
-		public RectViewHolder createViewHolder(@Nullable final ViewGroup parent) {
-			return new RectViewHolder(inflate(R.layout.item_simple, parent));
-		}
-	}
+        private int mID;
+        private final String mText;
 
-	public static class RectViewHolder extends ViewHolder {
+        public RectViewModel(final int ID, final String text) {
+            mID = ID;
+            mText = text;
+        }
 
-		public final TextView textView;
+        public int getID() {
+            return mID;
+        }
 
-		public RectViewHolder(final View itemView) {
-			super(itemView);
-			textView = (TextView) itemView.findViewById(R.id.text);
-		}
-	}
-
-	public static class RectViewModel implements ViewModel {
-
-		private int mID;
-		private final String mText;
-
-		public RectViewModel(final int ID, final String text) {
-			mID = ID;
-			mText = text;
-		}
-
-		public int getID() {
-			return mID;
-		}
-
-		public String getText() {
-			return mText;
-		}
-	}
+        public String getText() {
+            return mText;
+        }
+    }
 }
