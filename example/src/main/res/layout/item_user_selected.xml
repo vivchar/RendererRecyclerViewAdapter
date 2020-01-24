@@ -8,7 +8,7 @@
 	android:padding = "6dp"
 	>
 
-	<androidx.appcompat.widget.AppCompatImageView
+	<com.github.vivchar.example.widgets.AvatarView
 		android:id = "@+id/avatar"
 		android:layout_width = "48dp"
 		android:layout_height = "48dp"

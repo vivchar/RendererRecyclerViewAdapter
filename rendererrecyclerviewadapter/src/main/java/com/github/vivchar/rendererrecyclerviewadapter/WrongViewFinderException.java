@@ -6,9 +6,9 @@ package com.github.vivchar.rendererrecyclerviewadapter;
 
 public class WrongViewFinderException extends RuntimeException {
 
-	public WrongViewFinderException() {
-		super("Looks like you are trying to use a custom ViewFinder, " +
-		      "but forgot to implement or register it, " +
-		      "please use RendererRecyclerViewAdapter.registerViewFinder() to support your custom ViewFinder.");
-	}
+    public WrongViewFinderException(String message) {
+        super("Looks like you are trying to use a custom ViewFinder, " +
+                "but forgot to implement or register it, " +
+                "please use RendererRecyclerViewAdapter.registerViewFinder() to support your custom ViewFinder. \n " + message);
+    }
 }

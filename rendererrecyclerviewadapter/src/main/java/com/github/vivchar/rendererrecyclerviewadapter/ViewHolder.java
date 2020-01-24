@@ -1,5 +1,6 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -28,8 +29,9 @@ public class ViewHolder <VF extends ViewFinder> extends RecyclerView.ViewHolder 
 		if (mViewFinder == null) {
 			try {
 				mViewFinder = (VF) ViewFinderFactory.create(itemView);
+				Log.d("@@@", "created ViewFinder: " + mViewFinder);
 			} catch (ClassCastException e) { //TODO vivchar: by some reason it does not catch
-				throw new WrongViewFinderException();
+				throw new WrongViewFinderException(e.getMessage());
 			}
 		}
 		return mViewFinder;
