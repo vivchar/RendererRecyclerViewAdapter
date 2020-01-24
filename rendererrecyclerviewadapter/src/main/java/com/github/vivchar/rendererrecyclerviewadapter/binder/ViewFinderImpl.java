@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 
 import android.util.SparseArray;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -81,9 +82,31 @@ class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
 
     @NonNull
     @Override
+    public T setOnClickListener(final int ID, final OnClickListener listener) {
+        return setOnClickListener(ID, new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                listener.onClick();
+            }
+        });
+    }
+
+    @NonNull
+    @Override
     public T setOnTouchListener(final int ID, final View.OnTouchListener listener) {
         find(ID).setOnTouchListener(listener);
         return (T) this;
+    }
+
+    @NonNull
+    @Override
+    public T setOnTouchListener(final int ID, final OnTouchListener listener) {
+        return setOnTouchListener(ID, new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View view, final MotionEvent motionEvent) {
+                return listener.onTouch(motionEvent) && view.performClick();
+            }
+        });
     }
 
     @NonNull
@@ -95,6 +118,17 @@ class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
 
     @NonNull
     @Override
+    public ViewFinder setOnLongClickListener(final int ID, final OnLongClickListener listener) {
+        return setOnLongClickListener(ID, new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(final View view) {
+                return listener.onLongClick();
+            }
+        });
+    }
+
+    @NonNull
+    @Override
     public T setOnClickListener(@NonNull final View.OnClickListener listener) {
         getRootView().setOnClickListener(listener);
         return (T) this;
@@ -102,9 +136,31 @@ class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
 
     @NonNull
     @Override
+    public ViewFinder setOnClickListener(@NonNull final OnClickListener listener) {
+        return setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                listener.onClick();
+            }
+        });
+    }
+
+    @NonNull
+    @Override
     public T setOnCheckedChangeListener(final int ID, final CompoundButton.OnCheckedChangeListener listener) {
         ((CompoundButton) find(ID)).setOnCheckedChangeListener(listener);
         return (T) this;
+    }
+
+    @NonNull
+    @Override
+    public ViewFinder setOnCheckedChangeListener(final int ID, final OnCheckedChangeListener listener) {
+        return setOnCheckedChangeListener(ID, new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean b) {
+                listener.onCheckedChanged(b);
+            }
+        });
     }
 
     @NonNull
