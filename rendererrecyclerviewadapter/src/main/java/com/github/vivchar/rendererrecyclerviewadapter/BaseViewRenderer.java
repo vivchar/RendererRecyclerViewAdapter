@@ -87,7 +87,17 @@ public abstract class BaseViewRenderer<M extends ViewModel, VF extends ViewFinde
     }
 
     public void bindViewInner(@NonNull final M model, @NonNull final VH holder, @NonNull final List<Object> payloads) {
-        mBinder.bindView(model, holder.getViewFinder(), payloads);
+        try {
+            mBinder.bindView(model, holder.getViewFinder(), payloads);
+        } catch (ClassCastException e) {
+            /* temporary workaround to catch ViewFinder ClassCastException,
+             by some reason ViewHolder.getViewFinder() catch doesn't work */
+            if (e.getMessage().contains(ViewFinder.class.getSimpleName())) {
+                throw new WrongViewFinderException();
+            } else {
+                throw e;
+            }
+        }
     }
 
     @NonNull

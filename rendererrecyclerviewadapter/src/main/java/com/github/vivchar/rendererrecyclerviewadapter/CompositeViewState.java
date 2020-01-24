@@ -3,7 +3,7 @@ package com.github.vivchar.rendererrecyclerviewadapter;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 
 import java.io.Serializable;
@@ -29,7 +29,7 @@ public class CompositeViewState <VH extends CompositeViewHolder> implements View
 			final View item = holder.getRecyclerView().getChildAt(0);
 			mTopOffset = (item == null) ? 0 : (item.getTop() - holder.getRecyclerView().getPaddingTop());
 			mLeftOffset = (item == null) ? 0 : (item.getLeft() - holder.getRecyclerView().getPaddingLeft());
-			Log.d("###", "save mPosition: " + mPosition + " mTopOffset: " + mTopOffset);
+//			Log.d("###", "save mPosition: " + mPosition + " mTopOffset: " + mTopOffset);
 		} else {
 			mPosition = 0;
 			mTopOffset = 0;
@@ -42,7 +42,7 @@ public class CompositeViewState <VH extends CompositeViewHolder> implements View
 
 		final RecyclerView.LayoutManager layoutManager = holder.getRecyclerView().getLayoutManager();
 		if (mPosition != -1 && layoutManager instanceof LinearLayoutManager) {
-			Log.d("###", "restore mPosition: " + mPosition + " mTopOffset: " + mTopOffset);
+//			Log.d("###", "restore mPosition: " + mPosition + " mTopOffset: " + mTopOffset);
 			((LinearLayoutManager) layoutManager).scrollToPositionWithOffset(mPosition, Math.max(mTopOffset, mLeftOffset));
 		}
 	}
