@@ -21,14 +21,14 @@ public abstract class BaseViewRenderer<M extends ViewModel, VF extends ViewFinde
     @LayoutRes
     protected final int mLayoutID;
     @NonNull
-    protected final com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer.Binder<M, VF> mBinder;
+    protected final ViewRenderer.Binder<M, VF> mBinder;
     @Nullable
     protected ViewStateProvider<M, VH> mViewStateProvider = null;
 
 
     public BaseViewRenderer(@LayoutRes final int layoutID,
                             @NonNull final Class<M> type,
-                            @NonNull final com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer.Binder<M, VF> binder) {
+                            @NonNull final ViewRenderer.Binder<M, VF> binder) {
         mType = type;
         mLayoutID = layoutID;
         mBinder = binder;
@@ -36,7 +36,7 @@ public abstract class BaseViewRenderer<M extends ViewModel, VF extends ViewFinde
 
     public BaseViewRenderer(@LayoutRes final int layoutID,
                             @NonNull final Class<M> type,
-                            @NonNull final com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer.Binder<M, VF> binder,
+                            @NonNull final ViewRenderer.Binder<M, VF> binder,
                             @Nullable final ViewStateProvider<M, VH> viewStateProvider) {
         mType = type;
         mLayoutID = layoutID;
