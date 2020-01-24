@@ -1,9 +1,6 @@
-package com.github.vivchar.rendererrecyclerviewadapter.binder;
+package com.github.vivchar.rendererrecyclerviewadapter;
 
 import androidx.annotation.NonNull;
-
-import com.github.vivchar.rendererrecyclerviewadapter.LoadMoreViewModel;
-import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
 import java.util.List;
 

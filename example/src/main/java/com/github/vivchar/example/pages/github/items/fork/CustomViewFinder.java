@@ -3,7 +3,7 @@ package com.github.vivchar.example.pages.github.items.fork;
 import android.view.View;
 
 import com.github.vivchar.example.widgets.AvatarView;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinderImpl;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewFinderImpl;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;

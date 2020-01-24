@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.github.vivchar.example.R;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewFinder;
 
 /**
  * Created by Vivchar Vitaly on 1/10/17.

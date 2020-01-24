@@ -1,4 +1,4 @@
-package com.github.vivchar.rendererrecyclerviewadapter.binder;
+package com.github.vivchar.rendererrecyclerviewadapter;
 
 import androidx.annotation.NonNull;
 

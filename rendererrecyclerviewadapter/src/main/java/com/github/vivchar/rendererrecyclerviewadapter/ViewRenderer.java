@@ -6,8 +6,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
-
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */

@@ -1,4 +1,4 @@
-package com.github.vivchar.rendererrecyclerviewadapter.binder;
+package com.github.vivchar.rendererrecyclerviewadapter;
 
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -35,8 +35,7 @@ import android.widget.TextView;
  * Created by Vivchar Vitaly on 29.12.17.
  */
 @SuppressWarnings("unchecked")
-public
-class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
+public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
 
     @NonNull
     private final SparseArray<View> mCachedViews = new SparseArray<>();

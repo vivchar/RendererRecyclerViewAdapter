@@ -19,8 +19,8 @@ import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapte
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewStateProvider;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
+import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewStateProvider;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewFinder;
 
 import java.util.Collections;
 import java.util.List;

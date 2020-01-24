@@ -36,8 +36,8 @@ import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.LoadMoreViewBinder;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewProvider;
+import com.github.vivchar.rendererrecyclerviewadapter.LoadMoreViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewProvider;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.reflect.Type;

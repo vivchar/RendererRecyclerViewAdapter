@@ -3,8 +3,6 @@ package com.github.vivchar.example.pages.github.items.list;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
-import android.view.ViewGroup;
 
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
 import com.github.vivchar.example.R;
@@ -15,7 +13,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewState;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewFinder;
 
 import java.util.Collections;
 import java.util.List;

@@ -9,18 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
-import com.github.vivchar.rendererrecyclerviewadapter.ViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
-
-import java.util.List;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewFinder;
 
 /**
  * Created by Vivchar Vitaly on 12/28/17.

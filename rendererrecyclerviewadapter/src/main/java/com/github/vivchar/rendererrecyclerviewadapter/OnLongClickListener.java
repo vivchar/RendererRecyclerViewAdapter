@@ -1,4 +1,4 @@
-package com.github.vivchar.rendererrecyclerviewadapter.binder;
+package com.github.vivchar.rendererrecyclerviewadapter;
 
 public interface OnLongClickListener {
     boolean onLongClick();

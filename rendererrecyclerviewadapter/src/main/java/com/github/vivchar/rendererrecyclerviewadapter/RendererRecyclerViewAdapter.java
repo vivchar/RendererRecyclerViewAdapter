@@ -6,8 +6,6 @@ import android.os.Parcelable;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinderFactory;
-
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;

@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
-
 /**
  * Created by Vivchar Vitaly on 8/25/17.
  */

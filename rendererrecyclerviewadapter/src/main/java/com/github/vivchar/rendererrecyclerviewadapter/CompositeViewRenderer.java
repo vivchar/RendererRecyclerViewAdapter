@@ -9,9 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewStateProvider;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
-
 import java.util.ArrayList;
 import java.util.List;
 

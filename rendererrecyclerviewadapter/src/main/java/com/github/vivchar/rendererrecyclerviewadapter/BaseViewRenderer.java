@@ -9,9 +9,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.WrongViewFinderException;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;

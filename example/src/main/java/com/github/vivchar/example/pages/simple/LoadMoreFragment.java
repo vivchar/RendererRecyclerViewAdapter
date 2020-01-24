@@ -15,7 +15,7 @@ import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.EndlessScrollListener;
 import com.github.vivchar.example.widgets.ItemOffsetDecoration;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.LoadMoreViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.LoadMoreViewBinder;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 

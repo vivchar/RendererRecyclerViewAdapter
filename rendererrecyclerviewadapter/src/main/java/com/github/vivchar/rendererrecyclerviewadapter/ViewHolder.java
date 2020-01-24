@@ -6,9 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinder;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewFinderFactory;
-
 /**
  * Created by Vivchar Vitaly on 12/26/17.
  */
