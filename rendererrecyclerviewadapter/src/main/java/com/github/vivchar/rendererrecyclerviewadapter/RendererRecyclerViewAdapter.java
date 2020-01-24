@@ -73,9 +73,6 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 	public RendererRecyclerViewAdapter() {}
 
-	@Deprecated
-	public RendererRecyclerViewAdapter(@NonNull final Context context) {}
-
 	@NonNull
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int typeIndex) {
@@ -89,13 +86,14 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	@Override
 	public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {}
 
-	@SuppressWarnings("ConstantConditions") /* To support old versions */
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public void onBindViewHolder(@NonNull final ViewHolder holder, final int position, @NonNull final List payloads) {
 		super.onBindViewHolder(holder, position, payloads);
 		final ViewModel item = getItem(position);
 		final BaseViewRenderer renderer = getRenderer(item);
 
+		/* check null to support old versions */
 		if (payloads == null || payloads.isEmpty()) {
 			/* Full bind */
 			renderer.performBindView(item, holder);
