@@ -76,6 +76,7 @@ public class UIRouter {
 	public void openPayloadPage() {
 		showFragment(new PayloadFragment());
 	}
+
 	public void openLoadMorePage() {
 		showFragment(new LoadMoreFragment());
 	}

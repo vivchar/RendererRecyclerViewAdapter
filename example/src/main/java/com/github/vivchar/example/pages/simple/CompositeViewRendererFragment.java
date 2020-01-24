@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
+import com.github.vivchar.example.widgets.MyAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
@@ -32,7 +33,7 @@ public class CompositeViewRendererFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+		final RendererRecyclerViewAdapter adapter = new MyAdapter();
 
 		adapter.registerRenderer(
 				new CompositeViewRenderer<>(

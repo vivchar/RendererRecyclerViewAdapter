@@ -30,6 +30,7 @@ import com.github.vivchar.example.pages.github.items.selected.UserViewRenderer;
 import com.github.vivchar.example.pages.github.items.stargazer.StargazerModel;
 import com.github.vivchar.example.pages.github.items.stargazer.StargazerViewRenderer;
 import com.github.vivchar.example.widgets.EndlessScrollListener;
+import com.github.vivchar.example.widgets.MyAdapter;
 import com.github.vivchar.example.widgets.MyItemDecoration;
 import com.github.vivchar.network.MainManager;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
@@ -76,11 +77,10 @@ public class GithubFragment extends BaseScreenFragment {
 				mMainPresenterView
 		);
 
-		mSwipeToRefresh = (SwipeRefreshLayout) inflate.findViewById(R.id.refresh);
+		mSwipeToRefresh = inflate.findViewById(R.id.refresh);
 		mSwipeToRefresh.setOnRefreshListener(() -> mGithubPresenter.onRefresh());
 
-		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
-		mRecyclerViewAdapter.registerViewFinder(CustomViewFinder::new);
+		mRecyclerViewAdapter = new MyAdapter();
 		mRecyclerViewAdapter.setDiffCallback(new ItemsDiffCallback());
 		mRecyclerViewAdapter.registerRenderer(new LoadMoreViewBinder(R.layout.item_load_more));
 		mRecyclerViewAdapter.registerRenderer(createStargazerRenderer(R.layout.item_user_full_width));
@@ -221,7 +221,7 @@ public class GithubFragment extends BaseScreenFragment {
 
 		@Override
 		public void showSelectedUsers(@NonNull final ArrayList<ViewModel> list) {
-			final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+			final RendererRecyclerViewAdapter adapter = new MyAdapter();
 			adapter.registerRenderer(createUserRenderer());
 
 			final LayoutInflater inflater = LayoutInflater.from(getContext());

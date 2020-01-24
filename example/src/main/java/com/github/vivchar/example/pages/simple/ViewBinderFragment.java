@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
+import com.github.vivchar.example.widgets.MyAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
@@ -32,7 +33,7 @@ public class ViewBinderFragment extends ViewRendererFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+		final RendererRecyclerViewAdapter adapter = new MyAdapter();
 
 		adapter.registerRenderer(new ViewRenderer<>(R.layout.item_simple, RectViewModel.class,
 				(model, finder, payloads) -> finder

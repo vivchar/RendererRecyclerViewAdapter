@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
+import com.github.vivchar.example.widgets.MyAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
@@ -34,7 +35,7 @@ public class ViewRendererFragment extends BaseScreenFragment {
 
         final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+        final RendererRecyclerViewAdapter adapter = new MyAdapter();
 
         adapter.registerRenderer(new RectViewRenderer(RectViewModel.class));
 //		adapter.registerRenderer(...);

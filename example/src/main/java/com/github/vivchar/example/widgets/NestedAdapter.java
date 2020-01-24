@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Vivchar Vitaly on 21.10.17.
  */
 
-public class NestedAdapter extends RendererRecyclerViewAdapter {
+public class NestedAdapter extends MyAdapter {
 
 	private static final String TAG = NestedAdapter.class.getSimpleName();
 
