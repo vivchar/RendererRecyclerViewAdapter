@@ -1,9 +1,5 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
-import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
-import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewModel;
-import com.github.vivchar.rendererrecyclerviewadapter.ViewStateProvider;
-
 /**
  * Created by Vivchar Vitaly on 30.12.17.
  */

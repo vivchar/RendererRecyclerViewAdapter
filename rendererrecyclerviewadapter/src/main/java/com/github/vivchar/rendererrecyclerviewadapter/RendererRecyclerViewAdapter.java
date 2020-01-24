@@ -78,6 +78,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	@Deprecated
 	public RendererRecyclerViewAdapter(@NonNull final Context context) {}
 
+	@NonNull
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int typeIndex) {
 		final BaseViewRenderer renderer = mRenderers.get(typeIndex);
@@ -88,10 +89,11 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, final int position) {}
+	public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {}
 
+	@SuppressWarnings("ConstantConditions") /* To support old versions */
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, final int position, @Nullable final List payloads) {
+	public void onBindViewHolder(@NonNull final ViewHolder holder, final int position, @NonNull final List payloads) {
 		super.onBindViewHolder(holder, position, payloads);
 		final ViewModel item = getItem(position);
 		final BaseViewRenderer renderer = getRenderer(item);
@@ -372,9 +374,9 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 	/**
 	 * If you want to show a some custom data in a Load More Indicator
-	 * then you should set your custom {@link LoadMoreViewModel} and createViewState your custom {@link LoadMoreViewRenderer}
+	 * then you should set your custom {@link LoadMoreViewModel} and createViewState your custom {@link LoadMoreViewBinder}
 	 * <p>
-	 * Use the {@link #registerRenderer(ViewRenderer)} to set your custom {@link LoadMoreViewRenderer}
+	 * Use the {@link #registerRenderer(BaseViewRenderer)} to set your custom {@link LoadMoreViewBinder}
 	 *
 	 * @param model - custom {@link LoadMoreViewModel}
 	 */
@@ -385,36 +387,6 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	@NonNull
 	public ArrayList<ViewHolder> getBoundViewHolders() {
 		return new ArrayList<>(mBoundViewHolders);
-	}
-
-	/**
-	 * Use {@link #getStates()}
-	 */
-	@Deprecated
-	@NonNull
-	public SparseArray<ViewState> getViewStates() {
-		final SparseArray<ViewState> list = new SparseArray<>();
-
-		final Iterator<Map.Entry<Integer, ViewState>> iterator = getStates().entrySet().iterator();
-		while (iterator.hasNext()) {
-			final Map.Entry<Integer, ViewState> next = iterator.next();
-			list.put(next.getKey(), next.getValue());
-		}
-
-		return list;
-	}
-
-	/**
-	 * Use {@link #setStates(HashMap)}
-	 */
-	@Deprecated
-	public void setViewStates(@NonNull final SparseArray<ViewState> states) {
-		mViewStates.clear();
-		for (int i = 0; i < states.size(); i++) {
-			final int key = states.keyAt(i);
-			final ViewState value = states.get(key);
-			mViewStates.put(key, value);
-		}
 	}
 
 	@NonNull

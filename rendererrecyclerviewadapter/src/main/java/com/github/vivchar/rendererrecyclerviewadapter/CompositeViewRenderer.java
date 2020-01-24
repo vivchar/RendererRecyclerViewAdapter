@@ -140,7 +140,7 @@ public class CompositeViewRenderer<M extends CompositeViewModel, VF extends View
     }
 
     @NonNull
-    protected CompositeViewHolder<VF> createCompositeViewHolder(@Nullable final ViewGroup parent) {
+    protected CompositeViewHolder<VF> createCompositeViewHolder(@NonNull final ViewGroup parent) {
         return new CompositeViewHolder<>(mRecyclerViewID, inflate(mLayoutID, parent));
     }
 

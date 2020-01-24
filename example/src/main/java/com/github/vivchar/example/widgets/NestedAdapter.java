@@ -22,15 +22,16 @@ public class NestedAdapter extends RendererRecyclerViewAdapter {
 		super();
 	}
 
-	@Override
-	public ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
+	@NonNull
+    @Override
+	public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int typeIndex) {
 		final ViewHolder viewHolder = super.onCreateViewHolder(parent, typeIndex);
 		Log.d(TAG, "onCreateViewHolder: " + viewHolder.getClass().getSimpleName());
 		return viewHolder;
 	}
 
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, final int position, @Nullable final List payloads) {
+	public void onBindViewHolder(@NonNull final ViewHolder holder, final int position, @Nullable final List payloads) {
 		Log.d(TAG, "onBindViewHolder: " + holder.getClass().getSimpleName());
 		super.onBindViewHolder(holder, position, payloads);
 	}
