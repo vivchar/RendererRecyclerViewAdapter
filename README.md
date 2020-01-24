@@ -1,5 +1,5 @@
 
-# Renderer RecyclerView Adapter [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat)](https://android-arsenal.com/api?level=14)
+# Renderer RecyclerView Adapter [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat)](https://android-arsenal.com/api?level=14) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/vvivchar)
 
 * [Now you do not need to implement adapters for RecyclerView](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-the-Renderer-Adapter);
 * [You can easily use several types of cells in a single list](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-Simple-Items);
@@ -41,6 +41,16 @@ dependencies {
     compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.8.0'
 }
 ```
+## BETA
+Include this feature https://github.com/vivchar/RendererRecyclerViewAdapter/issues/32
+```gradle
+maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+
+dependencies {
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.9.0-SNAPSHOT'
+}
+```
+
 
 ## Usage
 * **Step 1:** Add the ViewModel interface to your UI model
