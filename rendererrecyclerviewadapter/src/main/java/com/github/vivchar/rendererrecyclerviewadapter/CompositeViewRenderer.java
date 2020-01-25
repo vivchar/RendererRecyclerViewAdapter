@@ -120,13 +120,14 @@ public class CompositeViewRenderer<M extends CompositeViewModel, VF extends View
 
     @NonNull
     @Override
-    public CompositeViewHolder<VF> createViewHolder(@NonNull final ViewGroup parent) {
+    protected CompositeViewHolder<VF> performCreateViewHolder(@NonNull final ViewGroup parent) {
+
         final RendererRecyclerViewAdapter adapter = createAdapter();
         for (final BaseViewRenderer renderer : mRenderers) {
             adapter.registerRenderer(renderer);
         }
 
-        final CompositeViewHolder<VF> viewHolder = createCompositeViewHolder(parent);
+        final CompositeViewHolder<VF> viewHolder = super.performCreateViewHolder(parent);
         viewHolder.setAdapter(adapter);
 
         if (viewHolder.getRecyclerView() != null) {
@@ -142,6 +143,12 @@ public class CompositeViewRenderer<M extends CompositeViewModel, VF extends View
     }
 
     @NonNull
+    @Override
+    public CompositeViewHolder<VF> createViewHolder(@NonNull final ViewGroup parent) {
+        return new CompositeViewHolder<>(mRecyclerViewID, inflate(mLayoutID, parent));
+    }
+
+    @NonNull
     public CompositeViewRenderer registerRenderer(@NonNull final BaseViewRenderer renderer) {
         mRenderers.add(renderer);
         return this;
@@ -154,11 +161,6 @@ public class CompositeViewRenderer<M extends CompositeViewModel, VF extends View
     @Override
     public ViewState createViewState(@NonNull final CompositeViewHolder<VF> holder) {
         return super.createViewState(holder);
-    }
-
-    @NonNull
-    protected CompositeViewHolder<VF> createCompositeViewHolder(@NonNull final ViewGroup parent) {
-        return new CompositeViewHolder<>(mRecyclerViewID, inflate(mLayoutID, parent));
     }
 
     @NonNull

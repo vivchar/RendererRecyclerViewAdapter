@@ -11,12 +11,8 @@ import android.view.View;
  */
 public class CompositeViewHolder<VF extends ViewFinder> extends ViewHolder<VF> {
 
-	public RecyclerView recyclerView;
-	public RendererRecyclerViewAdapter adapter;
-
-	public CompositeViewHolder(@NonNull final View itemView) {
-		super(itemView);
-	}
+	protected RecyclerView recyclerView;
+	protected RendererRecyclerViewAdapter adapter;
 
 	public CompositeViewHolder(@IdRes final int recyclerViewID, @NonNull final View view) {
 		super(view);

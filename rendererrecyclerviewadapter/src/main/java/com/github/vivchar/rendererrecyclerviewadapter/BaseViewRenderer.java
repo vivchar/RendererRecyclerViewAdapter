@@ -57,7 +57,7 @@ public abstract class BaseViewRenderer<M extends ViewModel, VF extends ViewFinde
     }
 
     @NonNull
-    protected ViewHolder performCreateViewHolder(@NonNull final ViewGroup parent) {
+    protected VH performCreateViewHolder(@NonNull final ViewGroup parent) {
         setContext(parent.getContext());
         return createViewHolder(parent);
     }
