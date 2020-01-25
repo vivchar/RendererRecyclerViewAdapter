@@ -98,15 +98,35 @@ public class CompositeViewRenderer<M extends CompositeViewModel, VF extends View
     @Override
     public void rebindView(@NonNull final M model, @NonNull final CompositeViewHolder<VF> holder, @NonNull final List<Object> payloads) {
         super.rebindView(model, holder, payloads);
-        holder.getAdapter().setItems(model.getItems());
-        holder.getAdapter().notifyDataSetChanged();
+        bindAdapterItems(model, holder.getAdapter());
     }
 
     @Override
     protected void bindView(@NonNull final M model, @NonNull final CompositeViewHolder<VF> holder) {
         super.bindView(model, holder);
-        holder.getAdapter().setItems(model.getItems());
-        holder.getAdapter().notifyDataSetChanged();
+        bindAdapterItems(model, holder.getAdapter());
+    }
+
+    /**
+     * You can use the DiffUtil, just extend this class and override this method
+     * @return true if we should enable DiffUtil
+     */
+    protected boolean isDiffUtilEnabled() {
+        return false;
+    }
+
+    /**
+     * @param model - item models which RecyclerView should contains
+     * @param adapter - adapter of RecyclerView
+     */
+    protected void bindAdapterItems(@NonNull final M model, @NonNull final RendererRecyclerViewAdapter adapter) {
+        if (isDiffUtilEnabled()) {
+            adapter.enableDiffUtil(true);
+            adapter.setItems(model.getItems());
+        } else {
+            adapter.setItems(model.getItems());
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @NonNull

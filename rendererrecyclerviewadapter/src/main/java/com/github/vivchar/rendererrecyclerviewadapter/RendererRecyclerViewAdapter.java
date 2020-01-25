@@ -169,7 +169,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	@Override
-	public void onViewRecycled(final ViewHolder holder) {
+	public void onViewRecycled(@NonNull final ViewHolder holder) {
 		super.onViewRecycled(holder);
 
 		final BaseViewRenderer renderer = getRenderer(holder.getType());
@@ -465,14 +465,14 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	@Override
-	public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+	public void onAttachedToRecyclerView(@NonNull final RecyclerView recyclerView) {
 		super.onAttachedToRecyclerView(recyclerView);
 		mRecyclerView = recyclerView;
 		restoreRecyclerViewState(mSavedInstanceState);
 	}
 
 	@Override
-	public void onDetachedFromRecyclerView(final RecyclerView recyclerView) {
+	public void onDetachedFromRecyclerView(@NonNull final RecyclerView recyclerView) {
 		super.onDetachedFromRecyclerView(recyclerView);
 		mRecyclerView = null;
 	}
