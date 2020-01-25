@@ -21,4 +21,10 @@ public class CustomViewFinder extends ViewFinderImpl<CustomViewFinder> {
 		((AvatarView) find(ID)).setUrl(url);
 		return this;
 	}
+
+	@NonNull
+	public CustomViewFinder setUrlCircled(@IdRes final int ID, @NonNull final String url) {
+		((AvatarView) find(ID)).setUrl(url, true);
+		return this;
+	}
 }

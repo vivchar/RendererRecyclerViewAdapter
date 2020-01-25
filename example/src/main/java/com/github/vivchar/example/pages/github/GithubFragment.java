@@ -84,7 +84,7 @@ public class GithubFragment extends BaseScreenFragment {
                         R.layout.item_fork,
                         ForkModel.class,
                         (model, finder, p) -> {
-                            finder.setUrl(R.id.fork_avatar, model.getAvatarUrl());
+                            finder.setUrlCircled(R.id.fork_avatar, model.getAvatarUrl());
                             finder.setText(R.id.fork_name, model.getName());
                         }
                 ))
