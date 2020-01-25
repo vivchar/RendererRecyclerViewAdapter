@@ -3,7 +3,7 @@ package com.github.vivchar.rendererrecyclerviewadapter;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-//import android.util.Log;
+import android.util.Log;
 import android.view.View;
 
 import java.io.Serializable;
@@ -20,16 +20,17 @@ public class CompositeViewState <VH extends CompositeViewHolder> implements View
 	protected int mTopOffset;
 	protected int mLeftOffset;
 
-	public <VH extends CompositeViewHolder> CompositeViewState(@NonNull final VH holder) {
+	public CompositeViewState(@NonNull final VH holder) {
 		mViewStates = holder.getAdapter().getStates();
 		final RecyclerView.LayoutManager layoutManager = holder.getRecyclerView().getLayoutManager();
 		if (layoutManager instanceof LinearLayoutManager) {
 			/* To get rid of Parcelable, https://stackoverflow.com/a/35287828/4894238 */
-			mPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+			@NonNull final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+			mPosition = linearLayoutManager.findFirstVisibleItemPosition();
 			final View item = holder.getRecyclerView().getChildAt(0);
 			mTopOffset = (item == null) ? 0 : (item.getTop() - holder.getRecyclerView().getPaddingTop());
 			mLeftOffset = (item == null) ? 0 : (item.getLeft() - holder.getRecyclerView().getPaddingLeft());
-//			Log.d("###", "save mPosition: " + mPosition + " mTopOffset: " + mTopOffset);
+			Log.d("###", "save mPosition: " + mPosition + " mTopOffset: " + mTopOffset + " mLeftOffset " + mLeftOffset);
 		} else {
 			mPosition = 0;
 			mTopOffset = 0;
@@ -42,8 +43,13 @@ public class CompositeViewState <VH extends CompositeViewHolder> implements View
 
 		final RecyclerView.LayoutManager layoutManager = holder.getRecyclerView().getLayoutManager();
 		if (mPosition != -1 && layoutManager instanceof LinearLayoutManager) {
-//			Log.d("###", "restore mPosition: " + mPosition + " mTopOffset: " + mTopOffset);
-			((LinearLayoutManager) layoutManager).scrollToPositionWithOffset(mPosition, Math.max(mTopOffset, mLeftOffset));
+			@NonNull final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+			Log.d("###", "restore mPosition: " + mPosition + " mTopOffset: " + mTopOffset + " mLeftOffset " + mLeftOffset);
+			if (linearLayoutManager.canScrollHorizontally()) {
+				linearLayoutManager.scrollToPositionWithOffset(mPosition, mLeftOffset);
+			} else {
+				linearLayoutManager.scrollToPositionWithOffset(mPosition, mTopOffset);
+			}
 		}
 	}
 }
