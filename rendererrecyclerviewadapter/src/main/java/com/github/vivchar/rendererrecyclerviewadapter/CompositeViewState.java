@@ -30,7 +30,7 @@ public class CompositeViewState <VH extends CompositeViewHolder> implements View
 			final View item = holder.getRecyclerView().getChildAt(0);
 			mTopOffset = (item == null) ? 0 : (item.getTop() - holder.getRecyclerView().getPaddingTop());
 			mLeftOffset = (item == null) ? 0 : (item.getLeft() - holder.getRecyclerView().getPaddingLeft());
-			Log.d("###", "save mPosition: " + mPosition + " mTopOffset: " + mTopOffset + " mLeftOffset " + mLeftOffset);
+//			Log.d("###", "save mPosition: " + mPosition + " mTopOffset: " + mTopOffset + " mLeftOffset " + mLeftOffset);
 		} else {
 			mPosition = 0;
 			mTopOffset = 0;
@@ -44,7 +44,7 @@ public class CompositeViewState <VH extends CompositeViewHolder> implements View
 		final RecyclerView.LayoutManager layoutManager = holder.getRecyclerView().getLayoutManager();
 		if (mPosition != -1 && layoutManager instanceof LinearLayoutManager) {
 			@NonNull final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
-			Log.d("###", "restore mPosition: " + mPosition + " mTopOffset: " + mTopOffset + " mLeftOffset " + mLeftOffset);
+//			Log.d("###", "restore mPosition: " + mPosition + " mTopOffset: " + mTopOffset + " mLeftOffset " + mLeftOffset);
 			if (linearLayoutManager.canScrollHorizontally()) {
 				linearLayoutManager.scrollToPositionWithOffset(mPosition, mLeftOffset);
 			} else {
