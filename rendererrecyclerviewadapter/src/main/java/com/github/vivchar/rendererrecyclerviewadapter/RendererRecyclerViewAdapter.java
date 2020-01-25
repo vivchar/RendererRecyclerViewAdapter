@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,7 +55,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected final ArrayList<ViewHolder> mBoundViewHolders = new ArrayList<>();
 
 	@Nullable
-	protected RecyclerView mRecyclerView = null;
+	protected WeakReference<RecyclerView> mRecyclerView = null;
 	@Nullable
 	protected ListUpdateCallback mUpdateCallback = null;
 	@NonNull
@@ -453,8 +454,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	protected void saveRecyclerViewState(@NonNull final Bundle outState) {
-		if (mRecyclerView != null) {
-			final Parcelable recyclerViewState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+		if (mRecyclerView != null && mRecyclerView .get() != null) {
+			final Parcelable recyclerViewState = mRecyclerView.get().getLayoutManager().onSaveInstanceState();
 			outState.putParcelable(RECYCLER_VIEW_STATE_KEY, recyclerViewState);
 		}
 	}
@@ -462,8 +463,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected void restoreRecyclerViewState(@Nullable final Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
 			final Parcelable parcelable = savedInstanceState.getParcelable(RECYCLER_VIEW_STATE_KEY);
-			if (parcelable != null && mRecyclerView != null) {
-				mRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
+			if (parcelable != null && mRecyclerView != null && mRecyclerView .get() != null) {
+				mRecyclerView.get().getLayoutManager().onRestoreInstanceState(parcelable);
 				mSavedInstanceState = null;
 			} else {
 				mSavedInstanceState = savedInstanceState;
@@ -489,14 +490,17 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	@Override
 	public void onAttachedToRecyclerView(@NonNull final RecyclerView recyclerView) {
 		super.onAttachedToRecyclerView(recyclerView);
-		mRecyclerView = recyclerView;
+		mRecyclerView = new WeakReference<>(recyclerView);
 		restoreRecyclerViewState(mSavedInstanceState);
 	}
 
 	@Override
 	public void onDetachedFromRecyclerView(@NonNull final RecyclerView recyclerView) {
 		super.onDetachedFromRecyclerView(recyclerView);
-		mRecyclerView = null;
+		if (mRecyclerView != null) {
+			mRecyclerView.clear();
+			mRecyclerView = null;
+		}
 	}
 
 	@NonNull
