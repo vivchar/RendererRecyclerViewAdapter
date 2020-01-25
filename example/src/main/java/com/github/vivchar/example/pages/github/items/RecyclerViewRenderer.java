@@ -12,6 +12,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewState;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewFinder;
 
@@ -29,18 +30,8 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 	}
 
 	@Override
-	public void rebindView(@NonNull final RecyclerViewModel model, @NonNull final CompositeViewHolder<ViewFinder> holder, @NonNull final List<Object> payloads) {
-		super.rebindView(model, holder, payloads);
-		holder.getAdapter().enableDiffUtil();
-		holder.getAdapter().setItems(model.getItems());
-	}
-
-	@Override
-	public void bindView(@NonNull final RecyclerViewModel model, @NonNull final CompositeViewHolder<ViewFinder> holder) {
-		super.bindView(model, holder);
-		holder.getAdapter().disableDiffUtil();
-		holder.getAdapter().setItems(model.getItems());
-		holder.getAdapter().notifyDataSetChanged();
+	protected void bindAdapterItems(@NonNull final RendererRecyclerViewAdapter adapter, @NonNull final List<? extends ViewModel> models) {
+		adapter.setItems(models);
 	}
 
 	@Nullable

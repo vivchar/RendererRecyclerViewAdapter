@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -56,7 +57,7 @@ public class CompositeViewRenderer<M extends CompositeViewModel, VF extends View
                                  @NonNull final ViewRenderer... renderers) {
         super(layoutID, type, binder);
         mRecyclerViewID = recyclerViewID;
-//        mRenderers.addAll(new ArrayList<ViewRenderer>(renderers));
+        Collections.addAll(mRenderers, renderers);
     }
 
     public CompositeViewRenderer(final int layoutID,
@@ -98,35 +99,23 @@ public class CompositeViewRenderer<M extends CompositeViewModel, VF extends View
     @Override
     public void rebindView(@NonNull final M model, @NonNull final CompositeViewHolder<VF> holder, @NonNull final List<Object> payloads) {
         super.rebindView(model, holder, payloads);
-        bindAdapterItems(model, holder.getAdapter());
+        bindAdapterItems(holder.getAdapter(), model.getItems());
     }
 
     @Override
     protected void bindView(@NonNull final M model, @NonNull final CompositeViewHolder<VF> holder) {
         super.bindView(model, holder);
-        bindAdapterItems(model, holder.getAdapter());
+        bindAdapterItems(holder.getAdapter(), model.getItems());
     }
 
     /**
-     * You can use the DiffUtil, just extend this class and override this method
-     * @return true if we should enable DiffUtil
-     */
-    protected boolean isDiffUtilEnabled() {
-        return false;
-    }
-
-    /**
-     * @param model - item models which RecyclerView should contains
+     * You can use the DiffUtil here, just extend this class and override this method
      * @param adapter - adapter of RecyclerView
+     * @param models - item models which RecyclerView should contains
      */
-    protected void bindAdapterItems(@NonNull final M model, @NonNull final RendererRecyclerViewAdapter adapter) {
-        if (isDiffUtilEnabled()) {
-            adapter.enableDiffUtil(true);
-            adapter.setItems(model.getItems());
-        } else {
-            adapter.setItems(model.getItems());
-            adapter.notifyDataSetChanged();
-        }
+    protected void bindAdapterItems(@NonNull final RendererRecyclerViewAdapter adapter, @NonNull final List<? extends ViewModel> models) {
+        adapter.setItems(models);
+        adapter.notifyDataSetChanged();
     }
 
     @NonNull
