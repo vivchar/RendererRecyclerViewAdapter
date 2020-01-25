@@ -1,10 +1,10 @@
-package com.github.vivchar.example.pages.github.items.stargazer;
+package com.github.vivchar.example.pages.github.items;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.github.vivchar.example.R;
-import com.github.vivchar.example.pages.github.items.fork.CustomViewFinder;
+import com.github.vivchar.example.widgets.CustomViewFinder;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;

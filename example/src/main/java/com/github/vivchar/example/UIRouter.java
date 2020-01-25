@@ -10,7 +10,6 @@ import com.github.vivchar.example.pages.simple.CompositeViewRendererFragment;
 import com.github.vivchar.example.pages.simple.DiffUtilFragment;
 import com.github.vivchar.example.pages.simple.LoadMoreFragment;
 import com.github.vivchar.example.pages.simple.PayloadFragment;
-import com.github.vivchar.example.pages.simple.ViewBinderFragment;
 import com.github.vivchar.example.pages.simple.ViewRendererFragment;
 import com.github.vivchar.example.pages.simple.ViewStateFragment;
 
@@ -55,10 +54,6 @@ public class UIRouter {
 
 	public void openViewRendererPage() {
 		showFragment(new ViewRendererFragment());
-	}
-
-	public void openViewBinderPage() {
-		showFragment(new ViewBinderFragment());
 	}
 
 	public void openCompositeViewRendererPage() {

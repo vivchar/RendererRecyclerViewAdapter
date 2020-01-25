@@ -1,4 +1,4 @@
-package com.github.vivchar.example.pages.github.items.list;
+package com.github.vivchar.example.pages.github.items;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +27,7 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 	public RecyclerViewRenderer() {
 		super(R.layout.item_composite, R.id.recycler_view, RecyclerViewModel.class);
 	}
-//
+
 //	@Override
 //	public void rebindView(@NonNull final RecyclerViewModel model, @NonNull final RecyclerViewHolder holder, @NonNull final List<Object> payloads) {
 //		Log.d(TAG, "bindView " + model.toString() + ", payload: " + payloads.toString());

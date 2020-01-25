@@ -1,10 +1,10 @@
-package com.github.vivchar.example.pages.github.items;
+package com.github.vivchar.example.widgets;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
-import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
+import com.github.vivchar.example.pages.github.items.RecyclerViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 

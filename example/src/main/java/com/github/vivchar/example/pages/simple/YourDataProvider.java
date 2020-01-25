@@ -1,7 +1,5 @@
 package com.github.vivchar.example.pages.simple;
 
-import androidx.recyclerview.widget.ListUpdateCallback;
-
 import com.github.vivchar.example.pages.simple.DiffUtilFragment.DiffViewModel;
 import com.github.vivchar.example.pages.simple.PayloadFragment.PayloadViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
@@ -14,7 +12,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.vivchar.example.pages.simple.ViewRendererFragment.RectViewModel;
 import static com.github.vivchar.example.pages.simple.ViewStateFragment.StateViewModel;
 
 /**
@@ -53,7 +50,7 @@ public class YourDataProvider {
 	public List<ViewModel> getSquareItems() {
 		final ArrayList<ViewModel> items = new ArrayList<>();
 		for (int i = 0; i < 50; i++) {
-			items.add(new RectViewModel(i, String.valueOf(i)));
+			items.add(new ViewRendererFragment.RectViewModel(i, String.valueOf(i)));
 		}
 		return items;
 	}

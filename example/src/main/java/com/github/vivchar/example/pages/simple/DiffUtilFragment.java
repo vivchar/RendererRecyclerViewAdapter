@@ -53,7 +53,7 @@ public class DiffUtilFragment extends BaseScreenFragment {
 
 		mAdapter.setItems(mYourDataProvider.getDiffItems());
 
-		mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+		mRecyclerView = view.findViewById(R.id.recycler_view);
 		mRecyclerView.setAdapter(mAdapter);
 		mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
 		mRecyclerView.addItemDecoration(new ItemOffsetDecoration(10));

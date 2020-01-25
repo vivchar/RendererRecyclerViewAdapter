@@ -1,8 +1,7 @@
-package com.github.vivchar.example.pages.github.items.fork;
+package com.github.vivchar.example.widgets;
 
 import android.view.View;
 
-import com.github.vivchar.example.widgets.AvatarView;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewFinderImpl;
 
 import androidx.annotation.IdRes;

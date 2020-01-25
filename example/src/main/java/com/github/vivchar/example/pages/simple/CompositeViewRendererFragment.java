@@ -48,7 +48,7 @@ public class CompositeViewRendererFragment extends BaseScreenFragment {
 
 		adapter.setItems(mYourDataProvider.getCompositeSimpleItems());
 
-		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+		final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
 		recyclerView.setAdapter(adapter);
 		recyclerView.addItemDecoration(new BetweenSpacesItemDecoration(10, 10));
 

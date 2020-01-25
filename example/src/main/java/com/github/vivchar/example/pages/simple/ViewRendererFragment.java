@@ -2,13 +2,13 @@ package com.github.vivchar.example.pages.simple;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
@@ -17,64 +17,59 @@ import com.github.vivchar.example.widgets.MyAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
-import com.github.vivchar.rendererrecyclerviewadapter.ViewFinder;
 
 /**
- * Created by Vivchar Vitaly on 12/28/17.
+ * Created by Vivchar Vitaly on 28.12.17.
  */
-@Deprecated
 public class ViewRendererFragment extends BaseScreenFragment {
 
-    private YourDataProvider mYourDataProvider = new YourDataProvider();
+	public static final String TAG = ViewRendererFragment.class.getSimpleName();
 
-    @Nullable
-    @Override
-    public View onCreateView(final LayoutInflater inflater,
-                             @Nullable final ViewGroup container,
-                             @Nullable final Bundle savedInstanceState) {
+	private YourDataProvider mYourDataProvider = new YourDataProvider();
 
-        final View view = inflater.inflate(R.layout.fragment_list, container, false);
+	@Nullable
+	@Override
+	public View onCreateView(final LayoutInflater inflater,
+	                         @Nullable final ViewGroup container,
+	                         @Nullable final Bundle savedInstanceState) {
 
-        final RendererRecyclerViewAdapter adapter = new MyAdapter();
+		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        adapter.registerRenderer(new RectViewRenderer(RectViewModel.class));
-//		adapter.registerRenderer(...);
-//		adapter.registerRenderer(...);
+		final RendererRecyclerViewAdapter adapter = new MyAdapter();
 
-        adapter.setItems(mYourDataProvider.getSquareItems());
+		adapter.registerRenderer(new ViewRenderer<>(R.layout.item_simple, RectViewModel.class,
+				(model, finder, payloads) -> finder
+						.setText(R.id.text, model.getText())
+						.setOnClickListener(R.id.text, v -> {
+							Toast.makeText(getContext(), "Text Clicked " + model.getText(), Toast.LENGTH_SHORT).show();
+						})
+		));
 
-        final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new BetweenSpacesItemDecoration(10, 10));
+		adapter.setItems(mYourDataProvider.getSquareItems());
 
-        return view;
-    }
+		final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+		recyclerView.setAdapter(adapter);
+		recyclerView.addItemDecoration(new BetweenSpacesItemDecoration(10, 10));
 
-    public static class RectViewRenderer extends ViewRenderer<RectViewModel, ViewFinder> {
+		return view;
+	}
 
-        public RectViewRenderer(@NonNull final Class<RectViewModel> type) {
-            super(R.layout.item_simple, type, (model, finder, payloads) -> finder
-                    .setText(R.id.text, model.getText())
-            );
-        }
-    }
+	public static class RectViewModel implements ViewModel {
 
-    public static class RectViewModel implements ViewModel {
+		private int mID;
+		private final String mText;
 
-        private int mID;
-        private final String mText;
+		public RectViewModel(final int ID, final String text) {
+			mID = ID;
+			mText = text;
+		}
 
-        public RectViewModel(final int ID, final String text) {
-            mID = ID;
-            mText = text;
-        }
+		public int getID() {
+			return mID;
+		}
 
-        public int getID() {
-            return mID;
-        }
-
-        public String getText() {
-            return mText;
-        }
-    }
+		public String getText() {
+			return mText;
+		}
+	}
 }
