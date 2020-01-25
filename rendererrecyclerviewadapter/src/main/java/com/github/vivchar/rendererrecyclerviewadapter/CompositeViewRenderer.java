@@ -56,6 +56,7 @@ public class CompositeViewRenderer<M extends CompositeViewModel, VF extends View
                                  @NonNull final ViewRenderer... renderers) {
         super(layoutID, type, binder);
         mRecyclerViewID = recyclerViewID;
+//        mRenderers.addAll(new ArrayList<ViewRenderer>(renderers));
     }
 
     public CompositeViewRenderer(final int layoutID,
@@ -95,8 +96,15 @@ public class CompositeViewRenderer<M extends CompositeViewModel, VF extends View
     }
 
     @Override
-    public void bindViewInner(@NonNull final M model, @NonNull final CompositeViewHolder<VF> holder, @NonNull final List<Object> payloads) {
-        super.bindViewInner(model, holder, payloads);
+    public void rebindView(@NonNull final M model, @NonNull final CompositeViewHolder<VF> holder, @NonNull final List<Object> payloads) {
+        super.rebindView(model, holder, payloads);
+        holder.getAdapter().setItems(model.getItems());
+        holder.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    protected void bindView(@NonNull final M model, @NonNull final CompositeViewHolder<VF> holder) {
+        super.bindView(model, holder);
         holder.getAdapter().setItems(model.getItems());
         holder.getAdapter().notifyDataSetChanged();
     }

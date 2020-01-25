@@ -28,20 +28,20 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 		super(R.layout.item_composite, R.id.recycler_view, RecyclerViewModel.class);
 	}
 
-//	@Override
-//	public void rebindView(@NonNull final RecyclerViewModel model, @NonNull final RecyclerViewHolder holder, @NonNull final List<Object> payloads) {
-//		Log.d(TAG, "bindView " + model.toString() + ", payload: " + payloads.toString());
-//		holder.getAdapter().enableDiffUtil();
-//		holder.getAdapter().setItems(model.getItems());
-//	}
-//
-//	@Override
-//	public void bindView(@NonNull final RecyclerViewModel model, @NonNull final RecyclerViewHolder holder) {
-//		Log.d(TAG, "bindView " + model.toString());
-//		holder.getAdapter().disableDiffUtil();
-//		holder.getAdapter().setItems(model.getItems());
-//		holder.getAdapter().notifyDataSetChanged();
-//	}
+	@Override
+	public void rebindView(@NonNull final RecyclerViewModel model, @NonNull final CompositeViewHolder<ViewFinder> holder, @NonNull final List<Object> payloads) {
+		super.rebindView(model, holder, payloads);
+		holder.getAdapter().enableDiffUtil();
+		holder.getAdapter().setItems(model.getItems());
+	}
+
+	@Override
+	public void bindView(@NonNull final RecyclerViewModel model, @NonNull final CompositeViewHolder<ViewFinder> holder) {
+		super.bindView(model, holder);
+		holder.getAdapter().disableDiffUtil();
+		holder.getAdapter().setItems(model.getItems());
+		holder.getAdapter().notifyDataSetChanged();
+	}
 
 	@Nullable
 	@Override

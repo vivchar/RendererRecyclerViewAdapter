@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,6 +62,27 @@ public abstract class BaseViewRenderer<M extends ViewModel, VF extends ViewFinde
         return createViewHolder(parent);
     }
 
+    void performRebindView(@NonNull final M model, @NonNull final VH holder, @NonNull final List<Object> payloads) {
+        rebindView(model, holder, payloads);
+    }
+
+    void performBindView(@NonNull final M model, @NonNull final VH holder) {
+        holder.setType(model.getClass());
+        holder.setViewStateID(createViewStateID(model));
+        bindView(model, holder);
+    }
+
+    /**
+     * This method will be called for a full bind.
+     *
+     * @param model  your a ViewModel
+     * @param holder your a ViewHolder
+     */
+    @CallSuper
+    protected void bindView(@NonNull final M model, @NonNull final VH holder) {
+        bindInner(model, holder, new ArrayList<>());
+    }
+
     /**
      * This method will be called for a partial bind if you override the {@link com.github.vivchar.rendererrecyclerviewadapter
      * .RendererRecyclerViewAdapter.DiffCallback#getChangePayload(ViewModel,
@@ -70,23 +92,12 @@ public abstract class BaseViewRenderer<M extends ViewModel, VF extends ViewFinde
      * @param holder   your a ViewHolder
      * @param payloads your payload
      */
-    protected void performRebindView(@NonNull final M model, @NonNull final VH holder, @NonNull final List<Object> payloads) {
-        bindViewInner(model, holder, payloads);
+    @CallSuper
+    protected void rebindView(@NonNull final M model, @NonNull final VH holder, @NonNull final List<Object> payloads) {
+        bindInner(model, holder, payloads);
     }
 
-    /**
-     * This method will be called for a full bind.
-     *
-     * @param model  your a ViewModel
-     * @param holder your a ViewHolder
-     */
-    protected void performBindView(@NonNull final M model, @NonNull final VH holder) {
-        holder.setType(model.getClass());
-        holder.setViewStateID(createViewStateID(model));
-        bindViewInner(model, holder, new ArrayList<>());
-    }
-
-    public void bindViewInner(@NonNull final M model, @NonNull final VH holder, @NonNull final List<Object> payloads) {
+    protected void bindInner(@NonNull final M model, @NonNull final VH holder, @NonNull final List<Object> payloads) {
         try {
             mBinder.bindView(model, holder.getViewFinder(), payloads);
         } catch (ClassCastException e) {
