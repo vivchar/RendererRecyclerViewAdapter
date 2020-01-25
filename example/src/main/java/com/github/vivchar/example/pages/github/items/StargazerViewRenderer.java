@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.CustomViewFinder;
-import com.github.vivchar.rendererrecyclerviewadapter.ViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
 
@@ -19,7 +18,6 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, CustomVi
 
     public StargazerViewRenderer(final int layoutID, @NonNull final Listener listener) {
         super(layoutID, StargazerModel.class, (model, finder, payloads) -> finder
-                .setInvisible(R.id.check, true) //reset view state to default
                 .setUrl(R.id.avatar, model.getAvatarUrl())
                 .setOnClickListener(view -> {
                     final boolean willChecked = finder.find(R.id.check).getVisibility() == GONE;
@@ -35,8 +33,8 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, CustomVi
 
     @Nullable
     @Override
-    public ViewState createViewState(@NonNull final ViewHolder<CustomViewFinder> holder) {
-        return new StargazerViewState(holder);
+    public ViewState createViewState() {
+        return new StargazerViewState();
     }
 
     @Override

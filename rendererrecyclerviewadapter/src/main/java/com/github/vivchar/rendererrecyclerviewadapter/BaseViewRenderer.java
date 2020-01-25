@@ -126,8 +126,8 @@ public abstract class BaseViewRenderer<M extends ViewModel, VF extends ViewFinde
     }
 
     @Nullable
-    public ViewState createViewState(@NonNull final VH holder) {
-        return mViewStateProvider != null ? mViewStateProvider.createViewState(holder) : null;
+    public ViewState createViewState() {
+        return mViewStateProvider != null ? mViewStateProvider.createViewState() : null;
     }
 
     @Override

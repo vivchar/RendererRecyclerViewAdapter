@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.NestedAdapter;
-import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewState;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
@@ -36,8 +35,8 @@ public class RecyclerViewRenderer extends CompositeViewRenderer<RecyclerViewMode
 
 	@Nullable
 	@Override
-	public ViewState createViewState(@NonNull final CompositeViewHolder<ViewFinder> holder) {
-		return new CompositeViewState<>(holder);
+	public ViewState createViewState() {
+		return new CompositeViewState<>();
 	}
 
 	@Override

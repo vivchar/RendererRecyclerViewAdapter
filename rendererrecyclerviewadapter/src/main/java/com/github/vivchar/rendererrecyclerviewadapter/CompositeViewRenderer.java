@@ -159,8 +159,8 @@ public class CompositeViewRenderer<M extends CompositeViewModel, VF extends View
      */
     @Nullable
     @Override
-    public ViewState createViewState(@NonNull final CompositeViewHolder<VF> holder) {
-        return super.createViewState(holder);
+    public ViewState createViewState() {
+        return super.createViewState();
     }
 
     @NonNull

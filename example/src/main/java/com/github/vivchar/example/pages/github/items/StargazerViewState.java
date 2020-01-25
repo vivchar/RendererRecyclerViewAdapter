@@ -16,7 +16,13 @@ public class StargazerViewState implements ViewState<ViewHolder>, Serializable {
 
 	private int mVisibility;
 
-	public StargazerViewState(@NonNull final ViewHolder holder) {
+    @Override
+    public void clear(@NonNull final ViewHolder holder) {
+        holder.getViewFinder().setVisible(R.id.check, false);
+    }
+
+	@Override
+	public void save(@NonNull final ViewHolder holder) {
 		holder.getViewFinder().find(R.id.check, view -> mVisibility = view.getVisibility());
 	}
 

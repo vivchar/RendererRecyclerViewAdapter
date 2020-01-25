@@ -29,4 +29,5 @@ public class LoadMoreViewBinder extends ViewRenderer<LoadMoreViewModel, ViewFind
     public LoadMoreViewBinder(final int layoutID) {
         this(layoutID, LoadMoreViewModel.class);
     }
+
 }

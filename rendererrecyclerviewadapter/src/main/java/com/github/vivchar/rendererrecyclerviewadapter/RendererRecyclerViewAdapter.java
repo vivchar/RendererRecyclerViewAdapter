@@ -1,6 +1,5 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.ViewGroup;
@@ -408,9 +407,10 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 	protected void saveViewState(@NonNull final ViewHolder holder) {
 		final BaseViewRenderer viewRenderer = getRenderer(holder.getType());
-		final ViewState viewState = viewRenderer.createViewState(holder);
+		final ViewState viewState = viewRenderer.createViewState();
 		if (viewState != null) {
 			if (holder.isSupportViewState()) {
+				viewState.save(holder);
 				mViewStates.put(holder.getViewStateID(), viewState);
 			} else {
 				throw new RuntimeException("You defined the " + viewState.getClass().getSimpleName() + " but didn't specify the ID."
@@ -419,13 +419,35 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		}
 	}
 
+	/**
+	 * This method called after bindView and if current model of this holder hasn't saved viewState yet.
+	 * <p>
+	 * So we should reset state to default, because it may be a reused view with a foreign state.
+	 * https://github.com/vivchar/RendererRecyclerViewAdapter/issues/15
+	 *
+	 * @param holder - holder with should be reset to default values
+	 */
+	protected void clearViewState(@NonNull final ViewHolder holder) {
+		if (holder.isSupportViewState()) { /* has a foreign state, need to clear */
+			final ViewState viewState = getRenderer(holder.getType()).createViewState();
+			if (viewState != null) {
+				viewState.clear(holder);
+			}
+		}
+	}
+
 	protected void restoreViewState(@NonNull final ViewHolder holder) {
 		if (holder.isSupportViewState()) {
 			final ViewState viewState = mViewStates.get(holder.getViewStateID());
-			if (viewState != null) {
+			final boolean hasSavedViewState = viewState != null;
+
+			if (hasSavedViewState) {
 				viewState.restore(holder);
-			} else if (hasChildren(holder)) {
-				getChildAdapter((CompositeViewHolder) holder).clearViewStates();
+			} else {
+				clearViewState(holder);
+				if (hasChildren(holder)) {
+					getChildAdapter((CompositeViewHolder) holder).clearViewStates();
+				}
 			}
 		}
 	}

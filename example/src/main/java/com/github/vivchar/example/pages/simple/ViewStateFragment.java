@@ -55,8 +55,8 @@ public class ViewStateFragment extends BaseScreenFragment {
 						Collections.singletonList(new BetweenSpacesItemDecoration(10, 10)),
 						new CompositeViewStateProvider<StateViewModel, CompositeViewHolder<ViewFinder>>() {
 							@Override
-							public ViewState createViewState(@NonNull final CompositeViewHolder<ViewFinder> holder) {
-								return new CompositeViewState(holder);
+							public ViewState createViewState() {
+								return new CompositeViewState<>();
 							}
 
 							@Override
