@@ -47,7 +47,7 @@ Include this feature https://github.com/vivchar/RendererRecyclerViewAdapter/issu
 maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 
 dependencies {
-    compile 'com.github.vivchar:RendererRecyclerViewAdapter:2.9.0-SNAPSHOT'
+    compile 'com.github.vivchar:RendererRecyclerViewAdapter:3.0.0-SNAPSHOT'
 }
 ```
 
