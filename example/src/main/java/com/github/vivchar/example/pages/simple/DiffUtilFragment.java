@@ -44,7 +44,7 @@ public class DiffUtilFragment extends BaseScreenFragment {
 		mAdapter.registerRenderer(new ViewRenderer<>(R.layout.item_simple_square, DiffViewModel.class,
 				(model, finder, payloads) -> finder
 						.setText(R.id.text, model.getText())
-						.setOnClickListener(R.id.text, v -> {
+						.setOnClickListener(R.id.text, () -> {
 							reloadItems(model);
 						})
 		));

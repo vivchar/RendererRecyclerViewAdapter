@@ -47,7 +47,7 @@ public class PayloadFragment extends BaseScreenFragment {
 		mAdapter.registerRenderer(new ViewRenderer<>(
 				R.layout.item_payload_square, PayloadViewModel.class,
 				(model, finder, payloads) -> {
-					finder.setOnClickListener(R.id.text, v -> changeItem(model));
+					finder.setOnClickListener(R.id.text, () -> changeItem(model));
 					final TextView textView = finder.find(R.id.text);
 
 					if (payloads.isEmpty()) {

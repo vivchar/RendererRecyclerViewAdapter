@@ -40,7 +40,7 @@ public class ViewRendererFragment extends BaseScreenFragment {
 		adapter.registerRenderer(new ViewRenderer<>(R.layout.item_simple, RectViewModel.class,
 				(model, finder, payloads) -> finder
 						.setText(R.id.text, model.getText())
-						.setOnClickListener(R.id.text, v -> {
+						.setOnClickListener(R.id.text, () -> {
 							Toast.makeText(getContext(), "Text Clicked " + model.getText(), Toast.LENGTH_SHORT).show();
 						})
 		));

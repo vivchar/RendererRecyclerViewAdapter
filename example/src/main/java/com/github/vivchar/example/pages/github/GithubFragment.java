@@ -96,7 +96,7 @@ public class GithubFragment extends BaseScreenFragment {
                 CategoryModel.class,
                 (model, finder, payloads) -> finder
                         .find(R.id.title, (ViewProvider<TextView>) view -> view.setText(model.getName()))
-                        .setOnClickListener(R.id.viewAll, (v -> mGithubPresenter.onCategoryClicked(model)))
+                        .setOnClickListener(R.id.viewAll, (() -> mGithubPresenter.onCategoryClicked(model)))
         ));
 
         mLayoutManager = new GridLayoutManager(getContext(), MAX_SPAN_COUNT);

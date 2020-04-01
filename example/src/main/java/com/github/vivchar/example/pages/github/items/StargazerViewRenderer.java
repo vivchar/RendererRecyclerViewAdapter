@@ -19,12 +19,12 @@ public class StargazerViewRenderer extends ViewRenderer<StargazerModel, CustomVi
     public StargazerViewRenderer(final int layoutID, @NonNull final Listener listener) {
         super(layoutID, StargazerModel.class, (model, finder, payloads) -> finder
                 .setUrl(R.id.avatar, model.getAvatarUrl())
-                .setOnClickListener(view -> {
+                .setOnClickListener(() -> {
                     final boolean willChecked = finder.find(R.id.check).getVisibility() == GONE;
                     finder.find(R.id.check).setVisibility(willChecked ? VISIBLE : GONE);
                     listener.onStargazerItemClicked(model, willChecked);
                 })
-                .setOnClickListener(R.id.check, view -> {
+                .setOnClickListener(R.id.check, () -> {
                     final boolean willChecked = finder.find(R.id.check).getVisibility() == GONE;
                     finder.find(R.id.check).setVisibility(willChecked ? VISIBLE : GONE);
                     listener.onStargazerItemClicked(model, willChecked);

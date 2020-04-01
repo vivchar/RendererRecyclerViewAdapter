@@ -73,8 +73,7 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     }
 
     @NonNull
-    @Override
-    public T setOnClickListener(final int ID, final View.OnClickListener listener) {
+    private T setOnClickListener(final int ID, final View.OnClickListener listener) {
         findViewById(ID).setOnClickListener(listener);
         return (T) this;
     }
@@ -91,8 +90,7 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     }
 
     @NonNull
-    @Override
-    public T setOnTouchListener(final int ID, final View.OnTouchListener listener) {
+    private T setOnTouchListener(final int ID, final View.OnTouchListener listener) {
         find(ID).setOnTouchListener(listener);
         return (T) this;
     }
@@ -116,8 +114,7 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     }
 
     @NonNull
-    @Override
-    public ViewFinder setOnLongClickListener(final int ID, final OnLongClickListener listener) {
+    private ViewFinder setOnLongClickListener(final int ID, final OnLongClickListener listener) {
         return setOnLongClickListener(ID, new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View view) {
@@ -127,8 +124,7 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     }
 
     @NonNull
-    @Override
-    public T setOnClickListener(@NonNull final View.OnClickListener listener) {
+    private T setOnClickListener(@NonNull final View.OnClickListener listener) {
         getRootView().setOnClickListener(listener);
         return (T) this;
     }
@@ -145,8 +141,7 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     }
 
     @NonNull
-    @Override
-    public T setOnCheckedChangeListener(final int ID, final CompoundButton.OnCheckedChangeListener listener) {
+    private T setOnCheckedChangeListener(final int ID, final CompoundButton.OnCheckedChangeListener listener) {
         ((CompoundButton) find(ID)).setOnCheckedChangeListener(listener);
         return (T) this;
     }
