@@ -53,6 +53,9 @@ class MainPresenter extends BasePresenter {
 				case COMPOSITE_VIEW_RENDERER:
 					mUIRouter.openCompositeViewRendererPage();
 					break;
+				case INPUTS_VIEW_STATE:
+					mUIRouter.openInputsPage();
+					break;
 			}
 		}));
 	}

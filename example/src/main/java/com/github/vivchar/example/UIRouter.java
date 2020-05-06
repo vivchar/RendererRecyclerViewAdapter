@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.vivchar.example.pages.github.GithubFragment;
 import com.github.vivchar.example.pages.simple.CompositeViewRendererFragment;
 import com.github.vivchar.example.pages.simple.DiffUtilFragment;
+import com.github.vivchar.example.pages.simple.InputsFragment;
 import com.github.vivchar.example.pages.simple.LoadMoreFragment;
 import com.github.vivchar.example.pages.simple.PayloadFragment;
 import com.github.vivchar.example.pages.simple.ViewRendererFragment;
@@ -74,5 +75,9 @@ public class UIRouter {
 
 	public void openLoadMorePage() {
 		showFragment(new LoadMoreFragment());
+	}
+
+	public void openInputsPage() {
+		showFragment(new InputsFragment());
 	}
 }

@@ -1,5 +1,7 @@
 package com.github.vivchar.example.pages.simple;
 
+import android.annotation.SuppressLint;
+
 import com.github.vivchar.example.pages.simple.DiffUtilFragment.DiffViewModel;
 import com.github.vivchar.example.pages.simple.PayloadFragment.PayloadViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
@@ -59,6 +61,15 @@ public class YourDataProvider {
 		final ArrayList<ViewModel> items = new ArrayList<>();
 		for (int i = 0; i < 50; i++) {
 			items.add(new DefaultCompositeViewModel(getDiffItems()));
+		}
+		return items;
+	}
+
+	@SuppressLint("DefaultLocale")
+	public List<? extends ViewModel> getInputsModels() {
+		final ArrayList<ViewModel> items = new ArrayList<>();
+		for (int i = 0; i < 50; i++) {
+			items.add(new InputsFragment.InputViewModel(i, String.format("Value %d", i)));
 		}
 		return items;
 	}

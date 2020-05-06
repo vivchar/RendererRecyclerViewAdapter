@@ -23,6 +23,7 @@ import static com.github.vivchar.example.MenuItemID.*;
 		LOAD_MORE,
 		VIEW_BINDER,
 		COMPOSITE_VIEW_RENDERER,
+		INPUTS_VIEW_STATE,
 		VIEW_RENDERER,
 })
 public @interface MenuItemID {
@@ -34,6 +35,7 @@ public @interface MenuItemID {
 	int LOAD_MORE = R.id.load_more;
 	int VIEW_BINDER = R.id.view_binder;
 	int COMPOSITE_VIEW_RENDERER = R.id.composite_view_renderer;
+	int INPUTS_VIEW_STATE = R.id.inputs;
 	int VIEW_RENDERER = R.id.view_renderer;
 
 	List<Integer> ALL = Arrays.asList(
@@ -45,6 +47,7 @@ public @interface MenuItemID {
 			LOAD_MORE,
 			VIEW_BINDER,
 			COMPOSITE_VIEW_RENDERER,
+			INPUTS_VIEW_STATE,
 			VIEW_RENDERER
 	);
 }

@@ -96,8 +96,9 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		/* check null to support old versions */
 		if (payloads == null || payloads.isEmpty()) {
 			/* Full bind */
+			clearViewStateifNeed(holder); /* we should clear previous view state before bindView */
 			renderer.performBindView(item, holder);
-			restoreViewState(holder);
+			restoreViewState(holder); /* we should restore view state after bindView */
 		} else {
 			/* Partial bind */
 			renderer.performRebindView(item, holder, payloads);
@@ -437,21 +438,30 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		}
 	}
 
-	protected void restoreViewState(@NonNull final ViewHolder holder) {
-		if (holder.isSupportViewState()) {
-			final ViewState viewState = mViewStates.get(holder.getViewStateID());
-			final boolean hasSavedViewState = viewState != null;
+protected void clearViewStateifNeed(@NonNull final ViewHolder holder) {
+	if (holder.isSupportViewState()) {
+		final ViewState viewState = mViewStates.get(holder.getViewStateID());
+		final boolean hasSavedViewState = viewState != null;
 
-			if (hasSavedViewState) {
-				viewState.restore(holder);
-			} else {
-				clearViewState(holder);
-				if (hasChildren(holder)) {
-					getChildAdapter((CompositeViewHolder) holder).clearViewStates();
-				}
+		if (!hasSavedViewState) {
+			clearViewState(holder);
+			if (hasChildren(holder)) {
+				getChildAdapter((CompositeViewHolder) holder).clearViewStates();
 			}
 		}
 	}
+}
+
+protected void restoreViewState(@NonNull final ViewHolder holder) {
+	if (holder.isSupportViewState()) {
+		final ViewState viewState = mViewStates.get(holder.getViewStateID());
+		final boolean hasSavedViewState = viewState != null;
+
+		if (hasSavedViewState) {
+			viewState.restore(holder);
+		}
+	}
+}
 
 	protected void saveRecyclerViewState(@NonNull final Bundle outState) {
 		if (mRecyclerView != null && mRecyclerView .get() != null) {

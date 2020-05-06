@@ -40,6 +40,12 @@
 		/>
 
 	<item
+		android:id = "@+id/inputs"
+		android:title = "@string/inputs"
+		app:showAsAction = "never"
+		/>
+
+	<item
 		android:id = "@+id/diff_util"
 		android:title = "@string/diff_util"
 		app:showAsAction = "never"
