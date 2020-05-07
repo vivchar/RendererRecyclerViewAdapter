@@ -73,7 +73,8 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     }
 
     @NonNull
-    private T setOnClickListener(final int ID, final View.OnClickListener listener) {
+    @Override
+    public T setOnViewClickListener(final int ID, final View.OnClickListener listener) {
         findViewById(ID).setOnClickListener(listener);
         return (T) this;
     }
@@ -81,7 +82,7 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     @NonNull
     @Override
     public T setOnClickListener(final int ID, final OnClickListener listener) {
-        return setOnClickListener(ID, new View.OnClickListener() {
+        return setOnViewClickListener(ID, new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 listener.onClick();
@@ -90,7 +91,8 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     }
 
     @NonNull
-    private T setOnTouchListener(final int ID, final View.OnTouchListener listener) {
+    @Override
+    public T setOnViewTouchListener(final int ID, final View.OnTouchListener listener) {
         find(ID).setOnTouchListener(listener);
         return (T) this;
     }
@@ -98,7 +100,7 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     @NonNull
     @Override
     public T setOnTouchListener(final int ID, final OnTouchListener listener) {
-        return setOnTouchListener(ID, new View.OnTouchListener() {
+        return setOnViewTouchListener(ID, new View.OnTouchListener() {
             @Override
             public boolean onTouch(final View view, final MotionEvent motionEvent) {
                 return listener.onTouch(motionEvent) && view.performClick();
@@ -108,14 +110,15 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
 
     @NonNull
     @Override
-    public T setOnLongClickListener(final int ID, final View.OnLongClickListener listener) {
+    public T setOnViewLongClickListener(final int ID, final View.OnLongClickListener listener) {
         find(ID).setOnLongClickListener(listener);
         return (T) this;
     }
 
     @NonNull
-    private ViewFinder setOnLongClickListener(final int ID, final OnLongClickListener listener) {
-        return setOnLongClickListener(ID, new View.OnLongClickListener() {
+    @Override
+    public ViewFinder setOnLongClickListener(final int ID, final OnLongClickListener listener) {
+        return setOnViewLongClickListener(ID, new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View view) {
                 return listener.onLongClick();
@@ -124,7 +127,8 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     }
 
     @NonNull
-    private T setOnClickListener(@NonNull final View.OnClickListener listener) {
+    @Override
+    public T setOnViewClickListener(@NonNull final View.OnClickListener listener) {
         getRootView().setOnClickListener(listener);
         return (T) this;
     }
@@ -132,7 +136,7 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     @NonNull
     @Override
     public ViewFinder setOnClickListener(@NonNull final OnClickListener listener) {
-        return setOnClickListener(new View.OnClickListener() {
+        return setOnViewClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 listener.onClick();
@@ -141,7 +145,8 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     }
 
     @NonNull
-    private T setOnCheckedChangeListener(final int ID, final CompoundButton.OnCheckedChangeListener listener) {
+    @Override
+    public T setOnViewCheckedChangeListener(final int ID, final CompoundButton.OnCheckedChangeListener listener) {
         ((CompoundButton) find(ID)).setOnCheckedChangeListener(listener);
         return (T) this;
     }
@@ -149,7 +154,7 @@ public class ViewFinderImpl<T extends ViewFinder> implements ViewFinder {
     @NonNull
     @Override
     public ViewFinder setOnCheckedChangeListener(final int ID, final OnCheckedChangeListener listener) {
-        return setOnCheckedChangeListener(ID, new CompoundButton.OnCheckedChangeListener() {
+        return setOnViewCheckedChangeListener(ID, new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(final CompoundButton compoundButton, final boolean b) {
                 listener.onCheckedChanged(b);

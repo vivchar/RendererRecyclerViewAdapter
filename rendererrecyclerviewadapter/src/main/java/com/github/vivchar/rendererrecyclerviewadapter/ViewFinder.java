@@ -39,13 +39,23 @@ public interface ViewFinder {
 	@NonNull
 	<V extends View> V getRootView();
 	@NonNull
+	ViewFinder setOnViewClickListener(@IdRes int ID, View.OnClickListener listener);
+	@NonNull
 	ViewFinder setOnClickListener(@IdRes int ID, OnClickListener listener);
+	@NonNull
+	ViewFinder setOnViewTouchListener(@IdRes int ID, View.OnTouchListener listener);
 	@NonNull
 	ViewFinder setOnTouchListener(@IdRes int ID, OnTouchListener listener);
 	@NonNull
-	ViewFinder setOnLongClickListener(@IdRes int ID, View.OnLongClickListener listener);
+	ViewFinder setOnViewLongClickListener(@IdRes int ID, View.OnLongClickListener listener);
+	@NonNull
+	ViewFinder setOnLongClickListener(@IdRes int ID, OnLongClickListener listener);
+	@NonNull
+	ViewFinder setOnViewClickListener(@NonNull View.OnClickListener listener);
 	@NonNull
 	ViewFinder setOnClickListener(@NonNull OnClickListener listener);
+	@NonNull
+	ViewFinder setOnViewCheckedChangeListener(@IdRes int ID, CompoundButton.OnCheckedChangeListener listener);
 	@NonNull
 	ViewFinder setOnCheckedChangeListener(@IdRes int ID, OnCheckedChangeListener listener);
 	@NonNull

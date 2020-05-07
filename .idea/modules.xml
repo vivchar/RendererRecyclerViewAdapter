@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Projects-RendererRecyclerViewAdapter.iml" filepath="$PROJECT_DIR$/Projects-RendererRecyclerViewAdapter.iml" group="RendererRecyclerViewAdapter" />
       <module fileurl="file://$PROJECT_DIR$/RendererRecyclerViewAdapter.iml" filepath="$PROJECT_DIR$/RendererRecyclerViewAdapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/example/RendererRecyclerViewAdapter-example.iml" filepath="$PROJECT_DIR$/example/RendererRecyclerViewAdapter-example.iml" group="RendererRecyclerViewAdapter/example" />
+      <module fileurl="file://$PROJECT_DIR$/network/RendererRecyclerViewAdapter-network.iml" filepath="$PROJECT_DIR$/network/RendererRecyclerViewAdapter-network.iml" group="RendererRecyclerViewAdapter/network" />
+      <module fileurl="file://$PROJECT_DIR$/rendererrecyclerviewadapter/RendererRecyclerViewAdapter-rendererrecyclerviewadapter.iml" filepath="$PROJECT_DIR$/rendererrecyclerviewadapter/RendererRecyclerViewAdapter-rendererrecyclerviewadapter.iml" group="RendererRecyclerViewAdapter/rendererrecyclerviewadapter" />
       <module fileurl="file://$PROJECT_DIR$/example/example.iml" filepath="$PROJECT_DIR$/example/example.iml" />
       <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
       <module fileurl="file://$PROJECT_DIR$/rendererrecyclerviewadapter/rendererrecyclerviewadapter.iml" filepath="$PROJECT_DIR$/rendererrecyclerviewadapter/rendererrecyclerviewadapter.iml" />
