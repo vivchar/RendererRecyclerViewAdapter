@@ -12,10 +12,11 @@ import android.view.ViewGroup;
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.ItemOffsetDecoration;
+import com.github.vivchar.example.widgets.MyAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
 /**
  * Created by Vivchar Vitaly on 28.12.17.
@@ -35,15 +36,15 @@ public class DiffUtilFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		mAdapter = new RendererRecyclerViewAdapter();
+		mAdapter = new MyAdapter();
 
 		mAdapter.setDiffCallback(new DiffCallback());
 //		adapter.enableDiffUtil(); /* Or just call it to enable DiffUtil with DefaultDiffCallback */
 
-		mAdapter.registerRenderer(new ViewBinder<>(R.layout.item_simple_square, DiffViewModel.class,
+		mAdapter.registerRenderer(new ViewRenderer<>(R.layout.item_simple_square, DiffViewModel.class,
 				(model, finder, payloads) -> finder
 						.setText(R.id.text, model.getText())
-						.setOnClickListener(R.id.text, v -> {
+						.setOnClickListener(R.id.text, () -> {
 							reloadItems(model);
 						})
 		));
@@ -52,7 +53,7 @@ public class DiffUtilFragment extends BaseScreenFragment {
 
 		mAdapter.setItems(mYourDataProvider.getDiffItems());
 
-		mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+		mRecyclerView = view.findViewById(R.id.recycler_view);
 		mRecyclerView.setAdapter(mAdapter);
 		mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
 		mRecyclerView.addItemDecoration(new ItemOffsetDecoration(10));

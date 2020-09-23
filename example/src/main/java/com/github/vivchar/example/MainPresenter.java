@@ -46,14 +46,15 @@ class MainPresenter extends BasePresenter {
 				case LOAD_MORE:
 					mUIRouter.openLoadMorePage();
 					break;
-				case VIEW_BINDER:
-					mUIRouter.openViewBinderPage();
+				case VIEW_BINDER: //removed in v3.0.0
+				case VIEW_RENDERER:
+					mUIRouter.openViewRendererPage();
 					break;
 				case COMPOSITE_VIEW_RENDERER:
 					mUIRouter.openCompositeViewRendererPage();
 					break;
-				case VIEW_RENDERER:
-					mUIRouter.openViewRendererPage();
+				case INPUTS_VIEW_STATE:
+					mUIRouter.openInputsPage();
 					break;
 			}
 		}));

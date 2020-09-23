@@ -1,10 +1,10 @@
-package com.github.vivchar.example.pages.github.items;
+package com.github.vivchar.example.widgets;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
-import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
+import com.github.vivchar.example.pages.github.items.RecyclerViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 
@@ -43,7 +43,7 @@ public class ItemsDiffCallback extends DefaultDiffCallback<ViewModel> {
 	public Object getChangePayload(@NonNull final ViewModel oldItem, @NonNull final ViewModel newItem) {
 		if (oldItem instanceof RecyclerViewModel) {
 			if (newItem instanceof RecyclerViewModel) {
-				/* vivchar: I just want to call the RecyclerViewRenderer.rebindView() method */
+				/* vivchar: I just want to call the RecyclerViewRenderer.bindView() method */
 				final ArrayList<Long> payload = new ArrayList<>();
 				payload.add(System.currentTimeMillis());
 				Log.d(TAG, "composite payload: " + payload);

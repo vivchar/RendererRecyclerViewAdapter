@@ -1,21 +1,8 @@
 package com.github.vivchar.rendererrecyclerviewadapter;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.SparseArray;
 import android.view.ViewGroup;
-
-import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +12,17 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
+
+import java.io.Serializable;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 
@@ -48,7 +46,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	@NonNull
 	protected final ArrayList<ViewModel> mItems = new ArrayList<>();
 	@NonNull
-	protected final ArrayList<ViewRenderer> mRenderers = new ArrayList<>();
+	protected final ArrayList<BaseViewRenderer> mRenderers = new ArrayList<>();
 	@NonNull
 	protected final ArrayList<Type> mTypes = new ArrayList<>();
 	@NonNull
@@ -57,7 +55,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected final ArrayList<ViewHolder> mBoundViewHolders = new ArrayList<>();
 
 	@Nullable
-	protected RecyclerView mRecyclerView = null;
+	protected WeakReference<RecyclerView> mRecyclerView = null;
 	@Nullable
 	protected ListUpdateCallback mUpdateCallback = null;
 	@NonNull
@@ -75,12 +73,10 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 	public RendererRecyclerViewAdapter() {}
 
-	@Deprecated
-	public RendererRecyclerViewAdapter(@NonNull final Context context) {}
-
+	@NonNull
 	@Override
-	public ViewHolder onCreateViewHolder(final ViewGroup parent, final int typeIndex) {
-		final ViewRenderer renderer = mRenderers.get(typeIndex);
+	public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int typeIndex) {
+		final BaseViewRenderer renderer = mRenderers.get(typeIndex);
 		if (isCompositeRenderer(renderer) && mNestedRecycledViewPool != null) {
 			((CompositeViewRenderer) renderer).setRecycledViewPool(mNestedRecycledViewPool);
 		}
@@ -88,18 +84,21 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, final int position) {}
+	public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {}
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, final int position, @Nullable final List payloads) {
+	public void onBindViewHolder(@NonNull final ViewHolder holder, final int position, @NonNull final List payloads) {
 		super.onBindViewHolder(holder, position, payloads);
 		final ViewModel item = getItem(position);
-		final ViewRenderer renderer = getRenderer(item);
+		final BaseViewRenderer renderer = getRenderer(item);
 
+		/* check null to support old versions */
 		if (payloads == null || payloads.isEmpty()) {
 			/* Full bind */
+			clearViewStateifNeed(holder); /* we should clear previous view state before bindView */
 			renderer.performBindView(item, holder);
-			restoreViewState(holder);
+			restoreViewState(holder); /* we should restore view state after bindView */
 		} else {
 			/* Partial bind */
 			renderer.performRebindView(item, holder, payloads);
@@ -109,7 +108,7 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		mBoundViewHolders.add(holder);
 	}
 
-	public void registerRenderer(@NonNull final ViewRenderer renderer) {
+	public void registerRenderer(@NonNull final BaseViewRenderer renderer) {
 		final Type type = renderer.getType();
 
 		if (!mTypes.contains(type)) {
@@ -121,19 +120,19 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	@NonNull
-	protected ViewRenderer getRenderer(final int position) {
+	protected BaseViewRenderer getRenderer(final int position) {
 		final int typeIndex = getTypeIndex(position);
 		return mRenderers.get(typeIndex);
 	}
 
 	@NonNull
-	protected ViewRenderer getRenderer(@NonNull final ViewModel model) {
+	protected BaseViewRenderer getRenderer(@NonNull final ViewModel model) {
 		final int typeIndex = getTypeIndex(model);
 		return mRenderers.get(typeIndex);
 	}
 
 	@NonNull
-	protected ViewRenderer getRenderer(@NonNull final Type type) {
+	protected BaseViewRenderer getRenderer(@NonNull final Type type) {
 		final int typeIndex = getTypeIndex(type);
 		return mRenderers.get(typeIndex);
 	}
@@ -171,10 +170,10 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	@Override
-	public void onViewRecycled(final ViewHolder holder) {
+	public void onViewRecycled(@NonNull final ViewHolder holder) {
 		super.onViewRecycled(holder);
 
-		final ViewRenderer renderer = getRenderer(holder.getType());
+		final BaseViewRenderer renderer = getRenderer(holder.getType());
 		renderer.viewRecycled(holder);
 
 		final int position = holder.getAdapterPosition();
@@ -372,9 +371,9 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 
 	/**
 	 * If you want to show a some custom data in a Load More Indicator
-	 * then you should set your custom {@link LoadMoreViewModel} and createViewState your custom {@link LoadMoreViewRenderer}
+	 * then you should set your custom {@link LoadMoreViewModel} and createViewState your custom {@link LoadMoreViewBinder}
 	 * <p>
-	 * Use the {@link #registerRenderer(ViewRenderer)} to set your custom {@link LoadMoreViewRenderer}
+	 * Use the {@link #registerRenderer(BaseViewRenderer)} to set your custom {@link LoadMoreViewBinder}
 	 *
 	 * @param model - custom {@link LoadMoreViewModel}
 	 */
@@ -385,36 +384,6 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	@NonNull
 	public ArrayList<ViewHolder> getBoundViewHolders() {
 		return new ArrayList<>(mBoundViewHolders);
-	}
-
-	/**
-	 * Use {@link #getStates()}
-	 */
-	@Deprecated
-	@NonNull
-	public SparseArray<ViewState> getViewStates() {
-		final SparseArray<ViewState> list = new SparseArray<>();
-
-		final Iterator<Map.Entry<Integer, ViewState>> iterator = getStates().entrySet().iterator();
-		while (iterator.hasNext()) {
-			final Map.Entry<Integer, ViewState> next = iterator.next();
-			list.put(next.getKey(), next.getValue());
-		}
-
-		return list;
-	}
-
-	/**
-	 * Use {@link #setStates(HashMap)}
-	 */
-	@Deprecated
-	public void setViewStates(@NonNull final SparseArray<ViewState> states) {
-		mViewStates.clear();
-		for (int i = 0; i < states.size(); i++) {
-			final int key = states.keyAt(i);
-			final ViewState value = states.get(key);
-			mViewStates.put(key, value);
-		}
 	}
 
 	@NonNull
@@ -439,10 +408,11 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	}
 
 	protected void saveViewState(@NonNull final ViewHolder holder) {
-		final ViewRenderer viewRenderer = getRenderer(holder.getType());
-		final ViewState viewState = viewRenderer.createViewState(holder);
+		final BaseViewRenderer viewRenderer = getRenderer(holder.getType());
+		final ViewState viewState = viewRenderer.createViewState();
 		if (viewState != null) {
 			if (holder.isSupportViewState()) {
+				viewState.save(holder);
 				mViewStates.put(holder.getViewStateID(), viewState);
 			} else {
 				throw new RuntimeException("You defined the " + viewState.getClass().getSimpleName() + " but didn't specify the ID."
@@ -451,20 +421,51 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		}
 	}
 
-	protected void restoreViewState(@NonNull final ViewHolder holder) {
-		if (holder.isSupportViewState()) {
-			final ViewState viewState = mViewStates.get(holder.getViewStateID());
+	/**
+	 * This method called after bindView and if current model of this holder hasn't saved viewState yet.
+	 * <p>
+	 * So we should reset state to default, because it may be a reused view with a foreign state.
+	 * https://github.com/vivchar/RendererRecyclerViewAdapter/issues/15
+	 *
+	 * @param holder - holder with should be reset to default values
+	 */
+	protected void clearViewState(@NonNull final ViewHolder holder) {
+		if (holder.isSupportViewState()) { /* has a foreign state, need to clear */
+			final ViewState viewState = getRenderer(holder.getType()).createViewState();
 			if (viewState != null) {
-				viewState.restore(holder);
-			} else if (hasChildren(holder)) {
-				getChildAdapter((CompositeViewHolder) holder).clearViewStates();
+				viewState.clear(holder);
 			}
 		}
 	}
 
+protected void clearViewStateifNeed(@NonNull final ViewHolder holder) {
+	if (holder.isSupportViewState()) {
+		final ViewState viewState = mViewStates.get(holder.getViewStateID());
+		final boolean hasSavedViewState = viewState != null;
+
+		if (!hasSavedViewState) {
+			clearViewState(holder);
+			if (hasChildren(holder)) {
+				getChildAdapter((CompositeViewHolder) holder).clearViewStates();
+			}
+		}
+	}
+}
+
+protected void restoreViewState(@NonNull final ViewHolder holder) {
+	if (holder.isSupportViewState()) {
+		final ViewState viewState = mViewStates.get(holder.getViewStateID());
+		final boolean hasSavedViewState = viewState != null;
+
+		if (hasSavedViewState) {
+			viewState.restore(holder);
+		}
+	}
+}
+
 	protected void saveRecyclerViewState(@NonNull final Bundle outState) {
-		if (mRecyclerView != null) {
-			final Parcelable recyclerViewState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+		if (mRecyclerView != null && mRecyclerView .get() != null) {
+			final Parcelable recyclerViewState = mRecyclerView.get().getLayoutManager().onSaveInstanceState();
 			outState.putParcelable(RECYCLER_VIEW_STATE_KEY, recyclerViewState);
 		}
 	}
@@ -472,8 +473,8 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 	protected void restoreRecyclerViewState(@Nullable final Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
 			final Parcelable parcelable = savedInstanceState.getParcelable(RECYCLER_VIEW_STATE_KEY);
-			if (parcelable != null && mRecyclerView != null) {
-				mRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
+			if (parcelable != null && mRecyclerView != null && mRecyclerView .get() != null) {
+				mRecyclerView.get().getLayoutManager().onRestoreInstanceState(parcelable);
 				mSavedInstanceState = null;
 			} else {
 				mSavedInstanceState = savedInstanceState;
@@ -492,21 +493,24 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 		return holder instanceof CompositeViewHolder;
 	}
 
-	protected boolean isCompositeRenderer(@NonNull final ViewRenderer renderer) {
+	protected boolean isCompositeRenderer(@NonNull final BaseViewRenderer renderer) {
 		return renderer instanceof CompositeViewRenderer;
 	}
 
 	@Override
-	public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+	public void onAttachedToRecyclerView(@NonNull final RecyclerView recyclerView) {
 		super.onAttachedToRecyclerView(recyclerView);
-		mRecyclerView = recyclerView;
+		mRecyclerView = new WeakReference<>(recyclerView);
 		restoreRecyclerViewState(mSavedInstanceState);
 	}
 
 	@Override
-	public void onDetachedFromRecyclerView(final RecyclerView recyclerView) {
+	public void onDetachedFromRecyclerView(@NonNull final RecyclerView recyclerView) {
 		super.onDetachedFromRecyclerView(recyclerView);
-		mRecyclerView = null;
+		if (mRecyclerView != null) {
+			mRecyclerView.clear();
+			mRecyclerView = null;
+		}
 	}
 
 	@NonNull
@@ -578,5 +582,14 @@ public class RendererRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
 			builder.setBackgroundThreadExecutor(mMainThreadExecutor);
 		}
 		return builder.build();
+	}
+
+	/**
+	 * Use this method to support your custom ViewFinder, so you will have ability easily work with your custom views
+	 *
+	 * @param creator
+	 */
+	public void registerViewFinder(@NonNull final ViewFinderFactory.Creator creator) {
+		ViewFinderFactory.setViewFinderCreator(creator);
 	}
 }

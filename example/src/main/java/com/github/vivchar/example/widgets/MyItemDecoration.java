@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
-import com.github.vivchar.example.pages.github.items.category.CategoryModel;
-import com.github.vivchar.example.pages.github.items.list.RecyclerViewModel;
+import com.github.vivchar.example.pages.github.items.CategoryModel;
+import com.github.vivchar.example.pages.github.items.RecyclerViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 

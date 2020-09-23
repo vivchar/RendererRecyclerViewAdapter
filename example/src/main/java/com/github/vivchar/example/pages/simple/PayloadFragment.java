@@ -13,10 +13,11 @@ import android.widget.TextView;
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.ItemOffsetDecoration;
+import com.github.vivchar.example.widgets.MyAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 
 /**
  * Created by Vivchar Vitaly on 12/29/17.
@@ -39,14 +40,14 @@ public class PayloadFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		mAdapter = new RendererRecyclerViewAdapter();
+		mAdapter = new MyAdapter();
 
 		mAdapter.setDiffCallback(new PayloadDiffCallback());
 
-		mAdapter.registerRenderer(new ViewBinder<>(
+		mAdapter.registerRenderer(new ViewRenderer<>(
 				R.layout.item_payload_square, PayloadViewModel.class,
 				(model, finder, payloads) -> {
-					finder.setOnClickListener(R.id.text, v -> changeItem(model));
+					finder.setOnClickListener(R.id.text, () -> changeItem(model));
 					final TextView textView = finder.find(R.id.text);
 
 					if (payloads.isEmpty()) {
@@ -71,7 +72,7 @@ public class PayloadFragment extends BaseScreenFragment {
 
 		mAdapter.setItems(mYourDataProvider.getPayloadItems());
 
-		mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+		mRecyclerView = view.findViewById(R.id.recycler_view);
 		mRecyclerView.setAdapter(mAdapter);
 		mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
 		mRecyclerView.addItemDecoration(new ItemOffsetDecoration(10));

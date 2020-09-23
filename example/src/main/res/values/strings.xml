@@ -7,6 +7,7 @@
 	<string name = "done">Done</string>
 	<string name = "view_renderer">View Renderer</string>
 	<string name = "composite_view_renderer">Composite View Renderer</string>
+	<string name = "inputs">Inputs View State</string>
 	<string name = "view_state">View State</string>
 	<string name = "load_more">Load More</string>
 	<string name = "diff_util">Diff Util</string>

@@ -11,16 +11,17 @@ import android.view.ViewGroup;
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
+import com.github.vivchar.example.widgets.MyAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewHolder;
+import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewState;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewState;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewBinder;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewStateProvider;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
+import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewStateProvider;
+import com.github.vivchar.rendererrecyclerviewadapter.ViewFinder;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,18 +45,18 @@ public class ViewStateFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		mRecyclerViewAdapter = new RendererRecyclerViewAdapter();
+		mRecyclerViewAdapter = new MyAdapter();
 
 		mRecyclerViewAdapter.registerRenderer(
-				new CompositeViewBinder<>(
+				new CompositeViewRenderer<>(
 						R.layout.item_simple_composite,
 						R.id.recycler_view,
 						StateViewModel.class,
 						Collections.singletonList(new BetweenSpacesItemDecoration(10, 10)),
-						new CompositeViewStateProvider<StateViewModel, CompositeViewHolder>() {
+						new CompositeViewStateProvider<StateViewModel, CompositeViewHolder<ViewFinder>>() {
 							@Override
-							public ViewState createViewState(@NonNull final CompositeViewHolder holder) {
-								return new CompositeViewState(holder);
+							public ViewState createViewState() {
+								return new CompositeViewState<>();
 							}
 
 							@Override
@@ -96,7 +97,7 @@ public class ViewStateFragment extends BaseScreenFragment {
 	}
 
 	private ViewRenderer getAnyViewRenderer() {
-		return new ViewBinder<>(R.layout.item_simple_square, DiffUtilFragment.DiffViewModel.class,
+		return new ViewRenderer<>(R.layout.item_simple_square, DiffUtilFragment.DiffViewModel.class,
 				(model, finder, payloads) -> finder.setText(R.id.text, model.getText())
 		);
 	}

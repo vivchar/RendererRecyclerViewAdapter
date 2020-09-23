@@ -9,14 +9,10 @@ import android.view.View;
 /**
  * Created by Vivchar Vitaly on 8/25/17.
  */
-public class CompositeViewHolder extends ViewHolder {
+public class CompositeViewHolder<VF extends ViewFinder> extends ViewHolder<VF> {
 
-	public RecyclerView recyclerView;
-	public RendererRecyclerViewAdapter adapter;
-
-	public CompositeViewHolder(@NonNull final View itemView) {
-		super(itemView);
-	}
+	protected RecyclerView recyclerView;
+	protected RendererRecyclerViewAdapter adapter;
 
 	public CompositeViewHolder(@IdRes final int recyclerViewID, @NonNull final View view) {
 		super(view);

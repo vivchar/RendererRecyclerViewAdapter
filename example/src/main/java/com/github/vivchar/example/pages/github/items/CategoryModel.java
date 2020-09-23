@@ -1,4 +1,4 @@
-package com.github.vivchar.example.pages.github.items.category;
+package com.github.vivchar.example.pages.github.items;
 
 import androidx.annotation.NonNull;
 

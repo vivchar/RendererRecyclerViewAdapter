@@ -20,6 +20,7 @@ def getRepositoryPassword() {
 	return hasProperty('nexusPassword') ? nexusPassword : ""
 }
 
+//https://issues.sonatype.org/browse/OSSRH-54875
 afterEvaluate { project ->
 	uploadArchives {
 		repositories {

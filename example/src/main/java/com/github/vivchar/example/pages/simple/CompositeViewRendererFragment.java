@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 import com.github.vivchar.example.BaseScreenFragment;
 import com.github.vivchar.example.R;
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration;
+import com.github.vivchar.example.widgets.MyAdapter;
+import com.github.vivchar.rendererrecyclerviewadapter.CompositeViewRenderer;
 import com.github.vivchar.rendererrecyclerviewadapter.DefaultCompositeViewModel;
 import com.github.vivchar.rendererrecyclerviewadapter.RendererRecyclerViewAdapter;
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.CompositeViewBinder;
-import com.github.vivchar.rendererrecyclerviewadapter.binder.ViewBinder;
 
 import java.util.Collections;
 
@@ -33,10 +33,10 @@ public class CompositeViewRendererFragment extends BaseScreenFragment {
 
 		final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-		final RendererRecyclerViewAdapter adapter = new RendererRecyclerViewAdapter();
+		final RendererRecyclerViewAdapter adapter = new MyAdapter();
 
 		adapter.registerRenderer(
-				new CompositeViewBinder<>(
+				new CompositeViewRenderer<>(
 						R.layout.item_simple_composite,
 						R.id.recycler_view,
 						DefaultCompositeViewModel.class,
@@ -48,7 +48,7 @@ public class CompositeViewRendererFragment extends BaseScreenFragment {
 
 		adapter.setItems(mYourDataProvider.getCompositeSimpleItems());
 
-		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+		final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
 		recyclerView.setAdapter(adapter);
 		recyclerView.addItemDecoration(new BetweenSpacesItemDecoration(10, 10));
 
@@ -56,7 +56,7 @@ public class CompositeViewRendererFragment extends BaseScreenFragment {
 	}
 
 	private ViewRenderer getAnyViewRenderer() {
-		return new ViewBinder<>(
+		return new ViewRenderer<>(
 				R.layout.item_simple_square,
 				DiffUtilFragment.DiffViewModel.class,
 				(model, finder, payloads) -> finder.setText(R.id.text, model.getText())

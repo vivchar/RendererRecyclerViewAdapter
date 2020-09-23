@@ -1,4 +1,4 @@
-package com.github.vivchar.example.pages.github.items.list;
+package com.github.vivchar.example.pages.github.items;
 
 import androidx.annotation.NonNull;
 
@@ -37,7 +37,6 @@ public class RecyclerViewModel extends DefaultCompositeViewModel {
 
 	@Override
 	public String toString() {
-//		return getClass().getSimpleName() + "{" + mID + ", " + mType + ", " + mItems.toString() + "}";
 		return getClass().getSimpleName() + "{" + mItems.toString() + "}";
 	}
 }
