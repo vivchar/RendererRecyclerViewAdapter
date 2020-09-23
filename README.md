@@ -93,6 +93,7 @@ See [the Releases Page](https://github.com/vivchar/RendererRecyclerViewAdapter/r
 ## Migrations
 * [Migration to v2.5.0](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Steps-for-migration-to-v2.5.0)
 * [Migration to v2.5.0 (by TheJuki)](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Migration-to-2.5.0)
+* [Migration to v3.0](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Steps-for-migration-to-3.0)
 
 ## Projects using RendererRecyclerViewAdapter
 * [Camfrog](https://play.google.com/store/apps/details?id=com.camshare.camfrog.android): Group Video Chat;
