@@ -42,6 +42,16 @@ dependencies {
 }
 ```
 
+## v3.0 What's new?
+* #44 Fix RecyclerView memory leak;
+* #42 Add setOnClickListener without View paramenter enhancement;
+* #38 Add CustomViewFinder support enhancement;
+* #32 Migration to ListAdapter enhancement;
+* #15 ViewState not working as expected bug;
+* #47 ViewState overrides value from Model;
+* Remove old ViewRenderer;
+* Rename ViewBinder to new ViewRenderer.
+
 
 ## Usage
 * **Step 1:** Add the ViewModel interface to your UI model
