@@ -43,12 +43,12 @@ dependencies {
 ```
 
 ## v3.0 What's new?
-* #44 Fix RecyclerView memory leak;
-* #42 Add setOnClickListener without View paramenter enhancement;
-* #38 Add CustomViewFinder support enhancement;
-* #32 Migration to ListAdapter enhancement;
-* #15 ViewState not working as expected bug;
-* #47 ViewState overrides value from Model;
+* [#44](https://github.com/vivchar/RendererRecyclerViewAdapter/issues/44) Fix RecyclerView memory leak;
+* [#42](https://github.com/vivchar/RendererRecyclerViewAdapter/issues/42) Add setOnClickListener without View paramenter enhancement;
+* [#38](https://github.com/vivchar/RendererRecyclerViewAdapter/issues/38) Add CustomViewFinder support enhancement;
+* [#32](https://github.com/vivchar/RendererRecyclerViewAdapter/issues/32) Migration to ListAdapter enhancement;
+* [#15](https://github.com/vivchar/RendererRecyclerViewAdapter/issues/15) ViewState not working as expected bug;
+* [#47](https://github.com/vivchar/RendererRecyclerViewAdapter/issues/47) ViewState overrides value from Model;
 * Remove old ViewRenderer;
 * Rename ViewBinder to new ViewRenderer.
 
