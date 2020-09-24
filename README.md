@@ -106,17 +106,17 @@ See [the Releases Page](https://github.com/vivchar/RendererRecyclerViewAdapter/r
 * [Migration to v3.0](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Steps-for-migration-to-3.0)
 
 ## Projects using RendererRecyclerViewAdapter
-* [Camfrog](https://play.google.com/store/apps/details?id=com.camshare.camfrog.android): Group Video Chat;
-* [Paltalk](https://play.google.com/store/apps/details?id=com.paltalk.chat.android): Free group video calls & chat rooms;
-* [DeskRoll](https://play.google.com/store/apps/details?id=com.deskroll.client1): Gives you secure remote access to computers;
-* [MedikTest](https://play.google.com/store/apps/details?id=com.anisov.medical.accreditation): Preparation for accreditation of doctors;
-* [KFormMaster](https://github.com/TheJuki/KFormMaster): Easily build generic forms with minimal effort;
-* [KDV Online](https://play.google.com/store/apps/details?id=com.magonline.app): Online store of KDV, Russian producer of snacks and confectionery products, whose goods are well known and beloved not only in Russia but also well beyond.
+* [Camfrog](https://play.google.com/store/apps/details?id=com.camshare.camfrog.android&utm_source=github-vivchar): Group Video Chat;
+* [Paltalk](https://play.google.com/store/apps/details?id=com.paltalk.chat.android&utm_source=github-vivchar): Free group video calls & chat rooms;
+* [DeskRoll](https://play.google.com/store/apps/details?id=com.deskroll.client1&utm_source=github-vivchar): Gives you secure remote access to computers;
+* [MedikTest](https://play.google.com/store/apps/details?id=com.anisov.medical.accreditation&utm_source=github-vivchar): Preparation for accreditation of doctors;
+* [KFormMaster](https://github.com/TheJuki/KFormMaster&utm_source=github-vivchar): Easily build generic forms with minimal effort;
+* [KDV Online](https://play.google.com/store/apps/details?id=com.magonline.app&utm_source=github-vivchar): Online store of KDV, Russian producer of snacks and confectionery products, whose goods are well known and beloved not only in Russia but also well beyond.
 
 Send me a pull request with modified README.md to get a shoutout!
 
 ## Communication
-* If you need help, please use [Stack Overflow](https://stackoverflow.com/search?tab=newest&q=rendererrecyclerviewadapter).
+* If you need help, please use [Stack Overflow](https://stackoverflow.com/search?tab=newest&q=rendererrecyclerviewadapter&utm_source=github-vivchar).
 * If you found a bug, please open [Issue](https://github.com/vivchar/RendererRecyclerViewAdapter/labels/bug).
 * If you have a feature request, please open [Issue](https://github.com/vivchar/RendererRecyclerViewAdapter/labels/feature%20request).
 * If you want to contribute, please submit [Pull request](https://github.com/vivchar/RendererRecyclerViewAdapter/pulls).
