@@ -29,7 +29,7 @@ public class ViewHolder <VF extends ViewFinder> extends RecyclerView.ViewHolder 
 			try {
 				mViewFinder = (VF) ViewFinderFactory.create(itemView);
 			} catch (ClassCastException e) { //TODO vivchar: by some reason it does not catch
-				throw new WrongViewFinderException();
+				throw new WrongViewFinderException(e);
 			}
 		}
 		return mViewFinder;
