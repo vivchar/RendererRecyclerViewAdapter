@@ -104,7 +104,7 @@ public abstract class BaseViewRenderer<M extends ViewModel, VF extends ViewFinde
             /* temporary workaround to catch ViewFinder ClassCastException,
              by some reason ViewHolder.getViewFinder() catch doesn't work */
             if (e.getMessage().contains(ViewFinder.class.getSimpleName())) {
-                throw new WrongViewFinderException();
+                throw new WrongViewFinderException(e);
             } else {
                 throw e;
             }
