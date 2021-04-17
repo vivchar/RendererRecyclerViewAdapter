@@ -20,7 +20,11 @@ def getRepositoryPassword() {
 	return hasProperty('nexusPassword') ? nexusPassword : ""
 }
 
-//https://issues.sonatype.org/browse/OSSRH-54875
+/*
+	https://issues.sonatype.org/browse/OSSRH-54875
+	https://issues.sonatype.org/browse/OSSRH-67154
+	Move local.properties to gradle.properties if you have a problems with SIGNING
+ */
 afterEvaluate { project ->
 	uploadArchives {
 		repositories {
