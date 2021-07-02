@@ -31,9 +31,9 @@ internal class GithubPresenter(
 	public override fun viewShown() {
 
 		val combineLatest = Observables.combineLatest(
-			stargazersManager.all.mapList { StargazerModel(it.id, it.login, it.avatarUrl, it.htmlUrl) },
-			stargazersManager.top10.mapList { StargazerModel(it.id, it.login, it.avatarUrl, it.htmlUrl) },
-			forksManager.githubForks.mapList { ForkModel(it.ownerLogin, it.ownerAvatarUrl, it.ownerHtmlUrl) }
+			stargazersManager.all.mapIterable { StargazerModel(it.id, it.login, it.avatarUrl, it.htmlUrl) },
+			stargazersManager.top10.mapIterable { StargazerModel(it.id, it.login, it.avatarUrl, it.htmlUrl) },
+			forksManager.githubForks.mapIterable { ForkModel(it.ownerLogin, it.ownerAvatarUrl, it.ownerHtmlUrl) }
 		) { stargazers, topStargazers, forkModels ->
 			val allModels = ArrayList<ViewModel>()
 			val topStargazersModels = topStargazers.toMutableList()
@@ -157,8 +157,8 @@ internal class GithubPresenter(
 		fun showLoadMoreView()
 	}
 
-	private fun <In, Out> Observable<out Collection<In>>.mapList(mapper: (In) -> Out): Observable<Collection<Out>> {
-		return map { list -> list.map { mapper.invoke(it) } }
+	private fun <T, R> Observable<out Iterable<T>>.mapIterable(mapper: (T) -> R): Observable<List<R>> {
+		return map { iterable -> iterable.map { mapper(it) } }
 	}
 
 	companion object {
