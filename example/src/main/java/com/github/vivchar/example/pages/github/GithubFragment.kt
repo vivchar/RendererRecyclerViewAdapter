@@ -27,8 +27,6 @@ import java.util.*
  */
 class GithubFragment : BaseScreenFragment() {
 	private var recyclerViewAdapter = MyAdapter()
-	private var recyclerView: RecyclerView? = null
-	private var layoutManager: GridLayoutManager? = null
 	private var swipeToRefresh: SwipeRefreshLayout? = null
 	private var githubPresenter: GithubPresenter? = null
 	private var instanceState: Bundle? = null
@@ -69,8 +67,8 @@ class GithubFragment : BaseScreenFragment() {
 		recyclerViewAdapter.registerRenderer(createListRenderer)
 		recyclerViewAdapter.registerRenderer(categoryRenderer)
 
-		layoutManager = GridLayoutManager(context, MAX_SPAN_COUNT)
-		layoutManager!!.spanSizeLookup = object : SpanSizeLookup() {
+		val layoutManager = GridLayoutManager(context, MAX_SPAN_COUNT)
+		layoutManager.spanSizeLookup = object : SpanSizeLookup() {
 			override fun getSpanSize(position: Int): Int {
 				return when (recyclerViewAdapter.getType(position)) {
 					ForkModel::class.java,
@@ -83,11 +81,11 @@ class GithubFragment : BaseScreenFragment() {
 		val inflate = inflater.inflate(R.layout.fragment_github, container, false)
 		swipeToRefresh = inflate.findViewById(R.id.refresh)
 		swipeToRefresh?.setOnRefreshListener { githubPresenter?.onRefresh() }
-		recyclerView = inflate.findViewById(R.id.recycler_view)
-		recyclerView?.layoutManager = layoutManager
-		recyclerView?.adapter = recyclerViewAdapter
-		recyclerView?.addItemDecoration(MyItemDecoration())
-		recyclerView?.addOnScrollListener(object : EndlessScrollListener() {
+		val recyclerView = inflate.findViewById<RecyclerView>(R.id.recycler_view)
+		recyclerView.layoutManager = layoutManager
+		recyclerView.adapter = recyclerViewAdapter
+		recyclerView.addItemDecoration(MyItemDecoration())
+		recyclerView.addOnScrollListener(object : EndlessScrollListener() {
 			override fun onLoadMore(page: Int, totalItemsCount: Int) {
 				githubPresenter?.onLoadMore()
 			}
