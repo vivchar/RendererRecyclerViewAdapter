@@ -1,9 +1,8 @@
 package com.github.vivchar.network
 
 import com.github.vivchar.network.models.GithubFork
-import io.reactivex.Observable
-import io.reactivex.subjects.ReplaySubject
-import java.util.*
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.ReplaySubject
 
 /**
  * Created by Vivchar Vitaly on 12.10.17.

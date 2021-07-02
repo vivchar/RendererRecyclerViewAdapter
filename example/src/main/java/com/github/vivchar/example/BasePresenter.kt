@@ -1,8 +1,8 @@
 package com.github.vivchar.example
 
 import androidx.annotation.CallSuper
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 
 /**
  * Created by Vivchar Vitaly on 10.10.17.

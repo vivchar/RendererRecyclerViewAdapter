@@ -52,8 +52,9 @@ ext {
 	glideVersion = "4.0.0"
 	glideTransformationsVersion = "3.0.1"
 	gpuImageVersion = "1.4.1"
-	rxJavaVersion = "2.2.2"
-	rxAndroidVersion = "2.1.0"
+	rxJavaVersion = '3.0.4'
+	rxKotlinVersion = '3.0.0'
+	rxAndroidVersion = '3.0.0'
 	streamVersion = "1.2.1"
 	axCoreVersion = '1.0.2'
 }

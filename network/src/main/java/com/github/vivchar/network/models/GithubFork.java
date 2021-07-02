@@ -233,6 +233,18 @@ public class GithubFork {
 		return owner;
 	}
 
+	public String getOwnerLogin() {
+		return owner.login;
+	}
+
+	public String getOwnerAvatarUrl() {
+		return owner.avatarUrl;
+	}
+
+	public String getOwnerHtmlUrl() {
+		return owner.htmlUrl;
+	}
+
 	public boolean is_private() {
 		return _private;
 	}

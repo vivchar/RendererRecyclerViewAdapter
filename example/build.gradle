@@ -37,9 +37,9 @@ dependencies {
 	implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
 	annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
 
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
-	implementation "com.annimon:stream:$rootProject.ext.streamVersion"
-	implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
+	implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+	implementation "io.reactivex.rxjava3:rxkotlin:$rxKotlinVersion"
+	implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
 
 	implementation "jp.wasabeef:glide-transformations:$rootProject.ext.glideTransformationsVersion"
 	implementation "jp.co.cyberagent.android.gpuimage:gpuimage-library:$rootProject.ext.gpuImageVersion"

@@ -2,9 +2,8 @@ package com.github.vivchar.network
 
 import android.util.Log
 import com.github.vivchar.network.models.GithubUser
-import io.reactivex.Observable
-import io.reactivex.subjects.ReplaySubject
-import java.util.*
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.ReplaySubject
 
 /**
  * Created by Vivchar Vitaly on 09.10.17.
