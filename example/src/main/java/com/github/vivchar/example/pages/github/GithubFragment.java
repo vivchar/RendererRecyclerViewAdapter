@@ -65,7 +65,7 @@ public class GithubFragment extends BaseScreenFragment {
         View inflate = inflater.inflate(R.layout.fragment_github, container, false);
 
         mGithubPresenter = new GithubPresenter(
-                getUIRouter(),
+                getRouter(),
                 getMenuController(),
                 MainManager.getInstance().getStargazersManager(),
                 MainManager.getInstance().getForksManager(),

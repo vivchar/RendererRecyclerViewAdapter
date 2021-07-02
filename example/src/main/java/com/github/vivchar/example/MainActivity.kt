@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
 class MainActivity : AppCompatActivity() {
-	private var router: UIRouter? = null
-	private var menuController: OptionsMenuController? = null
+	var router: UIRouter? = null
+	var menuController: OptionsMenuController? = null
 	private var presenter: MainPresenter? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
