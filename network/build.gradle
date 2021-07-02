@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -27,4 +28,6 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
     implementation "com.annimon:stream:$rootProject.ext.streamVersion"
+    implementation "androidx.core:core-ktx:$axCoreVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 }
