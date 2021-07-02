@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
 
@@ -42,6 +43,9 @@ dependencies {
 
 	implementation "jp.wasabeef:glide-transformations:$rootProject.ext.glideTransformationsVersion"
 	implementation "jp.co.cyberagent.android.gpuimage:gpuimage-library:$rootProject.ext.gpuImageVersion"
+
+	implementation "androidx.core:core-ktx:$axCoreVersion"
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
 //	api 'com.github.vivchar:RendererRecyclerViewAdapter:2.5.0'
 	implementation project(path: ':rendererrecyclerviewadapter')

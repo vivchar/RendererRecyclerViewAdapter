@@ -1,10 +1,13 @@
 buildscript {
+	ext.kotlin_version = '1.4.21'
+	ext.kotlinVersion = ext.kotlin_version /* vivchar: to support CamelCase */
 	repositories {
 		jcenter()
 		google()
 	}
 	dependencies {
 		classpath 'com.android.tools.build:gradle:3.5.1'
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 	}
 }
 
@@ -52,6 +55,7 @@ ext {
 	rxJavaVersion = "2.2.2"
 	rxAndroidVersion = "2.1.0"
 	streamVersion = "1.2.1"
+	axCoreVersion = '1.0.2'
 }
 
 apply plugin: 'android-reporting'
