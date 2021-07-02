@@ -96,11 +96,11 @@ public class YourDataProvider {
 		final ArrayList<PayloadViewModel> newList = new ArrayList<>();
 
 		for (final PayloadViewModel viewModel : mPayloadItems) {
-			if (viewModel.getID() == model.getID()) {
+			if (viewModel.getId() == model.getId()) {
 				newList.add(new PayloadViewModel(
-						model.getID(),
+						model.getId(),
 						String.valueOf(Integer.valueOf(model.getText()) + 1),
-						"model ID: " + model.getID()
+						"model ID: " + model.getId()
 				));
 			} else {
 				newList.add(viewModel);
