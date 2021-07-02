@@ -9,7 +9,7 @@ import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer
 /**
  * Created by Vivchar Vitaly on 1/10/17.
  */
-class StargazerViewRenderer(layoutID: Int, listener: Listener) : ViewRenderer<StargazerModel, CustomViewFinder>(
+class StargazerViewRenderer(layoutID: Int, listener: (StargazerModel, Boolean) -> Unit) : ViewRenderer<StargazerModel, CustomViewFinder>(
 	layoutID,
 	StargazerModel::class.java,
 	Binder { model, finder, _ ->
@@ -18,19 +18,15 @@ class StargazerViewRenderer(layoutID: Int, listener: Listener) : ViewRenderer<St
 			.setOnClickListener {
 				val willChecked = finder.find<View>(R.id.check).visibility == View.GONE
 				finder.find<View>(R.id.check).visibility = if (willChecked) View.VISIBLE else View.GONE
-				listener.onStargazerItemClicked(model, willChecked)
+				listener.invoke(model, willChecked)
 			}
 			.setOnClickListener(R.id.check) {
 				val willChecked = finder.find<View>(R.id.check).visibility == View.GONE
 				finder.find<View>(R.id.check).visibility = if (willChecked) View.VISIBLE else View.GONE
-				listener.onStargazerItemClicked(model, willChecked)
+				listener.invoke(model, willChecked)
 			}
 	}) {
 
 	override fun createViewState() = StargazerViewState()
 	override fun createViewStateID(model: StargazerModel) = model.id
-
-	interface Listener {
-		fun onStargazerItemClicked(model: StargazerModel, isChecked: Boolean)
-	}
 }

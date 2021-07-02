@@ -1,6 +1,5 @@
 package com.github.vivchar.example.pages.github
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -40,7 +39,7 @@ class GithubFragment : BaseScreenFragment() {
 			menuController,
 			instance.stargazersManager,
 			instance.forksManager,
-			mMainPresenterView
+			mainPresenterView
 		)
 
 		val categoryRenderer = ViewRenderer<CategoryModel, ViewFinder>(
@@ -122,7 +121,9 @@ class GithubFragment : BaseScreenFragment() {
 		githubPresenter?.viewHidden()
 	}
 
-	private fun createStargazerRenderer(layout: Int) = StargazerViewRenderer(layout, Listener())
+	private fun createStargazerRenderer(layout: Int) = StargazerViewRenderer(layout) { model, isChecked ->
+		githubPresenter?.onStargazerClicked(model, isChecked)
+	}
 
 	private fun createUserRenderer(): ViewRenderer<*, *> {
 		/* vivchar: ideally we should use other model */
@@ -136,7 +137,7 @@ class GithubFragment : BaseScreenFragment() {
 		}
 	}
 
-	private val mMainPresenterView: GithubPresenter.View = object : GithubPresenter.View {
+	private val mainPresenterView: GithubPresenter.View = object : GithubPresenter.View {
 		override fun updateList(list: List<ViewModel>) {
 			recyclerViewAdapter.setItems(list)
 		}
@@ -169,7 +170,7 @@ class GithubFragment : BaseScreenFragment() {
 			recyclerView.layoutManager = LinearLayoutManager(context)
 			recyclerView.adapter = adapter
 			adapter.setItems(list)
-			val builder = AlertDialog.Builder(context)
+			val builder = AlertDialog.Builder(context!!)
 			builder.setView(recyclerView)
 			builder.setTitle(R.string.selected_users)
 			builder.setPositiveButton(R.string.ok, null)
@@ -183,14 +184,6 @@ class GithubFragment : BaseScreenFragment() {
 
 		override fun showLoadMoreView() {
 			recyclerViewAdapter.showLoadMore()
-		}
-
-		override val context: Context get() = GithubFragment::getActivity as Context
-	}
-
-	private inner class Listener : StargazerViewRenderer.Listener {
-		override fun onStargazerItemClicked(model: StargazerModel, isChecked: Boolean) {
-			githubPresenter!!.onStargazerClicked(model, isChecked)
 		}
 	}
 
