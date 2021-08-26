@@ -20,16 +20,16 @@ class StargazersRepository(private val client: GithubClient) {
 	val all: Observable<List<User>> get() = usersSubject.hide()
 	val top10: Observable<List<User>> get() = usersSubject.hide().map { ArrayList(it.subList(0, it.size.coerceAtMost(10))) }
 
-	fun sendReloadRequest() {
-//		Log.d(TAG, "sendReloadRequest")
-//		/* vivchar: to avoid the API rate limit of the github https://developer.github.com/v3/#rate-limiting */
-//		if (usersSubject.value!!.isEmpty()) {
-//			isReloading = true
-//			currentPage = 1
-//			fetchStargazers(currentPage)
-//		} else {
-//			usersSubject.onNext(ArrayList(originalUsers)) //temporary workaround
-//		}
+	fun sendReloadRequest(): Observable<List<User>> {
+		Log.d(TAG, "sendReloadRequest")
+		/* vivchar: to avoid the API rate limit of the github https://developer.github.com/v3/#rate-limiting */
+		if (usersSubject.value!!.isEmpty()) {
+			isReloading = true
+			currentPage = 1
+			fetchStargazers(currentPage)
+		} else {
+			usersSubject.onNext(ArrayList(originalUsers)) //temporary workaround
+		}
 	}
 
 	fun sendLoadMoreRequest() {

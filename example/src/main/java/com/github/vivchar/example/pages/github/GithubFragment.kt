@@ -18,6 +18,7 @@ import com.github.vivchar.example.R
 import com.github.vivchar.example.pages.github.items.*
 import com.github.vivchar.example.widgets.*
 import com.github.vivchar.example.MainManager.Companion.instance
+import com.github.vivchar.example.interactors.GetAllCategoriesInteractor
 import com.github.vivchar.rendererrecyclerviewadapter.*
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
@@ -33,6 +34,10 @@ class GithubFragment : BaseScreenFragment() {
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		githubPresenter = GithubPresenter(
+			GetAllCategoriesInteractor(
+				instance.stargazersRepository,
+				instance.forksRepository
+			),
 			menuController,
 			instance.stargazersRepository,
 			instance.forksRepository,
