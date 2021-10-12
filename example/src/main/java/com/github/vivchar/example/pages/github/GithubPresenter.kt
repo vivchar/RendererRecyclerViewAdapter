@@ -1,24 +1,24 @@
 package com.github.vivchar.example.pages.github
 
 import android.util.Log
-import com.github.vivchar.example.*
-import com.github.vivchar.example.pages.github.items.CategoryModel
-import com.github.vivchar.example.pages.github.items.ForkModel
-import com.github.vivchar.example.pages.github.items.RecyclerViewModel
-import com.github.vivchar.example.pages.github.items.StargazerModel
 import com.github.vivchar.data.repositories.ForksRepository
 import com.github.vivchar.data.repositories.StargazersRepository
+import com.github.vivchar.example.BasePresenter
+import com.github.vivchar.example.IView
+import com.github.vivchar.example.MenuItemID
+import com.github.vivchar.example.OptionsMenuController
 import com.github.vivchar.example.interactors.GetAllCategoriesInteractor
+import com.github.vivchar.example.interactors.Interactor.Companion.execute
+import com.github.vivchar.example.pages.github.items.CategoryModel
+import com.github.vivchar.example.pages.github.items.ForkModel
+import com.github.vivchar.example.pages.github.items.StargazerModel
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.kotlin.Observables
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
  * Created by Vivchar Vitaly on 10.10.17.
  */
-internal class GithubPresenter(
+class GithubPresenter(
 	private val getAllCategoriesInteractor: GetAllCategoriesInteractor,
 	private val menuController: OptionsMenuController,
 	private val stargazersRepository: StargazersRepository,
@@ -29,12 +29,9 @@ internal class GithubPresenter(
 	private val selectedUsers = ArrayList<StargazerModel>()
 	private var isLoadingMore = false
 
-	public override fun viewShown() {
+	override fun subscribe() {
 
-		getAllCategoriesInteractor.execute(Unit) {
-			isLoadingMore = false
-			view.updateList(it)
-		}
+		getAllCategoriesInteractor.execute().listen { view.updateList(it) }
 
 		/* think about it, possible we should move it to Fragment */
 		addSubscription(
@@ -49,7 +46,7 @@ internal class GithubPresenter(
 		Log.d(TAG, "================================================")
 		count++
 		view.showProgressView()
-		stargazersRepository.sendReloadRequest()
+		//stargazersRepository.sendReloadRequest()
 	}
 
 	fun onStargazerClicked(model: StargazerModel, isChecked: Boolean) {

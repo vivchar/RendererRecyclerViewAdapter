@@ -10,16 +10,17 @@ import com.github.vivchar.example.pages.github.items.CategoryModel
 import com.github.vivchar.example.pages.github.items.ForkModel
 import com.github.vivchar.example.pages.github.items.RecyclerViewModel
 import com.github.vivchar.example.pages.github.items.StargazerModel
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.Observables
 
 class GetAllCategoriesInteractor(
 	private val stargazersRepository: StargazersRepository,
 	private val forksRepository: ForksRepository
-) : Interactor2<Unit, Observable<List<Any>>> {
+) : Interactor<Unit, Observable<List<ViewModel>>> {
 	private var count = 0
 
-	override fun execute(params: Unit): Observable<List<Any>> {
+	override fun execute(params: Unit): Observable<List<ViewModel>> {
 		return Observables.combineLatest(
 			stargazersRepository.all,
 			stargazersRepository.top10,
@@ -28,8 +29,8 @@ class GetAllCategoriesInteractor(
 	}
 
 	/* think about moving this from Interactor to Presenter, since there are UI models which break dependency rule */
-	private fun map(triple: Triple<List<User>, List<User>, List<Fork>>): List<Any> {
-		val allModels = ArrayList<Any>()
+	private fun map(triple: Triple<List<User>, List<User>, List<Fork>>): List<ViewModel> {
+		val allModels = ArrayList<ViewModel>()
 		val forkModels = triple.third.map { ForkModel(it.owner.login, it.owner.avatarUrl, it.owner.htmlUrl) }.toMutableList()
 		val topStargazersModels = triple.first.map { StargazerModel(it.id, it.login, it.avatarUrl, it.htmlUrl) }.toMutableList()
 		val stargazerModels = triple.second.map { StargazerModel(it.id, it.login, it.avatarUrl, it.htmlUrl) }.toMutableList()

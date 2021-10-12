@@ -3,6 +3,7 @@ package com.github.vivchar.data.repositories
 import android.util.Log
 import com.github.vivchar.data.GithubClient
 import com.github.vivchar.domain.entities.User
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.ReplaySubject
 
@@ -20,22 +21,23 @@ class StargazersRepository(private val client: GithubClient) {
 	val all: Observable<List<User>> get() = usersSubject.hide()
 	val top10: Observable<List<User>> get() = usersSubject.hide().map { ArrayList(it.subList(0, it.size.coerceAtMost(10))) }
 
-	fun sendReloadRequest(): Observable<List<User>> {
-		Log.d(TAG, "sendReloadRequest")
-		/* vivchar: to avoid the API rate limit of the github https://developer.github.com/v3/#rate-limiting */
-		if (usersSubject.value!!.isEmpty()) {
-			isReloading = true
-			currentPage = 1
-			fetchStargazers(currentPage)
-		} else {
-			usersSubject.onNext(ArrayList(originalUsers)) //temporary workaround
-		}
-	}
+//	fun sendReloadRequest(): Observable<List<User>> {
+//		Log.d(TAG, "sendReloadRequest")
+//		/* vivchar: to avoid the API rate limit of the github https://developer.github.com/v3/#rate-limiting */
+//		if (usersSubject.value!!.isEmpty()) {
+//			isReloading = true
+//			currentPage = 1
+//			fetchStargazers(currentPage)
+//		} else {
+//			usersSubject.onNext(ArrayList(originalUsers)) //temporary workaround
+//		}
+//	}
 
 	fun sendLoadMoreRequest() {
-//		if (hasMore) {
-//			fetchStargazers(lastLoadedPage + 1)
-//		}
+		if (hasMore) {
+			/* vivchar: think about moving subscribe to Presenter or Interactor */
+			fetchStargazers(lastLoadedPage + 1).subscribe()
+		}
 	}
 
 	private fun fetchStargazers(page: Int): Observable<List<User>> {

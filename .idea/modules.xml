@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/RendererRecyclerViewAdapter.iml" filepath="$PROJECT_DIR$/.idea/modules/RendererRecyclerViewAdapter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/network/RendererRecyclerViewAdapter.data.iml" filepath="$PROJECT_DIR$/.idea/modules/network/RendererRecyclerViewAdapter.data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data/RendererRecyclerViewAdapter.data.iml" filepath="$PROJECT_DIR$/.idea/modules/data/RendererRecyclerViewAdapter.data.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/RendererRecyclerViewAdapter.domain.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/RendererRecyclerViewAdapter.domain.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/example/RendererRecyclerViewAdapter.example.iml" filepath="$PROJECT_DIR$/.idea/modules/example/RendererRecyclerViewAdapter.example.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rendererrecyclerviewadapter/RendererRecyclerViewAdapter.rendererrecyclerviewadapter.iml" filepath="$PROJECT_DIR$/.idea/modules/rendererrecyclerviewadapter/RendererRecyclerViewAdapter.rendererrecyclerviewadapter.iml" />

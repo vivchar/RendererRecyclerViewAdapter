@@ -24,12 +24,12 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onStart() {
 		super.onStart()
-		presenter?.viewShown()
+		presenter?.subscribe()
 	}
 
 	override fun onStop() {
 		super.onStop()
-		presenter?.viewHidden()
+		presenter?.unsubscribe()
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {

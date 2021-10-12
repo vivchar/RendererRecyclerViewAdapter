@@ -8,7 +8,7 @@ internal class MainPresenter(
 	private val router: UIRouter, firstInit: Boolean
 ) : BasePresenter() {
 
-	public override fun viewShown() {
+	public override fun subscribe() {
 		addSubscription(
 			menuController.itemSelection.subscribe {
 				when (it) {

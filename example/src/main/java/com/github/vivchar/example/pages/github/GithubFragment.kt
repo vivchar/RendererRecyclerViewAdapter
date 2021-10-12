@@ -115,12 +115,12 @@ class GithubFragment : BaseScreenFragment() {
 
 	override fun onStart() {
 		super.onStart()
-		githubPresenter?.viewShown()
+		githubPresenter?.subscribe()
 	}
 
 	override fun onStop() {
 		super.onStop()
-		githubPresenter?.viewHidden()
+		githubPresenter?.unsubscribe()
 	}
 
 	private fun createStargazerRenderer(layout: Int) = StargazerViewRenderer(layout) { model, isChecked ->
