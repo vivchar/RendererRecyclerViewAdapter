@@ -20,19 +20,19 @@ class OptionsMenuController(private val context: AppCompatActivity) {
 	}
 
 	fun onPrepareOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
-		for (@MenuItemID menuItemID in MenuItemID.ALL) {
+		for (menuItemID in MenuItemID.ALL) {
 			menu.findItem(menuItemID).isVisible = !invisibleItems.contains(menuItemID)
 		}
 	}
 
-	fun showMenuItem(@MenuItemID itemID: Int) {
+	fun showMenuItem(itemID: Int) {
 		if (invisibleItems.contains(itemID)) {
 			invisibleItems.remove(Integer.valueOf(itemID))
 			context.invalidateOptionsMenu()
 		}
 	}
 
-	fun hideMenuItem(@MenuItemID itemID: Int) {
+	fun hideMenuItem(itemID: Int) {
 		if (!invisibleItems.contains(itemID)) {
 			invisibleItems.add(itemID)
 			context.invalidateOptionsMenu()

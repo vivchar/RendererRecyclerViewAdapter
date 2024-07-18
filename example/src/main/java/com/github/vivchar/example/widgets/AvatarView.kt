@@ -13,7 +13,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation
  * Created by Vivchar Vitaly on 10.07.19.
  */
 class AvatarView @JvmOverloads constructor(
-	context: Context?,
+	context: Context,
 	attrs: AttributeSet? = null,
 	defStyleAttr: Int = 0
 ) : AppCompatImageView(context, attrs, defStyleAttr) {

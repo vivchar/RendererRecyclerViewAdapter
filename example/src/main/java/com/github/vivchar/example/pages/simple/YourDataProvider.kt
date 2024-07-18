@@ -27,7 +27,7 @@ class YourDataProvider {
 	val payloadItems = mutableListOf<PayloadViewModel>().apply { for (i in 0..49) add(PayloadViewModel(i, i.toString(), "model ID: $i")) }
 	val loadMoreItems = mutableListOf<ViewModel>().apply { for (i in 0..30) add(SimpleViewModel(i.toString())) }
 
-	fun getUpdatedDiffItems(model: DiffViewModel?): List<ViewModel?> {
+	fun getUpdatedDiffItems(model: DiffViewModel): List<ViewModel?> {
 		val clickedIndex = diffItems.indexOf(model)
 		val clickedModel = diffItems.removeAt(clickedIndex)
 		val remove = diffItems.removeAt(0)

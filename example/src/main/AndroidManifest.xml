@@ -16,6 +16,7 @@
 
 		<activity
 			android:name = "com.github.vivchar.example.MainActivity"
+			android:exported = "true"
 			>
 			<!--android:screenOrientation = "portrait"-->
 			<intent-filter>

@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
+	namespace 'com.github.vivchar.rendererrecyclerviewadapter'
+
 	compileSdkVersion rootProject.ext.compileSdkVersion
 	buildToolsVersion rootProject.ext.buildToolsVersion
 
@@ -17,7 +19,8 @@ android {
 
 dependencies {
 	implementation "androidx.annotation:annotation:$androidxVersion"
-	implementation "androidx.recyclerview:recyclerview:$androidxVersion"
+	implementation 'androidx.recyclerview:recyclerview:1.3.2'
+//	implementation "androidx.recyclerview:recyclerview:$androidxVersion"
 }
 
-apply from: '../maven.gradle'
+//apply from: '../maven.gradle'
