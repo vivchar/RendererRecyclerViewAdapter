@@ -1,14 +1,12 @@
 [versions]
 applicationID = "com.example.vivchar.example"
+
 versionCode = "1"
 versionName = "1.0.0"
+
 minSdkVersion = "21"
 targetSdkVersion = "34"
 compileSdkVersion = "34"
-coreKtxVersion = "1.13.1"
-materialDesignVersion = "1.12.0"
-constraintVersion = "2.1.4"
-streamVersion = "1.2.1"
 
 retrofit = "2.11.0"
 
@@ -29,6 +27,10 @@ cardview = "1.0.0"
 material = "1.12.0"
 appcompat = "1.7.0"
 
+plugin-application = "8.5.1"
+plugin-library = "8.5.1"
+plugin-kotlin = "1.9.0"
+
 kotlinVersion = "1.9.24"
 
 [libraries]
@@ -48,7 +50,6 @@ androidx-material = { group = "com.google.android.material", name = "material", 
 squareup-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 squareup-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinVersion" }
 kotlin-stdlib-jdk7 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version.ref = "kotlinVersion" }
 
 androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
@@ -58,4 +59,6 @@ glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", versi
 glide-transformations = { group = "jp.wasabeef", name = "glide-transformations", version.ref = "glide-transformations" }
 
 [plugins]
-
+android-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "plugin-kotlin" }
+android-application = { id = "com.android.application", version.ref = "plugin-application" }
+android-library = { id = "com.android.library", version.ref = "plugin-library" }
