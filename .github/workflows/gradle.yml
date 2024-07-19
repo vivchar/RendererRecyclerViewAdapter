@@ -14,7 +14,7 @@ env:
   SIGNING_SECRET_KEY_RING_CONTENT: ${{ secrets.SIGNING_SECRET_KEY_RING_CONTENT }}
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,12 +30,10 @@ jobs:
       - name: Prepare environment
         run: |
           echo "$SIGNING_SECRET_KEY_RING_CONTENT" | base64 -d > publish_key.gpg
-          ls -al
           gpg --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" --output secret.gpg publish_key.gpg
-          ls -al
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      #- name: Publish with Gradle
-      #  run: ./gradlew publish -Psigning.secretKeyRingFile=secret.gpg -Psigning.keyId=$SIGNING_KEYID -Psigning.password=$SIGNING_PASSWORD -Ptoken="$SONATYPE_TOKEN"
+      - name: Publish with Gradle
+        run: ./gradlew publish -Psigning.secretKeyRingFile=../secret.gpg -Psigning.keyId=$SIGNING_KEYID -Psigning.password=$SIGNING_PASSWORD -Ptoken="$SONATYPE_TOKEN"
