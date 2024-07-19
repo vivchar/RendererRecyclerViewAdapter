@@ -27,11 +27,10 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
-      - name: Prepare environment
+      - name: Prepare environment # https://habr.com/ru/articles/490604/
         run: |
           echo "$SIGNING_SECRET_KEY_RING_CONTENT" | base64 -d > publish_key.gpg
-          gpg --version
-          gpg --pinentry loopback --batch --yes --decrypt --passphrase="SIGNING_SECRET_PASSPHRASE" --output secret.gpg publish_key.gpg
+          gpg --batch --yes --decrypt --passphrase="$SIGNING_SECRET_PASSPHRASE" --output secret.gpg publish_key.gpg
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
