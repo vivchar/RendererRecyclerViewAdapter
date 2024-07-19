@@ -11,8 +11,6 @@ android {
 	defaultConfig {
 		minSdk = libs.versions.minSdkVersion.get().toInt()
 		compileSdk = libs.versions.compileSdkVersion.get().toInt()
-		version = "3.0.2"
-//		version = "3.0.2-SNAPSHOT"
 	}
 
 	buildTypes {
@@ -53,6 +51,8 @@ publishing {
 
 			groupId = "com.github.vivchar"
 			artifactId = "RendererRecyclerViewAdapter"
+			version = "3.0.3"
+//			version = "3.0.2-SNAPSHOT"
 
 			pom {
 				packaging = "aar"

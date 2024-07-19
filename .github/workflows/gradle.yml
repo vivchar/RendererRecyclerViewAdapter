@@ -8,10 +8,10 @@ on:
 
 env:
   SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
-  SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
   SIGNING_KEYID: ${{ secrets.SIGNING_KEYID }}
   SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
   SIGNING_SECRET_KEY_RING_CONTENT: ${{ secrets.SIGNING_SECRET_KEY_RING_CONTENT }}
+  SIGNING_SECRET_PASSPHRASE: ${{ secrets.SIGNING_SECRET_PASSPHRASE }}
 
 jobs:
   publish:
@@ -30,7 +30,7 @@ jobs:
       - name: Prepare environment
         run: |
           echo "$SIGNING_SECRET_KEY_RING_CONTENT" | base64 -d > publish_key.gpg
-          gpg --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" --output secret.gpg publish_key.gpg
+          gpg --batch --yes --decrypt --passphrase="SIGNING_SECRET_PASSPHRASE" --output secret.gpg publish_key.gpg
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
