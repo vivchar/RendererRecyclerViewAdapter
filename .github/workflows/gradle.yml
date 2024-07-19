@@ -5,7 +5,11 @@ on:
     branches:
       - master
 env:
-  TOKEN: ${{ secrets.MVNTOKEN }}
+  SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
+  SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
+  SIGNING_KEYID: ${{ secrets.SIGNING_KEYID }}
+  SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+  SIGNING_SECRET_KEY_RING_CONTENT: ${{ secrets.SIGNING_SECRET_KEY_RING_CONTENT }}
 
 jobs:
   build:
@@ -21,8 +25,13 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
+      - name: Prepare environment
+        run: |
+          echo '$SIGNING_SECRET_KEY_RING_CONTENT' | base64 -d > publish_key.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" --output secret.gpg publish_key.gpg
+
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew publish -Ptoken="$TOKEN"
+      - name: Publish with gradle
+        run: ./gradlew publish -Psigning.secretKeyRingFile=secret.gpg -Psigning.keyId=$SIGNING_KEYID -Psigning.password=$SIGNING_PASSWORD -Ptoken="$TOKEN"

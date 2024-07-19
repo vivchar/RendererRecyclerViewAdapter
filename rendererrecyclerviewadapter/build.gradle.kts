@@ -2,6 +2,7 @@ plugins {
 	alias(libs.plugins.android.library)
 	alias(libs.plugins.android.kotlin)
 	id("maven-publish")
+	id("signing")
 }
 
 android {
@@ -32,6 +33,10 @@ android {
 dependencies {
 	implementation(libs.androidx.annotation)
 	implementation(libs.androidx.recyclerview)
+}
+
+signing {
+	sign(publishing.publications["release"])
 }
 
 /**
