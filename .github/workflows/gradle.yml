@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - maven
 env:
   SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
   SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
@@ -27,7 +28,7 @@ jobs:
 
       - name: Prepare environment
         run: |
-          echo '$SIGNING_SECRET_KEY_RING_CONTENT' | base64 -d > publish_key.gpg
+          echo '$SIGNING_SECRET_KEY_RING_CONTENT' | base64 -id > publish_key.gpg
           gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" --output secret.gpg publish_key.gpg
 
       - name: Grant execute permission for gradlew
