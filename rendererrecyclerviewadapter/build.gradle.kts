@@ -36,7 +36,7 @@ dependencies {
 }
 
 signing {
-	sign(publishing.publications["release"])
+	sign(publishing.publications)
 }
 
 /**
