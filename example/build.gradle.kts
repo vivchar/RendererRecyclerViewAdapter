@@ -12,8 +12,8 @@ android {
 		compileSdk = libs.versions.compileSdkVersion.get().toInt()
 		minSdk = libs.versions.minSdkVersion.get().toInt()
 		targetSdk = libs.versions.targetSdkVersion.get().toInt()
-		versionCode = libs.versions.versionCode.get().toInt()
-		versionName = libs.versions.versionName.get()
+		versionCode = 1
+		versionName = "1.0.0"
 
 		vectorDrawables {
 			useSupportLibrary = true
@@ -27,11 +27,11 @@ android {
 		}
 	}
 	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_18
-		targetCompatibility = JavaVersion.VERSION_18
+		sourceCompatibility = JavaVersion.VERSION_17
+		targetCompatibility = JavaVersion.VERSION_17
 	}
 	kotlinOptions {
-		jvmTarget = JavaVersion.VERSION_18.toString()
+		jvmTarget = JavaVersion.VERSION_17.toString()
 	}
 }
 
