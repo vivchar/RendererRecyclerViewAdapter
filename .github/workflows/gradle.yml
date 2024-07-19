@@ -5,7 +5,7 @@ on:
     branches:
       - master
 env:
-  TOKEN: ${{ github.MVNTOKEN }}
+  TOKEN: ${{ secrets.MVNTOKEN }}
 
 jobs:
   build:
@@ -25,4 +25,4 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew publish -Ptoken='$TOKEN'
+        run: ./gradlew publish -Ptoken="$TOKEN"
