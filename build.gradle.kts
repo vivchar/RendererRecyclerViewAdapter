@@ -13,7 +13,7 @@ plugins {
 //	repositories {
 //		sonatype {
 //			group = "com.github.vivchar" /* for filters by description */
-//			version = "3.0.3" /* for filters by description */
+//			version = "3.0.2" /* for filters by description */
 //			packageGroup = "com.github.vivchar"
 //			username = "Ud8EE3UN"
 //			password = findProperty("token") as String?

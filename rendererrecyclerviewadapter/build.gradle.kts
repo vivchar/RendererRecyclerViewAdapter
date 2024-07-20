@@ -51,7 +51,7 @@ publishing {
 
 			groupId = "com.github.vivchar"
 			artifactId = "RendererRecyclerViewAdapter"
-			version = "3.0.3"
+			version = "3.0.2"
 //			version = "3.0.2-SNAPSHOT"
 
 			pom {

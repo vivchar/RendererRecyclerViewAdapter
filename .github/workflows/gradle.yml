@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - maven
 
 env:
   SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
