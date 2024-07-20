@@ -1,6 +1,6 @@
 If you like this project you can show support by starring ⭐ this repository 🙏
 
-# Renderer RecyclerView Adapter [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat)](https://android-arsenal.com/api?level=21) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/vvivchar)
+# Renderer RecyclerView Adapter [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.vivchar/RendererRecyclerViewAdapter) [![API](https://img.shields.io/badge/API-21%2B-yellow.svg?style=flat)](https://android-arsenal.com/api?level=21) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/vvivchar)
 
 * [Now you do not need to implement adapters for RecyclerView](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-the-Renderer-Adapter);
 * [You can easily use several types of cells in a single list](https://github.com/vivchar/RendererRecyclerViewAdapter/wiki/Quick-start-with-Simple-Items);
