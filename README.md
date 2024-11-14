@@ -112,6 +112,10 @@ Send me a pull request with modified README.md to get a shoutout!
 * If you have a feature request, please open [Issue](https://github.com/vivchar/RendererRecyclerViewAdapter/labels/feature%20request).
 * If you want to contribute, please submit [Pull request](https://github.com/vivchar/RendererRecyclerViewAdapter/pulls).
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=vivchar/RendererRecyclerViewAdapter&type=Date)](https://star-history.com/#vivchar/RendererRecyclerViewAdapter&Date)
+
 ## License
 
     Copyright 2017 Vitaly Vivchar
