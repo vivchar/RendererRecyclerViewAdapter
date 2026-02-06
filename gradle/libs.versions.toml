@@ -29,6 +29,10 @@ plugin-library = "8.5.1"
 plugin-kotlin = "1.9.0"
 plugin-nexus = "2.0.0"
 
+lifecycle = "2.8.3"
+navigation = "2.7.7"
+coroutines = "1.8.1"
+
 kotlinVersion = "1.9.24"
 
 [libraries]
@@ -55,6 +59,14 @@ androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "s
 glide-core = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
 glide-transformations = { group = "jp.wasabeef", name = "glide-transformations", version.ref = "glide-transformations" }
+
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-coroutines-rx3 = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-rx3", version.ref = "coroutines" }
 
 [plugins]
 android-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "plugin-kotlin" }

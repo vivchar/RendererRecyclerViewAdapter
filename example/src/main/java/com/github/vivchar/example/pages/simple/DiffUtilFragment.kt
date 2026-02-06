@@ -4,50 +4,57 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.github.vivchar.example.BaseScreenFragment
 import com.github.vivchar.example.R
+import com.github.vivchar.example.base.BaseFragment
+import com.github.vivchar.example.databinding.FragmentListBinding
 import com.github.vivchar.example.widgets.ItemOffsetDecoration
 import com.github.vivchar.example.widgets.MyAdapter
-import com.github.vivchar.rendererrecyclerviewadapter.*
+import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback
+import com.github.vivchar.rendererrecyclerviewadapter.ViewFinder
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel
+import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer
+import kotlinx.coroutines.launch
 
-/**
- * Created by Vivchar Vitaly on 28.12.17.
- */
-class DiffUtilFragment : BaseScreenFragment() {
-	private val yourDataProvider = YourDataProvider()
-	private var adapter: RendererRecyclerViewAdapter? = null
+class DiffUtilFragment : BaseFragment<FragmentListBinding>() {
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+	private val viewModel: DiffUtilViewModel by viewModels()
+	private val adapter = MyAdapter()
 
-		adapter = MyAdapter()
-		adapter?.setDiffCallback(DiffCallback())
-//		adapter.enableDiffUtil(); /* Or just call it to enable DiffUtil with DefaultDiffCallback */
+	override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
+		FragmentListBinding.inflate(inflater, container, false)
 
-		adapter?.registerRenderer(
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
+		adapter.setDiffCallback(DiffCallback())
+		adapter.registerRenderer(
 			ViewRenderer<DiffViewModel, ViewFinder>(
 				R.layout.item_simple_square,
 				DiffViewModel::class.java
 			) { model, finder, _ ->
 				finder
 					.setText(R.id.text, model.text)
-					.setOnClickListener(R.id.text) { reloadItems(model) }
+					.setOnClickListener(R.id.text) { viewModel.onItemClicked(model) }
 			}
 		)
 
-		adapter?.setItems(yourDataProvider.diffItems)
+		binding.recyclerView.adapter = adapter
+		binding.recyclerView.layoutManager = GridLayoutManager(context, 4)
+		binding.recyclerView.addItemDecoration(ItemOffsetDecoration(10))
 
-		val view = inflater.inflate(R.layout.fragment_list, container, false)
-		val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-		recyclerView.adapter = adapter
-		recyclerView.layoutManager = GridLayoutManager(context, 4)
-		recyclerView.addItemDecoration(ItemOffsetDecoration(10))
-
-		return view
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				viewModel.state.collect { state ->
+					adapter.setItems(state.items)
+				}
+			}
+		}
 	}
-
-	private fun reloadItems(model: DiffViewModel) = adapter!!.setItems(yourDataProvider.getUpdatedDiffItems(model))
 
 	private inner class DiffCallback : DefaultDiffCallback<DiffViewModel>() {
 		override fun areItemsTheSame(oldItem: DiffViewModel, newItem: DiffViewModel): Boolean {

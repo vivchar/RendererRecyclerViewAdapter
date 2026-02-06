@@ -159,7 +159,12 @@ public class CompositeViewRenderer<M extends CompositeViewModel, VF extends View
     @Nullable
     @Override
     public ViewState createViewState() {
-        return super.createViewState();
+        return mViewStateProvider != null ? mViewStateProvider.createViewState() : null;
+    }
+
+    @Override
+    public int createViewStateID(@NonNull final M model) {
+        return mViewStateProvider != null ? mViewStateProvider.createViewStateID(model) : ViewHolder.UNDEFINED;
     }
 
     @NonNull

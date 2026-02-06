@@ -5,23 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
-import com.github.vivchar.example.BaseScreenFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.github.vivchar.example.R
+import com.github.vivchar.example.base.BaseFragment
+import com.github.vivchar.example.databinding.FragmentListBinding
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration
 import com.github.vivchar.example.widgets.MyAdapter
 import com.github.vivchar.rendererrecyclerviewadapter.ViewFinder
 import com.github.vivchar.rendererrecyclerviewadapter.ViewModel
 import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer
+import kotlinx.coroutines.launch
 
-/**
- * Created by Vivchar Vitaly on 28.12.17.
- */
-class ViewRendererFragment : BaseScreenFragment() {
-	private val yourDataProvider = YourDataProvider()
+class ViewRendererFragment : BaseFragment<FragmentListBinding>() {
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-		val adapter = MyAdapter()
+	private val viewModel: ViewRendererViewModel by viewModels()
+	private val adapter = MyAdapter()
+
+	override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
+		FragmentListBinding.inflate(inflater, container, false)
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
 		adapter.registerRenderer(
 			ViewRenderer<RectViewModel, ViewFinder>(
 				R.layout.item_simple,
@@ -29,17 +37,22 @@ class ViewRendererFragment : BaseScreenFragment() {
 			) { model, finder, _ ->
 				finder
 					.setText(R.id.text, model.text)
-					.setOnClickListener(R.id.text) { Toast.makeText(context, "Text Clicked " + model.text, Toast.LENGTH_SHORT).show() }
+					.setOnClickListener(R.id.text) {
+						Toast.makeText(context, "Text Clicked " + model.text, Toast.LENGTH_SHORT).show()
+					}
 			}
 		)
-		adapter.setItems(yourDataProvider.squareItems)
 
-		val view = inflater.inflate(R.layout.fragment_list, container, false)
-		val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-		recyclerView.adapter = adapter
-		recyclerView.addItemDecoration(BetweenSpacesItemDecoration(10, 10))
+		binding.recyclerView.adapter = adapter
+		binding.recyclerView.addItemDecoration(BetweenSpacesItemDecoration(10, 10))
 
-		return view
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				viewModel.state.collect { state ->
+					adapter.setItems(state.items)
+				}
+			}
+		}
 	}
 
 	data class RectViewModel(val id: Int, val text: String) : ViewModel

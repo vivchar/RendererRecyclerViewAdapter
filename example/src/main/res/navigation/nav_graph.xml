@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/nav_graph"
+	app:startDestination="@id/homeFragment">
+
+	<fragment
+		android:id="@+id/homeFragment"
+		android:name="com.github.vivchar.example.pages.home.HomeFragment"
+		android:label="@string/app_name">
+		<action android:id="@+id/action_home_to_viewRenderer" app:destination="@id/viewRendererFragment" />
+		<action android:id="@+id/action_home_to_compositeViewRenderer" app:destination="@id/compositeViewRendererFragment" />
+		<action android:id="@+id/action_home_to_viewState" app:destination="@id/viewStateFragment" />
+		<action android:id="@+id/action_home_to_diffUtil" app:destination="@id/diffUtilFragment" />
+		<action android:id="@+id/action_home_to_payload" app:destination="@id/payloadFragment" />
+		<action android:id="@+id/action_home_to_inputs" app:destination="@id/inputsFragment" />
+		<action android:id="@+id/action_home_to_loadMore" app:destination="@id/loadMoreFragment" />
+		<action android:id="@+id/action_home_to_github" app:destination="@id/githubFragment" />
+	</fragment>
+
+	<fragment
+		android:id="@+id/viewRendererFragment"
+		android:name="com.github.vivchar.example.pages.simple.ViewRendererFragment"
+		android:label="@string/view_renderer" />
+
+	<fragment
+		android:id="@+id/compositeViewRendererFragment"
+		android:name="com.github.vivchar.example.pages.simple.CompositeViewRendererFragment"
+		android:label="@string/composite_view_renderer" />
+
+	<fragment
+		android:id="@+id/viewStateFragment"
+		android:name="com.github.vivchar.example.pages.simple.ViewStateFragment"
+		android:label="@string/view_state" />
+
+	<fragment
+		android:id="@+id/diffUtilFragment"
+		android:name="com.github.vivchar.example.pages.simple.DiffUtilFragment"
+		android:label="@string/diff_util" />
+
+	<fragment
+		android:id="@+id/payloadFragment"
+		android:name="com.github.vivchar.example.pages.simple.PayloadFragment"
+		android:label="@string/payload" />
+
+	<fragment
+		android:id="@+id/inputsFragment"
+		android:name="com.github.vivchar.example.pages.simple.InputsFragment"
+		android:label="@string/inputs" />
+
+	<fragment
+		android:id="@+id/loadMoreFragment"
+		android:name="com.github.vivchar.example.pages.simple.LoadMoreFragment"
+		android:label="@string/load_more" />
+
+	<fragment
+		android:id="@+id/githubFragment"
+		android:name="com.github.vivchar.example.pages.github.GithubFragment"
+		android:label="@string/main" />
+
+</navigation>

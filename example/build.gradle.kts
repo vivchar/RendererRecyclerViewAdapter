@@ -33,6 +33,9 @@ android {
 	kotlinOptions {
 		jvmTarget = JavaVersion.VERSION_17.toString()
 	}
+	buildFeatures {
+		viewBinding = true
+	}
 }
 
 dependencies {
@@ -46,17 +49,19 @@ dependencies {
 	implementation(libs.androidx.swiperefreshlayout)
 	implementation(libs.androidx.coordinatorlayout)
 
+	implementation(libs.androidx.lifecycle.viewmodel)
+	implementation(libs.androidx.lifecycle.runtime)
+	implementation(libs.androidx.navigation.fragment)
+	implementation(libs.androidx.navigation.ui)
+
+	implementation(libs.kotlinx.coroutines.core)
+	implementation(libs.kotlinx.coroutines.android)
+	implementation(libs.kotlinx.coroutines.rx3)
+
 	implementation(libs.glide.core)
 	annotationProcessor(libs.glide.compiler)
 	implementation(libs.glide.transformations)
 
-	implementation(libs.rx.java)
-	implementation(libs.rx.kotlin)
-	implementation(libs.rx.android)
-
-	implementation(libs.kotlin.stdlib.jdk7)
-
-//	implementation(projects.network)
 	implementation(project(":network"))
 	implementation(project(":rendererrecyclerviewadapter"))
 }
