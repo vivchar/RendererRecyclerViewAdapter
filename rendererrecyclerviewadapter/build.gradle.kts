@@ -1,8 +1,10 @@
+import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
 	alias(libs.plugins.android.library)
 	alias(libs.plugins.android.kotlin)
-	id("maven-publish")
-	id("signing")
+	alias(libs.plugins.maven.publish)
 }
 
 android {
@@ -33,74 +35,35 @@ dependencies {
 	implementation(libs.androidx.recyclerview)
 }
 
-signing {
-	sign(publishing.publications)
-}
+mavenPublishing {
+	configure(AndroidSingleVariantLibrary(variant = "release"))
+	publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+	signAllPublications()
 
-/**
- * https://issues.sonatype.org/browse/OSSRH-54875
- * https://issues.sonatype.org/browse/OSSRH-67154
- * Move local.properties to gradle.properties if you have a problems with SIGNING
- */
-publishing {
-	publications {
-		create<MavenPublication>("release") {
-			afterEvaluate {
-				from(components["release"])
-			}
+	coordinates("com.github.vivchar", "RendererRecyclerViewAdapter", "3.0.3")
 
-			groupId = "com.github.vivchar"
-			artifactId = "RendererRecyclerViewAdapter"
-			version = "3.0.3"
-//			version = "3.0.2-SNAPSHOT"
+	pom {
+		name.set("RendererRecyclerViewAdapter")
+		description.set("A single adapter with multiple view types for the whole project")
+		url.set("https://github.com/vivchar/RendererRecyclerViewAdapter")
 
-			pom {
-				packaging = "aar"
-				name.set("RendererRecyclerViewAdapter")
-				description.set("A single adapter with multiple view types for the whole project")
-				url.set("https://github.com/vivchar/RendererRecyclerViewAdapter")
-
-				licenses {
-					license {
-						name.set("The Apache License, Version 2.0")
-						url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-					}
-				}
-				developers {
-					developer {
-						id.set("vivchar")
-						name.set("Vitaly Vivchar")
-						email.set("vivchar.vitaliy@gmail.com")
-					}
-				}
-				scm {
-					connection.set("scm:https://github.com/vivchar/RendererRecyclerViewAdapter.git")
-					developerConnection.set("scm:git@github.com:vivchar/RendererRecyclerViewAdapter.git")
-					url.set("https://github.com/vivchar/RendererRecyclerViewAdapter")
-				}
+		licenses {
+			license {
+				name.set("The Apache License, Version 2.0")
+				url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
 			}
 		}
-	}
-
-	/**
-	 * ./gradlew publish -Ptoken='<token>'
-	 *
-	 * Check Snapshots builds here:
-	 * https://oss.sonatype.org/content/repositories/snapshots/com/github/vivchar/RendererRecyclerViewAdapter/
-	 *
-	 * Check Release builds here:
-	 * https://oss.sonatype.org/#stagingRepositories
-	 * */
-	repositories {
-		maven {
-			val releasesUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-			val snapshotsUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-			url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsUrl else releasesUrl)
-
-			credentials {
-				username = System.getenv("SONATYPE_USER")
-				password = findProperty("token") as String?
+		developers {
+			developer {
+				id.set("vivchar")
+				name.set("Vitaly Vivchar")
+				email.set("vivchar.vitaliy@gmail.com")
 			}
+		}
+		scm {
+			connection.set("scm:https://github.com/vivchar/RendererRecyclerViewAdapter.git")
+			developerConnection.set("scm:git@github.com:vivchar/RendererRecyclerViewAdapter.git")
+			url.set("https://github.com/vivchar/RendererRecyclerViewAdapter")
 		}
 	}
 }

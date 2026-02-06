@@ -6,10 +6,10 @@ on:
       - master
 
 env:
-  SONATYPE_USER: ${{ vars.SONATYPE_USER }}
-  SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
-  SIGNING_KEYID: ${{ secrets.SIGNING_KEYID }}
-  SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+  ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ vars.SONATYPE_USER }}
+  ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_TOKEN }}
+  ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEYID }}
+  ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
   SIGNING_SECRET_KEY_RING_CONTENT: ${{ secrets.SIGNING_SECRET_KEY_RING_CONTENT }}
   SIGNING_SECRET_PASSPHRASE: ${{ secrets.SIGNING_SECRET_PASSPHRASE }}
 
@@ -27,7 +27,7 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
-      - name: Prepare environment # https://habr.com/ru/articles/490604/
+      - name: Prepare environment
         run: |
           echo "$SIGNING_SECRET_KEY_RING_CONTENT" | base64 -d > publish_key.gpg
           gpg --batch --yes --decrypt --passphrase="$SIGNING_SECRET_PASSPHRASE" --output secret.gpg publish_key.gpg
@@ -36,4 +36,4 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Publish with Gradle
-        run: ./gradlew publish -Psigning.secretKeyRingFile=../secret.gpg -Psigning.keyId=$SIGNING_KEYID -Psigning.password=$SIGNING_PASSWORD -Ptoken="$SONATYPE_TOKEN"
+        run: ./gradlew publishAndReleaseToMavenCentral -Psigning.secretKeyRingFile=../secret.gpg -Psigning.keyId=${{ secrets.SIGNING_KEYID }} -Psigning.password=${{ secrets.SIGNING_PASSWORD }}

@@ -28,6 +28,7 @@ plugin-application = "8.5.1"
 plugin-library = "8.5.1"
 plugin-kotlin = "1.9.0"
 plugin-nexus = "2.0.0"
+plugin-maven-publish = "0.36.0"
 
 lifecycle = "2.8.3"
 navigation = "2.7.7"
@@ -73,3 +74,4 @@ android-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "plugin-ko
 android-application = { id = "com.android.application", version.ref = "plugin-application" }
 android-library = { id = "com.android.library", version.ref = "plugin-library" }
 nexus-plugin = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "plugin-nexus" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "plugin-maven-publish" }
