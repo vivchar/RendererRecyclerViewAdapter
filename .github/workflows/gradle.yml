@@ -6,6 +6,7 @@ on:
       - master
 
 env:
+  SONATYPE_USER: ${{ vars.SONATYPE_USER }}
   SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
   SIGNING_KEYID: ${{ secrets.SIGNING_KEYID }}
   SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}

@@ -98,7 +98,7 @@ publishing {
 			url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsUrl else releasesUrl)
 
 			credentials {
-				username = "Ud8EE3UN"
+				username = System.getenv("SONATYPE_USER")
 				password = findProperty("token") as String?
 			}
 		}
