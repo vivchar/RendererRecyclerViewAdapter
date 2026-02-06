@@ -1,5 +1,4 @@
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
-import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
 	alias(libs.plugins.android.library)
@@ -37,7 +36,7 @@ dependencies {
 
 mavenPublishing {
 	configure(AndroidSingleVariantLibrary(variant = "release"))
-	publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+	publishToMavenCentral()
 	signAllPublications()
 
 	coordinates("com.github.vivchar", "RendererRecyclerViewAdapter", "3.0.3")
