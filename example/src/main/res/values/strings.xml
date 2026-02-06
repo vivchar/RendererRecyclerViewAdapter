@@ -14,4 +14,5 @@
 	<string name = "main">Main</string>
 	<string name = "view_binder">View Binder</string>
 	<string name = "payload">Payload</string>
+	<string name="home">Home</string>
 </resources>

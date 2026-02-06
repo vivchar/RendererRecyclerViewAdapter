@@ -4,56 +4,74 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.MenuProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.github.vivchar.example.BaseScreenFragment
 import com.github.vivchar.example.R
+import com.github.vivchar.example.base.BaseFragment
+import com.github.vivchar.example.databinding.FragmentGithubBinding
 import com.github.vivchar.example.pages.github.items.*
 import com.github.vivchar.example.widgets.*
-import com.github.vivchar.network.MainManager.Companion.instance
 import com.github.vivchar.rendererrecyclerviewadapter.*
 import com.google.android.material.snackbar.Snackbar
-import java.util.*
+import kotlinx.coroutines.launch
 
-/**
- * Created by Vivchar Vitaly on 12/28/17.
- */
-class GithubFragment : BaseScreenFragment() {
-	private var recyclerViewAdapter = MyAdapter()
-	private var swipeToRefresh: SwipeRefreshLayout? = null
-	private var githubPresenter: GithubPresenter? = null
-	private var instanceState: Bundle? = null
+class GithubFragment : BaseFragment<FragmentGithubBinding>() {
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-		githubPresenter = GithubPresenter(
-			router,
-			menuController,
-			instance.stargazersManager,
-			instance.forksManager,
-			mainPresenterView
-		)
+	private val viewModel: GithubViewModel by viewModels()
+	private val recyclerViewAdapter = MyAdapter()
 
-		val categoryRenderer = ViewRenderer<CategoryModel, ViewFinder>(
-			R.layout.item_category,
-			CategoryModel::class.java
-		) { model, finder, _ ->
-			finder
-				.find(R.id.title) { view: TextView -> view.text = model.name }
-				.setOnClickListener(R.id.viewAll) { githubPresenter?.onCategoryClicked(model) }
-		}
+	override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
+		FragmentGithubBinding.inflate(inflater, container, false)
 
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		setupMenu()
+		setupRecyclerView()
+		setupSwipeRefresh()
+		observeState()
+		observeEvents()
+	}
+
+	private fun setupMenu() {
+		requireActivity().addMenuProvider(object : MenuProvider {
+			override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+				menuInflater.inflate(R.menu.github, menu)
+			}
+
+			override fun onPrepareMenu(menu: Menu) {
+				menu.findItem(R.id.done)?.isVisible = viewModel.showDoneButton
+			}
+
+			override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+				return when (menuItem.itemId) {
+					R.id.done -> {
+						viewModel.onDoneClicked()
+						true
+					}
+					else -> false
+				}
+			}
+		}, viewLifecycleOwner, Lifecycle.State.RESUMED)
+	}
+
+	private fun setupRecyclerView() {
 		val createListRenderer = RecyclerViewRenderer()
 		createListRenderer.registerRenderer(
 			ViewRenderer<ForkModel, CustomViewFinder>(
-				R.layout.item_fork,
-				ForkModel::class.java
+				R.layout.item_fork, ForkModel::class.java
 			) { (name, avatarUrl), finder, _ ->
 				finder.setUrlCircled(R.id.fork_avatar, avatarUrl)
 				finder.setText(R.id.fork_name, name)
@@ -65,124 +83,115 @@ class GithubFragment : BaseScreenFragment() {
 		recyclerViewAdapter.registerRenderer(LoadMoreViewBinder(R.layout.item_load_more))
 		recyclerViewAdapter.registerRenderer(createStargazerRenderer(R.layout.item_user_full_width))
 		recyclerViewAdapter.registerRenderer(createListRenderer)
-		recyclerViewAdapter.registerRenderer(categoryRenderer)
+		recyclerViewAdapter.registerRenderer(
+			ViewRenderer<CategoryModel, ViewFinder>(
+				R.layout.item_category, CategoryModel::class.java
+			) { model, finder, _ ->
+				finder
+					.find(R.id.title) { view: TextView -> view.text = model.name }
+					.setOnClickListener(R.id.viewAll) { viewModel.onCategoryClicked(model) }
+			}
+		)
 
 		val layoutManager = GridLayoutManager(context, MAX_SPAN_COUNT)
-		layoutManager.spanSizeLookup = object : SpanSizeLookup() {
+		layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
 			override fun getSpanSize(position: Int): Int {
 				return when (recyclerViewAdapter.getType(position)) {
-					ForkModel::class.java,
-					StargazerModel::class.java -> 1
+					ForkModel::class.java, StargazerModel::class.java -> 1
 					else -> 3
 				}
 			}
 		}
 
-		val inflate = inflater.inflate(R.layout.fragment_github, container, false)
-		swipeToRefresh = inflate.findViewById(R.id.refresh)
-		swipeToRefresh?.setOnRefreshListener { githubPresenter?.onRefresh() }
-		val recyclerView = inflate.findViewById<RecyclerView>(R.id.recycler_view)
-		recyclerView.layoutManager = layoutManager
-		recyclerView.adapter = recyclerViewAdapter
-		recyclerView.addItemDecoration(MyItemDecoration())
-		recyclerView.addOnScrollListener(object : EndlessScrollListener() {
+		binding.recyclerView.layoutManager = layoutManager
+		binding.recyclerView.adapter = recyclerViewAdapter
+		binding.recyclerView.addItemDecoration(MyItemDecoration())
+		binding.recyclerView.addOnScrollListener(object : EndlessScrollListener() {
 			override fun onLoadMore(page: Int, totalItemsCount: Int) {
-				githubPresenter?.onLoadMore()
+				viewModel.onLoadMore()
 			}
 		})
-		return inflate
+	}
+
+	private fun setupSwipeRefresh() {
+		binding.refresh.setOnRefreshListener { viewModel.onRefresh() }
+	}
+
+	private fun observeState() {
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				viewModel.state.collect { state ->
+					binding.refresh.isRefreshing = state.isLoading
+					if (state.showLoadMore) {
+						recyclerViewAdapter.showLoadMore()
+					}
+					recyclerViewAdapter.setItems(state.items)
+					requireActivity().invalidateOptionsMenu()
+				}
+			}
+		}
+	}
+
+	private fun observeEvents() {
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				viewModel.events.collect { event ->
+					when (event) {
+						is GithubEvent.ShowSnackbar -> {
+							val view = requireActivity().window.decorView.findViewById<View>(android.R.id.content)
+							val snackbar = Snackbar.make(view, event.message, Snackbar.LENGTH_LONG)
+							event.url?.let { url ->
+								snackbar.setAction(R.string.view) {
+									startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+								}
+							}
+							snackbar.show()
+						}
+						is GithubEvent.ShowSelectedUsers -> showSelectedUsersDialog(event.users)
+						is GithubEvent.ClearSelections -> {
+							recyclerViewAdapter.clearViewStates()
+							recyclerViewAdapter.notifyDataSetChanged()
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private fun createStargazerRenderer(layout: Int) = StargazerViewRenderer(layout) { model, isChecked ->
+		viewModel.onStargazerClicked(model, isChecked)
+	}
+
+	private fun showSelectedUsersDialog(list: ArrayList<com.github.vivchar.rendererrecyclerviewadapter.ViewModel>) {
+		val adapter: RendererRecyclerViewAdapter = MyAdapter()
+		adapter.registerRenderer(
+			ViewRenderer<StargazerModel, CustomViewFinder>(
+				R.layout.item_user_selected, StargazerModel::class.java
+			) { (_, name, avatarUrl), finder, _ ->
+				finder.setText(R.id.name, name).setUrl(R.id.avatar, avatarUrl)
+			}
+		)
+		val recyclerView = LayoutInflater.from(context).inflate(R.layout.selected_items_dialog, null) as RecyclerView
+		recyclerView.layoutManager = LinearLayoutManager(context)
+		recyclerView.adapter = adapter
+		adapter.setItems(list)
+		AlertDialog.Builder(requireContext())
+			.setView(recyclerView)
+			.setTitle(R.string.selected_users)
+			.setPositiveButton(R.string.ok, null)
+			.show()
 	}
 
 	override fun onViewStateRestored(savedInstanceState: Bundle?) {
 		super.onViewStateRestored(savedInstanceState)
-		instanceState = savedInstanceState
-	}
-
-	override fun onResume() {
-		super.onResume()
-		recyclerViewAdapter.onRestoreInstanceState(instanceState)
-		instanceState = null
+		savedInstanceState?.let {
+			recyclerViewAdapter.onRestoreInstanceState(it)
+		}
 	}
 
 	override fun onSaveInstanceState(outState: Bundle) {
 		super.onSaveInstanceState(outState)
 		recyclerViewAdapter.onSaveInstanceState(outState)
-	}
-
-	override fun onStart() {
-		super.onStart()
-		githubPresenter?.viewShown()
-	}
-
-	override fun onStop() {
-		super.onStop()
-		githubPresenter?.viewHidden()
-	}
-
-	private fun createStargazerRenderer(layout: Int) = StargazerViewRenderer(layout) { model, isChecked ->
-		githubPresenter?.onStargazerClicked(model, isChecked)
-	}
-
-	private fun createUserRenderer(): ViewRenderer<*, *> {
-		/* vivchar: ideally we should use other model */
-		return ViewRenderer<StargazerModel, CustomViewFinder>(
-			R.layout.item_user_selected,
-			StargazerModel::class.java
-		) { (_, name, avatarUrl), finder, _ ->
-			finder
-				.setText(R.id.name, name)
-				.setUrl(R.id.avatar, avatarUrl)
-		}
-	}
-
-	private val mainPresenterView: GithubPresenter.View = object : GithubPresenter.View {
-		override fun updateList(list: List<ViewModel>) {
-			recyclerViewAdapter.setItems(list)
-		}
-
-		override fun showProgressView() {
-			swipeToRefresh?.isRefreshing = true
-		}
-
-		override fun hideProgressView() {
-			swipeToRefresh?.isRefreshing = false
-		}
-
-		override fun showMessageView(message: String, url: String) {
-			val view = activity!!.window.decorView.findViewById<View>(android.R.id.content)
-			Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-				.setAction(R.string.view) { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
-				.show()
-		}
-
-		override fun showMessageView(message: String) {
-			val view = activity!!.window.decorView.findViewById<View>(android.R.id.content)
-			Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
-		}
-
-		override fun showSelectedUsers(list: ArrayList<ViewModel>) {
-			val adapter: RendererRecyclerViewAdapter = MyAdapter()
-			adapter.registerRenderer(createUserRenderer())
-			val inflater = LayoutInflater.from(context)
-			val recyclerView = inflater.inflate(R.layout.selected_items_dialog, null) as RecyclerView
-			recyclerView.layoutManager = LinearLayoutManager(context)
-			recyclerView.adapter = adapter
-			adapter.setItems(list)
-			val builder = AlertDialog.Builder(context!!)
-			builder.setView(recyclerView)
-			builder.setTitle(R.string.selected_users)
-			builder.setPositiveButton(R.string.ok, null)
-			builder.show()
-		}
-
-		override fun clearSelections() {
-			recyclerViewAdapter.clearViewStates()
-			recyclerViewAdapter.notifyDataSetChanged()
-		}
-
-		override fun showLoadMoreView() {
-			recyclerViewAdapter.showLoadMore()
-		}
 	}
 
 	companion object {

@@ -1,70 +1,75 @@
 package com.github.vivchar.example.pages.simple
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
-import androidx.recyclerview.widget.RecyclerView
-import com.github.vivchar.example.BaseScreenFragment
 import com.github.vivchar.example.R
+import com.github.vivchar.example.base.BaseFragment
+import com.github.vivchar.example.databinding.FragmentListBinding
 import com.github.vivchar.example.widgets.EndlessScrollListener
 import com.github.vivchar.example.widgets.ItemOffsetDecoration
 import com.github.vivchar.example.widgets.MyAdapter
-import com.github.vivchar.rendererrecyclerviewadapter.*
+import com.github.vivchar.rendererrecyclerviewadapter.LoadMoreViewBinder
+import com.github.vivchar.rendererrecyclerviewadapter.ViewFinder
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel
+import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer
+import kotlinx.coroutines.launch
 
-/**
- * Created by Vivchar Vitaly on 12/29/17.
- */
-class LoadMoreFragment : BaseScreenFragment() {
-	private val yourDataProvider = YourDataProvider()
-	private var adapter: RendererRecyclerViewAdapter? = null
-	private var layoutManager: GridLayoutManager? = null
+class LoadMoreFragment : BaseFragment<FragmentListBinding>() {
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+	private val viewModel: LoadMoreViewModelVM by viewModels()
+	private val adapter = MyAdapter()
 
-		adapter = MyAdapter()
-		adapter?.enableDiffUtil()
+	override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
+		FragmentListBinding.inflate(inflater, container, false)
 
-//		adapter?.setLoadMoreModel(YourLoadMoreModel()); /* you can change the LoadMoreModel if needed */
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
 
-		adapter?.registerRenderer(LoadMoreViewBinder(R.layout.item_load_more))
-
-		adapter?.registerRenderer(
+		adapter.enableDiffUtil()
+		adapter.registerRenderer(LoadMoreViewBinder(R.layout.item_load_more))
+		adapter.registerRenderer(
 			ViewRenderer<SimpleViewModel, ViewFinder>(
 				R.layout.item_simple_square, SimpleViewModel::class.java
 			) { model, finder, _ -> finder.setText(R.id.text, model.text) }
 		)
-//		adapter.registerRenderer(...);
-//		adapter.registerRenderer(...);
 
-		adapter?.setItems(yourDataProvider.loadMoreItems)
-		layoutManager = GridLayoutManager(context, COLUMNS_COUNT)
-		layoutManager?.spanSizeLookup = object : SpanSizeLookup() {
+		val layoutManager = GridLayoutManager(context, COLUMNS_COUNT)
+		layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
 			override fun getSpanSize(position: Int): Int {
-				return when (adapter?.getType(position)) {
+				return when (adapter.getType(position)) {
 					SimpleViewModel::class.java -> 1
 					else -> COLUMNS_COUNT
 				}
 			}
 		}
 
-		val view = inflater.inflate(R.layout.fragment_list, container, false)
-		val recyclerView = view.findViewById<View>(R.id.recycler_view) as RecyclerView
-		recyclerView.adapter = adapter
-		recyclerView.layoutManager = layoutManager
-		recyclerView.addItemDecoration(ItemOffsetDecoration(10))
-		recyclerView.addOnScrollListener(object : EndlessScrollListener() {
+		binding.recyclerView.adapter = adapter
+		binding.recyclerView.layoutManager = layoutManager
+		binding.recyclerView.addItemDecoration(ItemOffsetDecoration(10))
+		binding.recyclerView.addOnScrollListener(object : EndlessScrollListener() {
 			override fun onLoadMore(page: Int, totalItemsCount: Int) {
-				Log.d("#####", "onLoadMore $page")
-				adapter?.showLoadMore()
-//				adapter?.hideLoadMore(); /* if you need force hide progress or call setItems() */
-				yourDataProvider.getLoadMoreItems { activity?.runOnUiThread { adapter?.setItems(it) } }
+				viewModel.onLoadMore()
 			}
 		})
-		return view
+
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				viewModel.state.collect { state ->
+					if (state.showLoadMore) {
+						adapter.showLoadMore()
+					} else {
+						adapter.setItems(state.items)
+					}
+				}
+			}
+		}
 	}
 
 	data class SimpleViewModel(val text: String) : ViewModel

@@ -1,49 +1,32 @@
 package com.github.vivchar.example
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import com.github.vivchar.example.databinding.MainBinding
 
 class MainActivity : AppCompatActivity() {
-	var router: UIRouter? = null
-	var menuController: OptionsMenuController? = null
-	private var presenter: MainPresenter? = null
+
+	private lateinit var binding: MainBinding
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		router = UIRouter(this)
-		menuController = OptionsMenuController(this)
-		setContentView(R.layout.main)
-		val toolbar = findViewById<Toolbar>(R.id.toolbar)
-		setSupportActionBar(toolbar)
-		val firstInit = savedInstanceState == null
-		presenter = MainPresenter(menuController!!, router!!, firstInit)
+		binding = MainBinding.inflate(layoutInflater)
+		setContentView(binding.root)
+		setSupportActionBar(binding.toolbar)
+
+		val navHostFragment = supportFragmentManager
+			.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+		val navController = navHostFragment.navController
+		val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment))
+		setupActionBarWithNavController(navController, appBarConfiguration)
 	}
 
-	override fun onStart() {
-		super.onStart()
-		presenter?.viewShown()
-	}
-
-	override fun onStop() {
-		super.onStop()
-		presenter?.viewHidden()
-	}
-
-	override fun onCreateOptionsMenu(menu: Menu): Boolean {
-		menuController?.onCreateOptionsMenu(menu, menuInflater)
-		return super.onCreateOptionsMenu(menu)
-	}
-
-	override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-		menuController?.onPrepareOptionsMenu(menu, menuInflater)
-		return super.onPrepareOptionsMenu(menu)
-	}
-
-	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		menuController?.onOptionsItemSelected(item)
-		return super.onOptionsItemSelected(item)
+	override fun onSupportNavigateUp(): Boolean {
+		val navHostFragment = supportFragmentManager
+			.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+		return navHostFragment.navController.navigateUp() || super.onSupportNavigateUp()
 	}
 }

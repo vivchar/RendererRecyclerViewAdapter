@@ -5,20 +5,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.recyclerview.widget.RecyclerView
-import com.github.vivchar.example.BaseScreenFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.github.vivchar.example.R
+import com.github.vivchar.example.base.BaseFragment
+import com.github.vivchar.example.databinding.FragmentListBinding
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration
 import com.github.vivchar.example.widgets.MyAdapter
 import com.github.vivchar.rendererrecyclerviewadapter.*
+import kotlinx.coroutines.launch
 
-class InputsFragment : BaseScreenFragment() {
+class InputsFragment : BaseFragment<FragmentListBinding>() {
 
-	private val yourDataProvider = YourDataProvider()
+	private val viewModel: InputsViewModelVM by viewModels()
+	private val adapter = MyAdapter()
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+	override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
+		FragmentListBinding.inflate(inflater, container, false)
 
-		val adapter = MyAdapter()
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
 		adapter.registerRenderer(
 			ViewRenderer(
 				R.layout.item_input,
@@ -27,21 +36,23 @@ class InputsFragment : BaseScreenFragment() {
 				viewStateProvider
 			)
 		)
-		adapter.setItems(yourDataProvider.inputsModels)
 
-		val view = inflater.inflate(R.layout.fragment_list, container, false)
-		val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-		recyclerView.adapter = adapter
-		recyclerView.addItemDecoration(BetweenSpacesItemDecoration(10, 10))
+		binding.recyclerView.adapter = adapter
+		binding.recyclerView.addItemDecoration(BetweenSpacesItemDecoration(10, 10))
 
-		return view
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				viewModel.state.collect { state ->
+					adapter.setItems(state.items)
+				}
+			}
+		}
 	}
 
 	private val viewStateProvider: ViewStateProvider<InputViewModel, ViewHolder<ViewFinder>>
 		get() = object : ViewStateProvider<InputViewModel, ViewHolder<ViewFinder>> {
 			override fun createViewState(): ViewState<*> {
 				return object : ViewState<ViewHolder<ViewFinder>> {
-					/* here will be saved a value for each item by createViewStateID() */
 					private var savedValue: String? = null
 
 					override fun clear(holder: ViewHolder<ViewFinder>) {

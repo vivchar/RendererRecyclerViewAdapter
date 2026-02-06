@@ -5,39 +5,46 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.github.vivchar.example.BaseScreenFragment
 import com.github.vivchar.example.R
+import com.github.vivchar.example.base.BaseFragment
+import com.github.vivchar.example.databinding.FragmentListBinding
 import com.github.vivchar.example.widgets.ItemOffsetDecoration
 import com.github.vivchar.example.widgets.MyAdapter
-import com.github.vivchar.rendererrecyclerviewadapter.*
+import com.github.vivchar.rendererrecyclerviewadapter.DefaultDiffCallback
+import com.github.vivchar.rendererrecyclerviewadapter.ViewFinder
+import com.github.vivchar.rendererrecyclerviewadapter.ViewModel
+import com.github.vivchar.rendererrecyclerviewadapter.ViewRenderer
+import kotlinx.coroutines.launch
 
-/**
- * Created by Vivchar Vitaly on 12/29/17.
- */
-class PayloadFragment : BaseScreenFragment() {
-	private val yourDataProvider = YourDataProvider()
-	private var adapter: RendererRecyclerViewAdapter? = null
+class PayloadFragment : BaseFragment<FragmentListBinding>() {
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-		val view = inflater.inflate(R.layout.fragment_list, container, false)
-		adapter = MyAdapter()
-		adapter?.setDiffCallback(PayloadDiffCallback())
-		adapter?.registerRenderer(
+	private val viewModel: PayloadViewModelVM by viewModels()
+	private val adapter = MyAdapter()
+
+	override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
+		FragmentListBinding.inflate(inflater, container, false)
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
+		adapter.setDiffCallback(PayloadDiffCallback())
+		adapter.registerRenderer(
 			ViewRenderer<PayloadViewModel, ViewFinder>(
 				R.layout.item_payload_square,
 				PayloadViewModel::class.java
 			) { model, finder, payloads: List<Any> ->
-				finder.setOnClickListener(R.id.text) { changeItem(model) }
+				finder.setOnClickListener(R.id.text) { viewModel.onItemClicked(model) }
 
 				val textView = finder.find<TextView>(R.id.text)
 				if (payloads.isEmpty()) {
-					/* full bind */
 					textView.text = model.text
 					finder.setText(R.id.desciption, model.description)
 				} else {
-					/* partially bind */
 					val payload = payloads[0]
 					if (payload == TEXT_CHANGED) {
 						textView.rotation = 0f
@@ -49,20 +56,18 @@ class PayloadFragment : BaseScreenFragment() {
 				}
 			}
 		)
-//		adapter.registerRenderer(...);
-//		adapter.registerRenderer(...);
 
-		adapter?.setItems(yourDataProvider.payloadItems)
+		binding.recyclerView.adapter = adapter
+		binding.recyclerView.layoutManager = GridLayoutManager(context, 3)
+		binding.recyclerView.addItemDecoration(ItemOffsetDecoration(10))
 
-		val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-		recyclerView.adapter = adapter
-		recyclerView.layoutManager = GridLayoutManager(context, 3)
-		recyclerView.addItemDecoration(ItemOffsetDecoration(10))
-		return view
-	}
-
-	private fun changeItem(model: PayloadViewModel) {
-		adapter?.setItems(yourDataProvider.getChangedPayloadItems(model))
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				viewModel.state.collect { state ->
+					adapter.setItems(state.items)
+				}
+			}
+		}
 	}
 
 	private inner class PayloadDiffCallback : DefaultDiffCallback<PayloadViewModel>() {

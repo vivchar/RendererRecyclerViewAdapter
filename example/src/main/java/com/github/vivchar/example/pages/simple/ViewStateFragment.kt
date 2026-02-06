@@ -4,23 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.github.vivchar.example.BaseScreenFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.github.vivchar.example.R
+import com.github.vivchar.example.base.BaseFragment
+import com.github.vivchar.example.databinding.FragmentListBinding
 import com.github.vivchar.example.pages.simple.DiffUtilFragment.DiffViewModel
 import com.github.vivchar.example.widgets.BetweenSpacesItemDecoration
 import com.github.vivchar.example.widgets.MyAdapter
 import com.github.vivchar.rendererrecyclerviewadapter.*
+import kotlinx.coroutines.launch
 
-/**
- * Created by Vivchar Vitaly on 28.12.17.
- */
-class ViewStateFragment : BaseScreenFragment() {
-	private val yourDataProvider = YourDataProvider()
+class ViewStateFragment : BaseFragment<FragmentListBinding>() {
+
+	private val viewModel: ViewStateViewModel by viewModels()
+	private val adapter = MyAdapter()
 	private var instanceState: Bundle? = null
-	private var adapter: MyAdapter = MyAdapter()
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+	override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
+		FragmentListBinding.inflate(inflater, container, false)
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
 
 		val compositeViewRenderer = CompositeViewRenderer(
 			R.layout.item_simple_composite,
@@ -40,16 +47,16 @@ class ViewStateFragment : BaseScreenFragment() {
 		)
 
 		adapter.registerRenderer(compositeViewRenderer)
-//		adapter.registerRenderer(...);
-//		adapter.registerRenderer(...);
+		binding.recyclerView.adapter = adapter
+		binding.recyclerView.addItemDecoration(BetweenSpacesItemDecoration(10, 10))
 
-		adapter.setItems(yourDataProvider.stateItems)
-
-		val view = inflater.inflate(R.layout.fragment_list, container, false)
-		val recyclerView = view.findViewById<View>(R.id.recycler_view) as RecyclerView
-		recyclerView.adapter = adapter
-		recyclerView.addItemDecoration(BetweenSpacesItemDecoration(10, 10))
-		return view
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				viewModel.state.collect { state ->
+					adapter.setItems(state.items)
+				}
+			}
+		}
 	}
 
 	override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -68,5 +75,5 @@ class ViewStateFragment : BaseScreenFragment() {
 		adapter.onSaveInstanceState(outState)
 	}
 
-	data class StateViewModel(val id: Int, val list: List<ViewModel>) : DefaultCompositeViewModel(list)
+	data class StateViewModel(val id: Int, val list: List<com.github.vivchar.rendererrecyclerviewadapter.ViewModel>) : DefaultCompositeViewModel(list)
 }
